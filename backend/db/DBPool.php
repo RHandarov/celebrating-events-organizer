@@ -1,6 +1,6 @@
 <?php
 
-namespace Db;
+namespace db;
 
 use mysqli;
 
@@ -13,7 +13,7 @@ class DBPool {
         $this->db_connections = array();
     }
 
-    public function get_connection(): \mysqli {
+    public function get_connection(): mysqli {
         $db_connection = null;
         if ($this->num_connections > 0) {
             $db_connection = $this->db_connections[$this->num_connections - 1];
@@ -27,10 +27,10 @@ class DBPool {
         return $db_connection;
     }
 
-    private function make_connection(): \mysqli {
+    private function make_connection(): mysqli {
         $config = \Config\AppConfig::get_instance();
 
-        $new_connection = new \mysqli(
+        $new_connection = new mysqli(
             $config->DB_HOST,
             $config->DB_USERNAME,
             $config->DB_PASSWORD,
@@ -49,7 +49,7 @@ class DBPool {
         return $new_connection;
     }
 
-    public function release_connection(\mysqli $db_connection): void {
+    public function release_connection(mysqli $db_connection): void {
         if ($db_connection === null) {
             throw new \BadMethodCallException("DB connection is null!");
         }
