@@ -28,12 +28,14 @@ class DBPool {
     }
 
     private function make_connection(): \mysqli {
+        $config = \Config\AppConfig::get_instance();
+
         $new_connection = new \mysqli(
-            "localhost",
-            "root",
-            "",
-            "celebrating_events_organizer",
-            3306
+            $config->DB_HOST,
+            $config->DB_USERNAME,
+            $config->DB_PASSWORD,
+            $config->DB_DATABASE,
+            $config->DB_PORT
         );
 
         if ($new_connection->connect_errno) {
