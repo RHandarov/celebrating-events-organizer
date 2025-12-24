@@ -5,10 +5,20 @@ namespace db;
 use mysqli;
 
 class DBPool {
+    private static ?self $instance = null;
+
+    public static function get_instance(): self {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
+
     private int $num_connections;
     private array $db_connections;
 
-    public function __construct() {
+    private function __construct() {
         $this->num_connections = 0;
         $this->db_connections = array();
     }
@@ -56,6 +66,10 @@ class DBPool {
 
         array_push($this->db_connections, $db_connection);
         ++$this->num_connections;
+    }
+
+    private function __clone() {
+        
     }
 
     public function __destruct() {
