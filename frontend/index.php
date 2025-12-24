@@ -12,6 +12,4 @@ session_start([
     "cookie_httponly" => "1"
 ]);
 
-
-$auth_controller = new \controllers\AuthController();
-$auth_controller->show_login_form();
+Router::run();
