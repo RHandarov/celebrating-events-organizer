@@ -3,10 +3,13 @@
 final class Router {
     private static array $PATHS = array(
         "GET" => [
-            "login" => [\controllers\AuthController::class, "show_login_form"]
+            "login" => [\controllers\AuthController::class, "show_login_form"],
+            "register" => [\controllers\AuthController::class, "show_register_form"],
+            "logout" => [\controllers\AuthController::class, "log_out"]
         ],
         "POST" => [
-            "login" => [\controllers\AuthController::class, "login"]
+            "login" => [\controllers\AuthController::class, "login"],
+            "register" => [\controllers\AuthController::class, "register"]
         ]
     );
 

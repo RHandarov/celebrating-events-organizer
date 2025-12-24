@@ -33,4 +33,15 @@ class UserRepository {
 
         return $user;
     }
+
+    public function add_user(string $username, string $email, string $password_hash): void {
+        $prepared_statement =
+            $this->db_connection->prepare(
+                "INSERT INTO users (username, email, password)
+                VALUES (?, ?, ?)"
+            );
+
+        $prepared_statement->bind_param("sss", $username, $email, $password_hash);
+        $prepared_statement->execute();
+    }
 }

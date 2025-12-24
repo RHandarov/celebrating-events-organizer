@@ -10,13 +10,39 @@ class AuthController {
     }
 
     public function show_login_form(): void {
-        if (isset($_SESSION["is_logged"]) && $_SESSION["is_logged"] === true) {
-            return; // should redirect to the home page
-        }
+        $this->forward_if_logged_in();
 
         include("templates/header.php");
         include("templates/login_form.php");
         include("templates/footer.php");
+    }
+
+    public function show_register_form(): void {
+        $this->forward_if_logged_in();
+
+        include("templates/header.php");
+        include("templates/register_form.php");
+        include("templates/footer.php");
+    }
+
+    private function forward_if_logged_in(): void {
+        if ($this->is_logged_in()) {
+            header("Location: /");
+            exit;
+        }
+    }
+
+    public function log_out(): void {
+        if ($this->is_logged_in()) {
+            $_SESSION = array();
+        }
+
+        header("Location: /");
+        exit;
+    }
+
+    private function is_logged_in(): bool {
+        return isset($_SESSION["is_logged"]) && $_SESSION["is_logged"] === true;
     }
 
     public function login(): void {
@@ -38,6 +64,27 @@ class AuthController {
         } else {
             include("templates/header.php");
             include("templates/login_form.php");
+            include("templates/footer.php");
+        }
+    }
+
+    public function register(): void {
+        $errors = [];
+
+        $success =
+            $this->user_service->add_user(
+                $_POST["username"],
+                $_POST["email"],
+                $_POST["password"],
+                $errors
+            );
+
+        if ($success === true) {
+            header("Location: /login");
+            exit;
+        } else {
+            include("templates/header.php");
+            include("templates/register_form.php");
             include("templates/footer.php");
         }
     }
