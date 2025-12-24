@@ -1,3 +1,10 @@
+<?php
+    if (isset($errors)) {
+        foreach ($errors as $error) {
+            echo "<h1>" . $error . "</h1>";
+        }
+    }
+?>
     <form method="post">
         <label for="username">Потребителско име:</label>
         <input id="username" name="username" type="text" maxlength="30" required>
