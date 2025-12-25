@@ -27,11 +27,13 @@ class UserRepository {
 
         $row = $result->fetch_assoc();
         $follower_ids = $this->get_all_followers_of_user($row["id"]);
+        $dates = $this->get_dates_of_user($row["id"]);
         return new \models\User($row["id"],
             $row["username"],
             $row["email"],
             $row["password"],
-            $follower_ids);
+            $follower_ids,
+            $dates);
     }
 
     public function find_user_by_id(int $user_id): ?\models\User {
@@ -51,12 +53,14 @@ class UserRepository {
 
         $row = $result->fetch_assoc();
         $follower_ids = $this->get_all_followers_of_user($row["id"]);
+        $dates = $this->get_dates_of_user($row["id"]);
         return new \models\User(
             $row["id"],
             $row["username"],
             $row["email"],
             $row["password"],
-            $follower_ids
+            $follower_ids,
+            $dates
         );
     }
 
@@ -82,6 +86,31 @@ class UserRepository {
         }
 
         return $followers;
+    }
+
+    private function get_dates_of_user(int $user_id): array {
+        $prepared_statement =
+            $this->db_connection->prepare(
+                "SELECT `date`, title FROM dates WHERE owner_id = ?"
+            );
+
+        $prepared_statement->bind_param("i", $user_id);
+        $prepared_statement->execute();
+
+        $dates = [];
+
+        $result = $prepared_statement->get_result();
+        while (true) {
+            $row = $result->fetch_assoc();
+
+            if ($row === null || $row === false) {
+                break; // no nore rows or error occurred
+            }
+
+            array_push($dates, new \models\Date($row["date"], $row["title"]));
+        }
+
+        return $dates;
     }
 
     public function add_user(string $username, string $email, string $password_hash): void {
