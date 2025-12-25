@@ -18,14 +18,7 @@ class User {
         $this->username = $username;
         $this->email = $email;
         $this->password = $password;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
         $this->followers = $followers;
->>>>>>> 3d48d92 (Add method of getting all followers by user id and finding user by id)
-=======
-        $this->followers = [];
->>>>>>> a65f128 (Add followers field, getter and adding methods in the user model)
     }
 
     public function get_id(): int {
