@@ -160,4 +160,19 @@ class UserRepository {
 
         return false;
     }
+
+    public function add_date(int $user_id, string $date, string $title): void {
+        $prepared_statement =
+            $this->db_connection->prepare(
+                "INSERT INTO dates (owner_id, `date`, title)
+                VALUES (?, ?, ?)"
+            );
+
+        $prepared_statement->bind_param("iss", $user_id, $date, $title);
+        var_dump($prepared_statement->execute());
+
+        echo "<pre>";
+        print_r($prepared_statement);
+        echo "</pre>";
+    }
 }

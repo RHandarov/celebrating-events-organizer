@@ -2,6 +2,8 @@
 
 namespace services;
 
+use DateTime;
+
 class UserService {
     private \repositories\UserRepository $user_repository;
 
@@ -90,10 +92,56 @@ class UserService {
         return true;
     }
 
+    public function add_date(int $user_id, string $date, string $title, array &$errors): bool {
+        $title = htmlspecialchars(trim($title));
+
+
+        if (!$this->validate_date_format($date, $errors)) {
+            return false;
+        }
+
+        if (!$this->validate_date_title($title, $errors)) {
+            return false;
+        }
+
+        if (!$this->does_user_with_id_exists($user_id, $errors)) {
+            return false;
+        }
+
+        $this->user_repository->add_date($user_id, $date, $title);
+
+        return true;
+    }
+
     private function does_user_with_id_exists(int $user_id, array &$errors): bool {
         if ($this->user_repository->find_user_by_id($user_id) === null) {
             array_push($errors,
                 "Потребителят с ИД " . $user_id . " не съществува!");
+
+            return false;
+        }
+
+        return true;
+    }
+
+    private function validate_date_title(string $title, array &$errors): bool {
+        $username_length = mb_strlen($title);
+        if ($username_length === 0 || $username_length > 100) {
+            array_push($errors,
+                "Дължината на заглавието на датата трябва да е не повече от 100 символа!");
+
+            return false;
+        }
+
+        return true;
+    }
+
+    private function validate_date_format(string $date, array &$errors): bool {
+        $date_format = DateTime::createFromFormat("Y-m-d", $date);
+        
+        if (!$date_format || $date_format->format("Y-m-d") !== $date) {
+            array_push($errors,
+                "Датата трябва да е във формат YYYY-MM-DD!");
 
             return false;
         }
