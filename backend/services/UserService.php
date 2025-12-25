@@ -46,26 +46,57 @@ class UserService {
         return true;
     }
 
-    public function follow_user(int $followr_id, int $followed_id, array &$errors): bool {
-        if ($followr_id === $followed_id) {
+    public function follow_user(int $follower_id, int $followed_id, array &$errors): bool {
+        if ($follower_id === $followed_id) {
             return true;
         }
 
-        if ($this->user_repository->find_user_by_id($followr_id) === null) {
-            array_push($errors,
-                "Потребителят с ИД " . $followr_id . " не съществува!");
-
+        if (!$this->does_user_with_id_exists($follower_id, $errors)) {
             return false;
         }
 
-        if ($this->user_repository->find_user_by_id($followed_id) === null) {
-            array_push($errors,
-                "Потребителят с ИД " . $followed_id . " не съществува!");
-
+        if (!$this->does_user_with_id_exists($followed_id, $errors)) {
             return false;
         }
 
-        $this->user_repository->follow_user($followr_id, $followed_id);
+        if ($this->user_repository->are_users_already_following($follower_id, $followed_id)) {
+            return true;
+        }
+
+        $this->user_repository->follow_user($follower_id, $followed_id);
+
+        return true;
+    }
+
+    public function unfollow_user(int $follower_id, int $followed_id, array &$errors): bool {
+        if ($follower_id === $followed_id) {
+            return true;
+        }
+
+        if (!$this->does_user_with_id_exists($follower_id, $errors)) {
+            return false;
+        }
+
+        if (!$this->does_user_with_id_exists($followed_id, $errors)) {
+            return false;
+        }
+
+        if (!$this->user_repository->are_users_already_following($follower_id, $followed_id)) {
+            return true;
+        }
+
+        $this->user_repository->unfollow_user($follower_id, $followed_id);
+
+        return true;
+    }
+
+    private function does_user_with_id_exists(int $user_id, array &$errors): bool {
+        if ($this->user_repository->find_user_by_id($user_id) === null) {
+            array_push($errors,
+                "Потребителят с ИД " . $user_id . " не съществува!");
+
+            return false;
+        }
 
         return true;
     }

@@ -98,6 +98,27 @@ class UserRepository {
     public function follow_user(int $follower_id, int $followed_id): void {
         $prepared_statement =
             $this->db_connection->prepare(
+                "INSERT INTO followers (follower_id, followed_id)
+                VALUES (?, ?)"
+            );
+
+        $prepared_statement->bind_param("ii", $follower_id, $followed_id);
+        $prepared_statement->execute();
+    }
+
+    public function unfollow_user(int $follower_id, int $followed_id): void {
+        $prepared_statement =
+            $this->db_connection->prepare(
+                "DELETE FROM followers WHERE follower_id = ? AND followed_id = ?"
+            );
+
+        $prepared_statement->bind_param("ii", $follower_id, $followed_id);
+        $prepared_statement->execute();
+    }
+
+    public function are_users_already_following(int $follower_id, int $followed_id): bool {
+        $prepared_statement =
+            $this->db_connection->prepare(
                 "SELECT * FROM followers WHERE follower_id = ? AND followed_id = ?"
             );
 
@@ -105,16 +126,9 @@ class UserRepository {
         $prepared_statement->execute();
 
         if ($prepared_statement->get_result()->num_rows > 0) {
-            return;
+            return true;
         }
 
-        $prepared_statement =
-            $this->db_connection->prepare(
-                "INSERT INTO followers (follower_id, followed_id)
-                VALUES (?, ?)"
-            );
-
-        $prepared_statement->bind_param("ii", $follower_id, $followed_id);
-        $prepared_statement->execute();
+        return false;
     }
 }
