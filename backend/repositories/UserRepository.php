@@ -26,12 +26,62 @@ class UserRepository {
         }
 
         $row = $result->fetch_assoc();
-        $user = new \models\User($row["id"],
+        $follower_ids = $this->get_all_followers_of_user($row["id"]);
+        return new \models\User($row["id"],
             $row["username"],
             $row["email"],
-            $row["password"]);
+            $row["password"],
+            $follower_ids);
+    }
 
-        return $user;
+    public function find_user_by_id(int $user_id): ?\models\User {
+        $prepared_statement =
+            $this->db_connection->prepare(
+                "SELECT * FROM users WHERE id = ?"
+            );
+
+        $prepared_statement->bind_param("i", $user_id);
+        $prepared_statement->execute();
+
+        $result = $prepared_statement->get_result();
+
+        if ($result->num_rows !== 1) {
+            return null;
+        }
+
+        $row = $result->fetch_assoc();
+        $follower_ids = $this->get_all_followers_of_user($row["id"]);
+        return new \models\User(
+            $row["id"],
+            $row["username"],
+            $row["email"],
+            $row["password"],
+            $follower_ids
+        );
+    }
+
+    private function get_all_followers_of_user(int $user_id): array {
+        $prepared_statement =
+            $this->db_connection->prepare(
+                "SELECT followed_id FROM followers WHERE follower_id = ?"
+            );
+
+        $prepared_statement->bind_param("i", $user_id);
+        $prepared_statement->execute();
+
+        $result = $prepared_statement->get_result();
+        $followers = [];
+        while (true) {
+            $row = $result->fetch_assoc();
+
+            if ($row === null || $row === false) {
+                break; // no nore rows or error occurred
+            }
+
+            array_push($followers, $row["followed_id"]);
+        }
+
+        return $followers;
     }
 
     public function add_user(string $username, string $email, string $password_hash): void {
