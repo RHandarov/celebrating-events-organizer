@@ -59,13 +59,15 @@ class DBPool {
         return $new_connection;
     }
 
-    public function release_connection(mysqli $db_connection): void {
+    public function release_connection(mysqli &$db_connection): void {
         if ($db_connection === null) {
             throw new \BadMethodCallException("DB connection is null!");
         }
 
         array_push($this->db_connections, $db_connection);
         ++$this->num_connections;
+
+        $db_connection = null;
     }
 
     private function __clone() {

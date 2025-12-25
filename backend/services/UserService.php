@@ -5,11 +5,12 @@ namespace services;
 use DateTime;
 
 class UserService {
+    private \mysqli $db_connection;
     private \repositories\UserRepository $user_repository;
 
     public function __construct() {
-        $db_connection = \db\DBPool::get_instance()->get_connection();
-        $this->user_repository = new \repositories\UserRepository($db_connection);
+        $this->db_connection = \db\DBPool::get_instance()->get_connection();
+        $this->user_repository = new \repositories\UserRepository($this->db_connection);
     }
 
     public function find_user_by_username_and_password(string $username,
@@ -169,5 +170,9 @@ class UserService {
         }
 
         return true;
+    }
+
+    public function __destruct() {
+        \db\DBPool::get_instance()->release_connection($this->db_connection);
     }
 }
