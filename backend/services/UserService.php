@@ -46,6 +46,30 @@ class UserService {
         return true;
     }
 
+    public function follow_user(int $followr_id, int $followed_id, array &$errors): bool {
+        if ($followr_id === $followed_id) {
+            return true;
+        }
+
+        if ($this->user_repository->find_user_by_id($followr_id) === null) {
+            array_push($errors,
+                "Потребителят с ИД " . $followr_id . " не съществува!");
+
+            return false;
+        }
+
+        if ($this->user_repository->find_user_by_id($followed_id) === null) {
+            array_push($errors,
+                "Потребителят с ИД " . $followed_id . " не съществува!");
+
+            return false;
+        }
+
+        $this->user_repository->follow_user($followr_id, $followed_id);
+
+        return true;
+    }
+
     private function validate_username(string $username, array &$errors): bool {
         $username_length = mb_strlen($username);
         if ($username_length === 0 || $username_length > 30) {
