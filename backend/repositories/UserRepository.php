@@ -56,7 +56,7 @@ class UserRepository {
         );
     }
 
-    public function change_user(\models\User $updated_user): void {
+    public function change_user(\models\User $updated_user): \models\User {
         $prepared_statement =
             $this->db_connection->prepare(
                 "UPDATE users
@@ -69,6 +69,8 @@ class UserRepository {
         $id = $updated_user->get_id();
         $prepared_statement->bind_param("ssi", $email, $password, $id);
         $prepared_statement->execute();
+
+        return $updated_user;
     }
 
     public function get_all_followers_of_user(\models\User $user): array {
@@ -208,7 +210,7 @@ class UserRepository {
         );
     }
 
-    public function change_date(\models\Date $changed_date): void {
+    public function change_date(\models\Date $changed_date): \models\Date {
         $prepared_statement =
             $this->db_connection->prepare(
                 "UPDATE dates
@@ -221,6 +223,8 @@ class UserRepository {
         $id = $changed_date->get_id();
         $prepared_statement->bind_param("ssi", $date, $title, $id);
         $prepared_statement->execute();
+
+        return $changed_date;
     }
 
     public function delete_date(\models\Date $date): void {
