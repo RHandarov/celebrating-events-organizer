@@ -34,4 +34,21 @@ class EventRepository {
             $description
         );
     }
+
+    public function change_event(\models\Event $changed_event): \models\Event {
+        $prepared_statement =
+            $this->db_connection->prepare(
+                "UPDATE events
+                SET `location` = ?, `description` = ?
+                WHERE id = ?"
+            );
+
+        $location = $changed_event->get_location();
+        $description = $changed_event->get_description();
+        $event_id = $changed_event->get_id();
+        $prepared_statement->bind_param("ssi", $location, $description, $event_id);
+        $prepared_statement->execute();
+
+        return $changed_event;
+    }
 }
