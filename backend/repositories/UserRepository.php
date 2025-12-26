@@ -26,14 +26,10 @@ class UserRepository {
         }
 
         $row = $result->fetch_assoc();
-        $follower_ids = $this->get_all_followers_of_user($row["id"]);
-        $dates = $this->get_dates_of_user($row["id"]);
         return new \models\User($row["id"],
             $row["username"],
             $row["email"],
-            $row["password"],
-            $follower_ids,
-            $dates);
+            $row["password"]);
     }
 
     public function find_user_by_id(int $user_id): ?\models\User {
@@ -52,29 +48,27 @@ class UserRepository {
         }
 
         $row = $result->fetch_assoc();
-        $follower_ids = $this->get_all_followers_of_user($row["id"]);
-        $dates = $this->get_dates_of_user($row["id"]);
         return new \models\User(
             $row["id"],
             $row["username"],
             $row["email"],
-            $row["password"],
-            $follower_ids,
-            $dates
+            $row["password"]
         );
     }
 
-    private function get_all_followers_of_user(int $user_id): array {
+    public function get_all_followers_of_user(\models\User $user): array {
         $prepared_statement =
             $this->db_connection->prepare(
                 "SELECT followed_id FROM followers WHERE follower_id = ?"
             );
 
+        $user_id = $user->get_id(); // because bind_param accepts only reference
         $prepared_statement->bind_param("i", $user_id);
         $prepared_statement->execute();
 
-        $result = $prepared_statement->get_result();
         $followers = [];
+
+        $result = $prepared_statement->get_result();
         while (true) {
             $row = $result->fetch_assoc();
 
@@ -82,18 +76,19 @@ class UserRepository {
                 break; // no nore rows or error occurred
             }
 
-            array_push($followers, $row["followed_id"]);
+            array_push($followers, $this->find_user_by_id($row["followed_id"]));
         }
 
         return $followers;
     }
 
-    private function get_dates_of_user(int $user_id): array {
+    public function get_dates_of_user(\models\User $user): array {
         $prepared_statement =
             $this->db_connection->prepare(
-                "SELECT `date`, title FROM dates WHERE owner_id = ?"
+                "SELECT id, `date`, title FROM dates WHERE owner_id = ?"
             );
 
+        $user_id = $user->get_id(); // because bind_param accepts only reference
         $prepared_statement->bind_param("i", $user_id);
         $prepared_statement->execute();
 
@@ -107,13 +102,18 @@ class UserRepository {
                 break; // no nore rows or error occurred
             }
 
-            array_push($dates, new \models\Date($row["date"], $row["title"]));
+            array_push($dates, new \models\Date(
+                $row["id"],
+                $user,
+                $row["date"],
+                $row["title"]
+            ));
         }
 
         return $dates;
     }
 
-    public function add_user(string $username, string $email, string $password_hash): void {
+    public function add_user(string $username, string $email, string $password_hash): \models\User {
         $prepared_statement =
             $this->db_connection->prepare(
                 "INSERT INTO users (username, email, password)
@@ -122,35 +122,48 @@ class UserRepository {
 
         $prepared_statement->bind_param("sss", $username, $email, $password_hash);
         $prepared_statement->execute();
+
+        return new \models\User(
+            $prepared_statement->insert_id,
+            $username,
+            $email,
+            $password_hash
+        );
     }
 
-    public function follow_user(int $follower_id, int $followed_id): void {
+    public function follow_user(\models\User $follower, \models\User $followed): void {
         $prepared_statement =
             $this->db_connection->prepare(
                 "INSERT INTO followers (follower_id, followed_id)
                 VALUES (?, ?)"
             );
 
+        $follower_id = $follower->get_id();
+        $followed_id = $followed->get_id();
         $prepared_statement->bind_param("ii", $follower_id, $followed_id);
         $prepared_statement->execute();
     }
 
-    public function unfollow_user(int $follower_id, int $followed_id): void {
+    public function unfollow_user(\models\User $follower, \models\User $followed): void {
         $prepared_statement =
             $this->db_connection->prepare(
                 "DELETE FROM followers WHERE follower_id = ? AND followed_id = ?"
             );
 
+        $follower_id = $follower->get_id();
+        $followed_id = $followed->get_id();
         $prepared_statement->bind_param("ii", $follower_id, $followed_id);
         $prepared_statement->execute();
     }
 
-    public function are_users_already_following(int $follower_id, int $followed_id): bool {
+    public function are_users_already_following(\models\User $follower, \models\User $followed): bool {
         $prepared_statement =
             $this->db_connection->prepare(
                 "SELECT * FROM followers WHERE follower_id = ? AND followed_id = ?"
             );
 
+        $follower_id = $follower->get_id();
+        $followed_id = $followed->get_id();
         $prepared_statement->bind_param("ii", $follower_id, $followed_id);
         $prepared_statement->execute();
 
@@ -161,14 +174,33 @@ class UserRepository {
         return false;
     }
 
-    public function add_date(int $user_id, string $date, string $title): void {
+    public function add_date(\models\User $user, string $date, string $title): \models\Date {
         $prepared_statement =
             $this->db_connection->prepare(
                 "INSERT INTO dates (owner_id, `date`, title)
                 VALUES (?, ?, ?)"
             );
 
+        $user_id = $user->get_id();
         $prepared_statement->bind_param("iss", $user_id, $date, $title);
+        $prepared_statement->execute();
+
+        return new \models\Date(
+            $prepared_statement->insert_id,
+            $user,
+            $date,
+            $title
+        );
+    }
+
+    public function delete_date(\models\Date $date): void {
+        $prepared_statement =
+            $this->db_connection->prepare(
+                "DELETE FROM dates WHERE id = ?"
+            );
+
+        $date_id = $date->get_id();
+        $prepared_statement->bind_param("i", $date_id);
         $prepared_statement->execute();
     }
 }

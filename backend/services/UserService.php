@@ -32,6 +32,10 @@ class UserService {
         return $user;
     }
 
+    public function find_user_by_id(int $user_id): ?\models\User {
+        return $this->user_repository->find_user_by_id($user_id);
+    }
+
     public function add_user(string $username, string $email, string $password, array &$errors): bool {
         $username = htmlspecialchars(trim($username));
         $email = htmlspecialchars(trim($email));
@@ -49,51 +53,43 @@ class UserService {
         return true;
     }
 
-    public function follow_user(int $follower_id, int $followed_id, array &$errors): bool {
-        if ($follower_id === $followed_id) {
+    public function get_all_followers_of_user(\models\User $user): array {
+        return $this->user_repository->get_all_followers_of_user($user);
+    }
+
+    public function follow_user(\models\User $follower, \models\User $followed): true {
+        if ($follower->get_id() === $followed->get_id()) {
             return true;
         }
 
-        if (!$this->does_user_with_id_exists($follower_id, $errors)) {
-            return false;
-        }
-
-        if (!$this->does_user_with_id_exists($followed_id, $errors)) {
-            return false;
-        }
-
-        if ($this->user_repository->are_users_already_following($follower_id, $followed_id)) {
+        if ($this->user_repository->are_users_already_following($follower, $followed)) {
             return true;
         }
 
-        $this->user_repository->follow_user($follower_id, $followed_id);
+        $this->user_repository->follow_user($follower, $followed);
 
         return true;
     }
 
-    public function unfollow_user(int $follower_id, int $followed_id, array &$errors): bool {
-        if ($follower_id === $followed_id) {
+    public function unfollow_user(\models\User $follower, \models\User $followed): true {
+        if ($follower->get_id() === $followed->get_id()) {
             return true;
         }
 
-        if (!$this->does_user_with_id_exists($follower_id, $errors)) {
-            return false;
-        }
-
-        if (!$this->does_user_with_id_exists($followed_id, $errors)) {
-            return false;
-        }
-
-        if (!$this->user_repository->are_users_already_following($follower_id, $followed_id)) {
+        if (!$this->user_repository->are_users_already_following($follower, $followed)) {
             return true;
         }
 
-        $this->user_repository->unfollow_user($follower_id, $followed_id);
+        $this->user_repository->unfollow_user($follower, $followed);
 
         return true;
     }
 
-    public function add_date(int $user_id, string $date, string $title, array &$errors): bool {
+    public function get_all_dates_of_user(\models\User $user): array {
+        return $this->user_repository->get_dates_of_user($user);
+    }
+
+    public function add_date(\models\User $user, string $date, string $title, array &$errors): bool {
         $title = htmlspecialchars(trim($title));
 
 
@@ -105,23 +101,13 @@ class UserService {
             return false;
         }
 
-        if (!$this->does_user_with_id_exists($user_id, $errors)) {
-            return false;
-        }
-
-        $this->user_repository->add_date($user_id, $date, $title);
+        $this->user_repository->add_date($user, $date, $title);
 
         return true;
     }
 
-    private function does_user_with_id_exists(int $user_id, array &$errors): bool {
-        if ($this->user_repository->find_user_by_id($user_id) === null) {
-            array_push($errors,
-                "Потребителят с ИД " . $user_id . " не съществува!");
-
-            return false;
-        }
-
+    public function delete_date(\models\Date $date): true {
+        $this->user_repository->delete_date($date);
         return true;
     }
 
