@@ -9,7 +9,7 @@ class EventService {
 
     public function __construct(\services\UserService $user_service) {
         $this->db_connection = \db\DBPool::get_instance()->get_connection();
-        $this->event_repository = new \repositories\EventRepository($this->db_connection);
+        $this->event_repository = new \repositories\EventRepository($this->db_connection, $user_service);
         $this->user_service = $user_service;
     }
 
@@ -103,6 +103,28 @@ class EventService {
         }
 
         return false;
+    }
+
+    public function get_all_organizing_events_for_user(\models\User $user): array {
+        $events = [];
+
+        $followed_users = $this->user_service->get_all_followers_of_user($user);
+        foreach ($followed_users as $followed_user) {
+            $events = array_merge($events, $this->get_all_celebrant_events($followed_user));
+        }
+
+        return $events;
+    }
+
+    private function get_all_celebrant_events(\models\User $celebrant): array {
+        $events = [];
+
+        $dates = $this->user_service->get_all_dates_of_user($celebrant);
+        foreach ($dates as $date) {
+            $events = array_merge($events, $this->event_repository->get_all_events_for_date($date));
+        }
+
+        return $events;
     }
 
     public function __destruct() {

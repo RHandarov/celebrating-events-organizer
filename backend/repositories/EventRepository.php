@@ -4,9 +4,11 @@ namespace repositories;
 
 class EventRepository {
     private \mysqli $db_connection;
+    private \services\UserService $user_service;
 
-    public function __construct(\mysqli $db_connection) {
+    public function __construct(\mysqli $db_connection, \services\UserService $user_service) {
         $this->db_connection = $db_connection;
+        $this->user_service = $user_service;
     }
 
     public function add_event(
@@ -50,5 +52,38 @@ class EventRepository {
         $prepared_statement->execute();
 
         return $changed_event;
+    }
+
+    public function get_all_events_for_date(\models\Date $date): array {
+        $prepared_statement =
+            $this->db_connection->prepare(
+                "SELECT * FROM events WHERE date_id = ?"
+            );
+
+        $date_id = $date->get_id();
+        $prepared_statement->bind_param("i", $date_id);
+        $prepared_statement->execute();
+
+        $events = [];
+
+        $result = $prepared_statement->get_result();
+        while (true) {
+            $row = $result->fetch_assoc();
+
+            if ($row === null || $row === false) {
+                break;
+            }
+
+            $organizer = $this->user_service->find_user_by_id($row["organizer_id"]);
+            array_push($events, new \models\Event(
+                $row["id"],
+                $date,
+                $organizer,
+                $row["location"],
+                $row["description"]
+            ));
+        }
+
+        return $events;
     }
 }
