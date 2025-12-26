@@ -47,6 +47,14 @@ class EventService {
         return $this->event_repository->add_event($date, $organizer, $location, $description);
     }
 
+    public function change_event(\models\Event $changed_event, array &$errors): ?\models\Event {
+        if (!$this->validate_location($changed_event->get_location(), $errors)) {
+            return null;
+        }
+
+        return $this->event_repository->change_event($changed_event);
+    }
+
     private function is_organizer_the_same_as_celebrant(\models\User $organizer, \models\Date $date): bool {
         return $organizer->get_id() === $date->get_owner()->get_id();
     }
