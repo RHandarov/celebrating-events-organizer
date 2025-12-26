@@ -30,7 +30,15 @@ class User {
         return $this->email;
     }
 
+    public function set_email($new_email): void {
+        $this->email = $new_email;
+    }
+
     public function get_password(): string {
         return $this->password;
+    }
+
+    public function set_password($new_password): void {
+        $this->password = hash("sha256", $new_password);
     }
 }

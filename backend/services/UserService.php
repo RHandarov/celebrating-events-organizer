@@ -53,6 +53,16 @@ class UserService {
         return true;
     }
 
+    public function change_user(\models\User $changed_user, array &$errors): bool {
+        if (!$this->validate_email($changed_user->get_email(), $errors)) {
+            return false;
+        }
+
+        $this->user_repository->change_user($changed_user);
+
+        return true;
+    }
+
     public function get_all_followers_of_user(\models\User $user): array {
         return $this->user_repository->get_all_followers_of_user($user);
     }
@@ -115,7 +125,7 @@ class UserService {
         }
 
         $this->user_repository->change_date($changed_date);
-        
+
         return true;
     }
 

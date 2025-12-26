@@ -56,6 +56,21 @@ class UserRepository {
         );
     }
 
+    public function change_user(\models\User $updated_user): void {
+        $prepared_statement =
+            $this->db_connection->prepare(
+                "UPDATE users
+                SET email = ?, `password` = ?
+                WHERE id = ?"
+            );
+
+        $email = $updated_user->get_email();
+        $password = $updated_user->get_password();
+        $id = $updated_user->get_id();
+        $prepared_statement->bind_param("ssi", $email, $password, $id);
+        $prepared_statement->execute();
+    }
+
     public function get_all_followers_of_user(\models\User $user): array {
         $prepared_statement =
             $this->db_connection->prepare(
