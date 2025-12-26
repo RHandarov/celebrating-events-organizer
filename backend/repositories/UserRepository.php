@@ -193,6 +193,21 @@ class UserRepository {
         );
     }
 
+    public function change_date(\models\Date $changed_date): void {
+        $prepared_statement =
+            $this->db_connection->prepare(
+                "UPDATE dates
+                SET `date` = ?, title = ?
+                WHERE id = ?"
+            );
+
+        $date = $changed_date->get_date();
+        $title = $changed_date->get_title();
+        $id = $changed_date->get_id();
+        $prepared_statement->bind_param("ssi", $date, $title, $id);
+        $prepared_statement->execute();
+    }
+
     public function delete_date(\models\Date $date): void {
         $prepared_statement =
             $this->db_connection->prepare(

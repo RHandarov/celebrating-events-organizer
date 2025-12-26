@@ -92,7 +92,6 @@ class UserService {
     public function add_date(\models\User $user, string $date, string $title, array &$errors): bool {
         $title = htmlspecialchars(trim($title));
 
-
         if (!$this->validate_date_format($date, $errors)) {
             return false;
         }
@@ -103,6 +102,20 @@ class UserService {
 
         $this->user_repository->add_date($user, $date, $title);
 
+        return true;
+    }
+
+    public function change_date(\models\Date $changed_date, array &$errors): bool {
+        if (!$this->validate_date_format($changed_date->get_date(), $errors)) {
+            return false;
+        }
+
+        if (!$this->validate_date_title($changed_date->get_title(), $errors)) {
+            return false;
+        }
+
+        $this->user_repository->change_date($changed_date);
+        
         return true;
     }
 
