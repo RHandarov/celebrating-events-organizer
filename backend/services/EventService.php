@@ -123,6 +123,24 @@ class EventService {
         $this->event_repository->save_user_as_guest($guest, $event);
     }
 
+    public function delete_guest_from_event(\models\User $guest, \models\Event $event, array &$errors): void {
+        if (!$this->event_repository->is_user_already_guest($guest, $event)) {
+            array_push($errors,
+                "Потребителят " . $guest->get_username() . " не е гост на събитието!");
+
+            return;
+        }
+
+        if ($guest->get_id() === $event->get_organizer()->get_id()) {
+            array_push($errors,
+                "Потребителят " . $guest->get_username() . " е организатор на събитието!");
+
+            return;
+        }
+
+        $this->event_repository->delete_guest_from_event($guest, $event);
+    }
+
     private function could_user_be_guest_in(\models\User $user, \models\Event $event): bool {
         $possible_events = $this->get_all_organizing_events_for_user($user);
 
