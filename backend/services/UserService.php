@@ -36,31 +36,28 @@ class UserService {
         return $this->user_repository->find_user_by_id($user_id);
     }
 
-    public function add_user(string $username, string $email, string $password, array &$errors): bool {
+    public function add_user(string $username, string $email, string $password, array &$errors): ?\models\User {
         $username = htmlspecialchars(trim($username));
         $email = htmlspecialchars(trim($email));
         $password = hash("sha256", $password);
 
         if (!$this->validate_username($username, $errors)) {
-            return false;
+            return null;
         }
 
         if (!$this->validate_email($email, $errors)) {
-            return false;
+            return null;
         }
 
-        $this->user_repository->add_user($username, $email, $password);
-        return true;
+        return $this->user_repository->add_user($username, $email, $password);
     }
 
-    public function change_user(\models\User $changed_user, array &$errors): bool {
+    public function change_user(\models\User $changed_user, array &$errors): ?\models\User {
         if (!$this->validate_email($changed_user->get_email(), $errors)) {
-            return false;
+            return null;
         }
 
-        $this->user_repository->change_user($changed_user);
-
-        return true;
+        return $this->user_repository->change_user($changed_user);
     }
 
     public function get_all_followers_of_user(\models\User $user): array {
@@ -99,34 +96,30 @@ class UserService {
         return $this->user_repository->get_dates_of_user($user);
     }
 
-    public function add_date(\models\User $user, string $date, string $title, array &$errors): bool {
+    public function add_date(\models\User $user, string $date, string $title, array &$errors): ?\models\Date {
         $title = htmlspecialchars(trim($title));
 
         if (!$this->validate_date_format($date, $errors)) {
-            return false;
+            return null;
         }
 
         if (!$this->validate_date_title($title, $errors)) {
-            return false;
+            return null;
         }
 
-        $this->user_repository->add_date($user, $date, $title);
-
-        return true;
+        return $this->user_repository->add_date($user, $date, $title);
     }
 
-    public function change_date(\models\Date $changed_date, array &$errors): bool {
+    public function change_date(\models\Date $changed_date, array &$errors): ?\models\Date {
         if (!$this->validate_date_format($changed_date->get_date(), $errors)) {
-            return false;
+            return null;
         }
 
         if (!$this->validate_date_title($changed_date->get_title(), $errors)) {
-            return false;
+            return null;
         }
 
-        $this->user_repository->change_date($changed_date);
-
-        return true;
+        return $this->user_repository->change_date($changed_date);
     }
 
     public function delete_date(\models\Date $date): true {
