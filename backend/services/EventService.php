@@ -177,6 +177,71 @@ class EventService {
         return $events;
     }
 
+    public function add_gift(
+        \models\Event $event,
+        \models\User $assigned_guest,
+        string $description,
+        array &$errors
+    ): ?\models\Gift {
+        if (!$this->validate_description($description, $errors)) {
+            return null;
+        }
+
+        if (!$this->is_user_guest_of_event($assigned_guest, $event)) {
+            array_push($errors,
+                "Потребителят " . $assigned_guest->get_username() .
+                " не е гост на събитието!");
+
+            return null;
+        }
+
+        return $this->event_repository->add_gift_to_event(
+            $event,
+            $assigned_guest,
+            $description
+        );
+    }
+
+    public function get_all_gifts_of_event(\models\Event $event): array {
+        return $this->event_repository->get_all_gifts_of_event($event);
+    }
+
+    public function change_gift(\models\Gift $gift, array &$errors): ?\models\Gift {
+        if (!$this->validate_description($gift->get_description(), $errors)) {
+            return null;
+        }
+
+        return $this->event_repository->change_gift($gift);
+    }
+
+    public function delete_gift(\models\Gift $gift): true {
+        $this->event_repository->delete_gift_from_event($gift);
+        return true;
+    }
+
+    private function validate_description(string $description, array &$errors): bool {
+        if ($description === "") {
+            array_push($errors,
+                "Описанието на подаръка не може да е празно!");
+
+            return false;
+        }
+
+        $description_length = mb_strlen($description);
+        if ($description_length > 512) {
+            array_push($errors,
+                "Дължината на описанието не може да надхвърля 512 символа!");
+
+            return false;
+        }
+
+        return true;
+    }
+
+    private function is_user_guest_of_event(\models\User $user, \models\Event $event): bool {
+        return $this->event_repository->is_user_already_guest($user, $event);
+    }
+
     public function __destruct() {
         \db\DBPool::get_instance()->release_connection($this->db_connection);
     }

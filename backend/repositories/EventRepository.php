@@ -94,7 +94,7 @@ class EventRepository {
 
         $prepared_statement =
             $this->db_connection->prepare(
-                "INSERT guests (event_id, guest_id) VALUES (?, ?)"
+                "INSERT INTO guests (event_id, guest_id) VALUES (?, ?)"
             );
 
         $event_id = $event->get_id();
@@ -126,6 +126,88 @@ class EventRepository {
         $guest_id = $guest->get_id();
         $event_id = $event->get_id();
         $prepared_statement->bind_param("ii", $guest_id, $event_id);
+        $prepared_statement->execute();
+    }
+
+    public function add_gift_to_event(
+        \models\Event $event,
+        \models\User $assigned_guest,
+        string $description
+    ): \models\Gift {
+        $prepared_statement =
+            $this->db_connection->prepare(
+                "INSERT INTO gifts (event_id, assigned_guest_id, `description`)
+                VALUES (?, ?, ?)"
+            );
+
+        $event_id = $event->get_id();
+        $assigned_guest_id = $assigned_guest->get_id();
+        $prepared_statement->bind_param("iis", $event_id, $assigned_guest_id, $description);
+        $prepared_statement->execute();
+
+        return new \models\Gift(
+            $prepared_statement->insert_id,
+            $event,
+            $assigned_guest,
+            $description
+        );
+    }
+
+    public function get_all_gifts_of_event(\models\Event $event): array {
+        $prepared_statement = 
+            $this->db_connection->prepare(
+                "SELECT * FROM gifts WHERE event_id = ?"
+            );
+
+        $event_id = $event->get_id();
+        $prepared_statement->bind_param("i", $event_id);
+        $prepared_statement->execute();
+
+        $gifts = [];
+
+        $result = $prepared_statement->get_result();
+        while (true) {
+            $row = $result->fetch_assoc();
+
+            if ($row === null || $row === false) {
+                break;
+            }
+
+            $assigned_guest = $this->user_service->find_user_by_id($row["assigned_guest_id"]);
+            array_push($gifts,
+                new \models\Gift(
+                    $row["id"],
+                    $event,
+                    $assigned_guest,
+                    $row["description"]
+                ));
+        }
+
+        return $gifts;
+    }
+
+    public function change_gift(\models\Gift $gift): \models\Gift {
+        $prepared_statement =
+            $this->db_connection->prepare(
+                "UPDATE gifts SET `description` = ? WHERE id = ?"
+            );
+
+        $description = $gift->get_description();
+        $gift_id = $gift->get_id();
+        $prepared_statement->bind_param("si", $description, $gift_id);
+        $prepared_statement->execute();
+
+        return $gift;
+    }
+
+    public function delete_gift_from_event(\models\Gift $gift): void {
+        $prepared_statement =
+            $this->db_connection->prepare(
+                "DELETE FROM gifts WHERE id = ?"
+            );
+
+        $gift_id = $gift->get_id();
+        $prepared_statement->bind_param("i", $gift_id);
         $prepared_statement->execute();
     }
 }
