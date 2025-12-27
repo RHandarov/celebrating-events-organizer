@@ -98,6 +98,7 @@ class UserService {
 
     public function add_date(\models\User $user, string $date, string $title, array &$errors): ?\models\Date {
         $title = htmlspecialchars(trim($title));
+        $date = trim($date);
 
         if (!$this->validate_date_format($date, $errors)) {
             return null;

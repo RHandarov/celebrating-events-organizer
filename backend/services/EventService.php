@@ -19,6 +19,9 @@ class EventService {
         string $location,
         string $description,
         array &$errors): ?\models\Event {
+        $location = htmlspecialchars(trim($location));
+        $description = htmlspecialchars(trim($description));
+
         if ($this->is_organizer_the_same_as_celebrant($organizer, $date)) {
             array_push($errors,
                 "Не може да организираш парти на себе си!");
@@ -183,6 +186,8 @@ class EventService {
         string $description,
         array &$errors
     ): ?\models\Gift {
+        $description = htmlspecialchars(trim($description));
+
         if (!$this->validate_description($description, $errors)) {
             return null;
         }
