@@ -44,7 +44,12 @@ class EventService {
             return null;
         }
 
-        return $this->event_repository->add_event($date, $organizer, $location, $description);
+        $event = $this->event_repository->add_event($date, $organizer, $location, $description);
+
+        $errors = [];
+        $this->add_guest_to_event($organizer, $event, $errors);
+
+        return $event;
     }
 
     public function change_event(\models\Event $changed_event, array &$errors): ?\models\Event {
@@ -103,6 +108,33 @@ class EventService {
         }
 
         return false;
+    }
+
+    public function add_guest_to_event(\models\User $guest, \models\Event $event, array &$errors): void {
+        if (!$this->could_user_be_guest_in($guest, $event)) {
+            array_push($errors,
+                "Потребителят " . $guest->get_username() . " не следва " .
+                $event->get_date()->get_owner()->get_username() .
+                ". Затова не може да бъде гост на събитието!");
+
+            return;
+        }
+
+        $this->event_repository->save_user_as_guest($guest, $event);
+    }
+
+    private function could_user_be_guest_in(\models\User $user, \models\Event $event): bool {
+        $possible_events = $this->get_all_organizing_events_for_user($user);
+
+        $found = false;
+        foreach ($possible_events as $possible_event) {
+            if ($event->get_id() === $possible_event->get_id()) {
+                $found = true;
+                break;
+            }
+        }
+
+        return $found;
     }
 
     public function get_all_organizing_events_for_user(\models\User $user): array {
