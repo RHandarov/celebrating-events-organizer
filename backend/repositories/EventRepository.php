@@ -103,7 +103,7 @@ class EventRepository {
         $prepared_statement->execute();
     }
 
-    private function is_user_already_guest(\models\User $guest, \models\Event $event): bool {
+    public function is_user_already_guest(\models\User $guest, \models\Event $event): bool {
         $prepared_statement =
             $this->db_connection->prepare(
                 "SELECT * FROM guests WHERE guest_id = ? AND event_id = ?"
@@ -115,5 +115,17 @@ class EventRepository {
         $prepared_statement->execute();
 
         return $prepared_statement->get_result()->num_rows > 0;
+    }
+
+    public function delete_guest_from_event(\models\User $guest, \models\Event $event): void {
+        $prepared_statement =
+            $this->db_connection->prepare(
+                "DELETE FROM guests WHERE guest_id = ? AND event_id = ?"
+            );
+
+        $guest_id = $guest->get_id();
+        $event_id = $event->get_id();
+        $prepared_statement->bind_param("ii", $guest_id, $event_id);
+        $prepared_statement->execute();
     }
 }
