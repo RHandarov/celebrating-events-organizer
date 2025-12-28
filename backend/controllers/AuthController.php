@@ -64,7 +64,7 @@ class AuthController {
 
     public function register(): void {
         $errors = [];
-        $success =
+        $new_user =
             $this->user_service->add_user(
                 $_POST["username"],
                 $_POST["email"],
@@ -72,7 +72,7 @@ class AuthController {
                 $errors
             );
 
-        if ($success === true) {
+        if ($new_user !== null) {
             header("Location: /login");
             exit;
         } else {
