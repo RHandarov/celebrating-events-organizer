@@ -32,6 +32,28 @@ class UserRepository {
             $row["password"]);
     }
 
+    public function find_user_by_username(string $username): ?\models\User {
+        $prepared_statement =
+            $this->db_connection->prepare(
+                "SELECT * FROM users WHERE username = ?"
+            );
+
+        $prepared_statement->bind_param("s", $username, );
+        $prepared_statement->execute();
+
+        $result = $prepared_statement->get_result();
+
+        if ($result->num_rows !== 1) {
+            return null;
+        }
+
+        $row = $result->fetch_assoc();
+        return new \models\User($row["id"],
+            $row["username"],
+            $row["email"],
+            $row["password"]);
+    }
+
     public function find_user_by_id(int $user_id): ?\models\User {
         $prepared_statement =
             $this->db_connection->prepare(

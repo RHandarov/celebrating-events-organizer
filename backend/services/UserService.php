@@ -49,6 +49,13 @@ class UserService {
             return null;
         }
 
+        if ($this->user_repository->find_user_by_username($username) !== null) {
+            array_push($errors,
+                "Потребителското име " . $username . " вече е заето!");
+
+            return null;
+        }
+
         return $this->user_repository->add_user($username, $email, $password);
     }
 
