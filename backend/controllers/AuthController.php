@@ -43,7 +43,6 @@ class AuthController {
 
     public function login(): void {
         $errors = [];
-
         $user =
             $this->user_service->find_user_by_username_and_password(
                 $_POST["username"],
