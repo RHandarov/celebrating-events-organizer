@@ -7,13 +7,5 @@ if ($_SERVER["REQUEST_URI"] === "/favicon.ico") {
 require_once("../backend/Loader.php");
 spl_autoload_register("\Loader::load");
 
-session_set_cookie_params(0,
-    "/",
-    null,
-    null,
-    true);
-session_start([
-    "cookie_httponly" => "1"
-]);
-
+SessionManager::start();
 Router::run();

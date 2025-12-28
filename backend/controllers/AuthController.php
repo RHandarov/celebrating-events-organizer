@@ -2,6 +2,8 @@
 
 namespace controllers;
 
+use SessionManager;
+
 class AuthController {
     private \services\UserService $user_service;
 
@@ -26,23 +28,17 @@ class AuthController {
     }
 
     private function forward_if_logged_in(): void {
-        if ($this->is_logged_in()) {
+        if (SessionManager::is_logged_in()) {
             header("Location: /");
             exit;
         }
     }
 
     public function log_out(): void {
-        if ($this->is_logged_in()) {
-            $_SESSION = array();
-        }
+        SessionManager::logout();
 
         header("Location: /");
         exit;
-    }
-
-    private function is_logged_in(): bool {
-        return isset($_SESSION["is_logged"]) && $_SESSION["is_logged"] === true;
     }
 
     public function login(): void {
@@ -56,8 +52,7 @@ class AuthController {
             );
 
         if ($user !== null) {
-            $_SESSION["is_logged"] = true;
-            $_SESSION["id"] = $user->get_id();
+            SessionManager::login($user);
 
             header("Location: /");
             exit;
