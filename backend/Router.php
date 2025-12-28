@@ -5,7 +5,8 @@ final class Router {
         "GET" => [
             "login" => [\controllers\AuthController::class, "show_login_form"],
             "register" => [\controllers\AuthController::class, "show_register_form"],
-            "logout" => [\controllers\AuthController::class, "log_out"]
+            "logout" => [\controllers\AuthController::class, "log_out"],
+            "" => [\controllers\HomeController::class, "show_home_page"]
         ],
         "POST" => [
             "login" => [\controllers\AuthController::class, "login"],
