@@ -16,8 +16,9 @@ final class Router {
     public static function run(): void {
         $routes = self::$PATHS[$_SERVER["REQUEST_METHOD"]];
         $tokens = explode("/", $_SERVER["REQUEST_URI"]);
-        $controller = new $routes[$tokens[1]][0]();
-        $controller->{$routes[$tokens[1]][1]}();
+        $controller_and_method = $routes[$tokens[1]];
+        $controller = new $controller_and_method[0]();
+        $controller->{$controller_and_method[1]}();
     }
 
     private function __construct() {
