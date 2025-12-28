@@ -35,6 +35,10 @@ header nav a {
     text-decoration: none;
 }
 
+.error {
+    color: #e60000;
+}
+
 #login-form {
     display: block;
     margin: 0 auto;

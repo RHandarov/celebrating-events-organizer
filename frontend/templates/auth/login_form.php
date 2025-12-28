@@ -1,11 +1,12 @@
-<?php
-    if (isset($errors)) {
-        foreach ($errors as $error) {
-            echo "<h1>" . $error . "</h1>";
-        }
-    }
-?>
 <main id="login-form">
+    <?php
+        if (isset($errors)) {
+            foreach ($errors as $error) {
+                echo "<h2 class=\"error\">" . $error . "</h2>";
+            }
+        }
+    ?>
+
     <h2>Вход в системата</h2>
     <form method="post">
         <label for="username">Потребителско име:</label>
