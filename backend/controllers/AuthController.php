@@ -64,7 +64,6 @@ class AuthController {
 
     public function register(): void {
         $errors = [];
-
         $success =
             $this->user_service->add_user(
                 $_POST["username"],

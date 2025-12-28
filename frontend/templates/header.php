@@ -8,8 +8,11 @@
     <body>
         <header>
             <h1>Система за организиране на събития</h1>
-            <nav>
-                <a href="/login">Влез</a>
-                <a href="/register">Регистрирай се</a>
-            </nav>
+            <?php
+                if (!SessionManager::is_logged_in()) {
+                    include("navs/guest_nav.php");
+                } else {
+                    include("navs/logged_nav.php");
+                }
+            ?>
         </header>
