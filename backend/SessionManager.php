@@ -19,7 +19,7 @@ class SessionManager {
 
     public static function logout(): void {
         if (self::is_logged_in()) {
-            $_SESSION = array();
+            session_destroy();
         }
     }
 
