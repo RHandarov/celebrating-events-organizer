@@ -55,3 +55,20 @@ header nav a {
     text-align: center;
     font-size: 17px;
 }
+
+#registration-form {
+    display: block;
+    margin: 0 auto;
+    width: 50%;
+}
+
+#registration-form h2 {
+    text-align: center;
+}
+
+#registration-form form * {
+    display: block;
+    margin: 5px auto;
+    text-align: center;
+    font-size: 17px;
+}
