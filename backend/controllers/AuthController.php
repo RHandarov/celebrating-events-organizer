@@ -15,7 +15,7 @@ class AuthController {
         $this->forward_if_logged_in();
 
         include("templates/header.php");
-        include("templates/login_form.php");
+        include("templates/auth/login_form.php");
         include("templates/footer.php");
     }
 
@@ -23,7 +23,7 @@ class AuthController {
         $this->forward_if_logged_in();
 
         include("templates/header.php");
-        include("templates/register_form.php");
+        include("templates/auth/register_form.php");
         include("templates/footer.php");
     }
 
@@ -58,7 +58,7 @@ class AuthController {
             exit;
         } else {
             include("templates/header.php");
-            include("templates/login_form.php");
+            include("templates/auth/login_form.php");
             include("templates/footer.php");
         }
     }
@@ -79,7 +79,7 @@ class AuthController {
             exit;
         } else {
             include("templates/header.php");
-            include("templates/register_form.php");
+            include("templates/auth/register_form.php");
             include("templates/footer.php");
         }
     }
