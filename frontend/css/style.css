@@ -1,3 +1,7 @@
+* {
+    color: #404040;
+}
+
 header {
     border-bottom: 2px solid black;
     padding-bottom: 5px;
@@ -10,7 +14,6 @@ header h1 {
     flex-direction: row;
     font-size: 25px;
     margin: 10px;
-    color: #404040;
     text-transform: uppercase;
 }
 
@@ -24,7 +27,22 @@ header nav a {
     margin: 15px;
     font-size: 18px;
     text-transform: uppercase;
-    color: #404040;
     font-weight: bold;
     text-decoration: none;
+}
+
+#login-form {
+    display: block;
+    margin: 0 auto;
+    width: 50%;
+}
+
+#login-form h2 {
+    text-align: center;
+}
+
+#login-form form * {
+    display: block;
+    margin: 5px auto;
+    text-align: center;
 }
