@@ -1,0 +1,29 @@
+header {
+    border-bottom: 2px solid black;
+    padding-bottom: 5px;
+    background: #c2f0c2;
+}
+
+header h1 {
+    display: inline-flex;
+    flex-direction: row;
+    font-size: 25px;
+    margin: 10px;
+    color: #404040;
+    text-transform: uppercase;
+}
+
+header nav {
+    display: inline-flex;
+    justify-content: flex-end;
+    float: right;
+}
+
+header nav a {
+    margin: 15px;
+    font-size: 18px;
+    text-transform: uppercase;
+    color: #404040;
+    font-weight: bold;
+    text-decoration: none;
+}

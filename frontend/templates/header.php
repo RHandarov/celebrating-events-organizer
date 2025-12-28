@@ -6,4 +6,10 @@
         <link type="text/css" rel="stylesheet" href="../css/style.css">
     </head>
     <body>
-        
+        <header>
+            <h1>Система за организиране на събития</h1>
+            <nav>
+                <a href="#">Влез</a>
+                <a href="#">Регистрирай се</a>
+            </nav>
+        </header>
