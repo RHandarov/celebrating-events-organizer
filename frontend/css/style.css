@@ -1,19 +1,19 @@
 * {
-    color: #404040;
+    color: #404040 !important;
 }
 
 body {
     background: #eafaea;
 }
 
-header {
+#header {
     border-bottom: 2px solid black;
     padding-bottom: 5px;
     margin-bottom: 20px;
     background: #c2f0c2;
 }
 
-header h1 {
+#header h1 {
     display: inline-flex;
     flex-direction: row;
     font-size: 25px;
@@ -21,13 +21,13 @@ header h1 {
     text-transform: uppercase;
 }
 
-header nav {
+#header nav {
     display: inline-flex;
     justify-content: flex-end;
     float: right;
 }
 
-header nav a {
+#header nav a {
     margin: 15px;
     font-size: 18px;
     text-transform: uppercase;
@@ -36,7 +36,7 @@ header nav a {
 }
 
 .error {
-    color: #e60000;
+    color: #e60000 !important;
 }
 
 #login-form {
@@ -70,5 +70,29 @@ header nav a {
     display: block;
     margin: 5px auto;
     text-align: center;
+    font-size: 17px;
+}
+
+#my-dates header {
+    border-bottom: 2px solid black;
+    padding-bottom: 5px;
+    margin-bottom: 20px;
+    background: #c2f0c2;
+}
+
+#my-dates header h2 {
+    display: inline-flex;
+    flex-direction: row;
+    font-size: 23px;
+    margin: 10px;
+}
+
+#my-dates header form {
+    display: inline-flex;
+    float: right;
+    margin: 10px;
+}
+
+#my-dates header form button {
     font-size: 17px;
 }
