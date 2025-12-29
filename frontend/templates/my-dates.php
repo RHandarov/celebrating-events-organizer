@@ -17,8 +17,8 @@
                 echo "<td>" . $user_date->get_date() . "</td>";
                 echo "<td>" . $user_date->get_title() . "</td>";
                 echo "<td>";
-                echo "<a href=\"#\">Редактирай</a> |";
-                echo "<a href=\"#\">Изтрий</a>";
+                echo "<a href=\"/my-dates/edit/" . $user_date->get_id() . "\">Редактирай</a> |";
+                echo "<a href=\"/my-dates/delete/". $user_date->get_id() ."\">Изтрий</a>";
                 echo "</td>";
                 echo "</tr>";
             }

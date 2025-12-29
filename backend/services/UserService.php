@@ -137,9 +137,17 @@ class UserService {
 
     private function validate_date_title(string $title, array &$errors): bool {
         $username_length = mb_strlen($title);
-        if ($username_length === 0 || $username_length > 100) {
+
+        if ($username_length === 0) {
             array_push($errors,
-                "Дължината на заглавието на датата трябва да е не повече от 100 символа!");
+                "Поводът не трябва да е празен!");
+
+            return false;
+        }
+
+        if ($username_length > 100) {
+            array_push($errors,
+                "Дължината на повода трябва да е не повече от 100 символа!");
 
             return false;
         }

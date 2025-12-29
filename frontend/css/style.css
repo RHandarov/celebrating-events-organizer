@@ -100,3 +100,15 @@ body {
 #my-dates header form button {
     font-size: 17px;
 }
+
+#dates-form h2 {
+    font-size: 23px;
+    text-align: center;
+}
+
+#dates-form form * {
+    display: block;
+    margin: 5px auto;
+    text-align: center;
+    font-size: 17px;
+}

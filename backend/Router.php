@@ -9,12 +9,16 @@ final class Router {
             "/register" => [\controllers\AuthController::class, "show_register_form"],
             "/logout" => [\controllers\AuthController::class, "log_out"],
             "/my-dates/delete" => [\controllers\DateController::class, "delete_date"],
+            "/my-dates/add" => [\controllers\DateController::class, "show_add_date_form"],
+            "/my-dates/edit" => [\controllers\DateController::class, "show_edit_date_form"],
             "/my-dates" => [\controllers\DateController::class, "show_my_dates"],
             "/" => [\controllers\HomeController::class, "show_home_page"]
         ],
         "POST" => [
             "/login" => [\controllers\AuthController::class, "login"],
-            "/register" => [\controllers\AuthController::class, "register"]
+            "/register" => [\controllers\AuthController::class, "register"],
+            "/my-dates/add" => [\controllers\DateController::class, "add_date"],
+            "/my-dates/edit" => [\controllers\DateController::class, "edit_date"]
         ]
     );
 
