@@ -40,7 +40,7 @@ class Event {
     }
 
     public function set_location(string $new_location): void {
-        $this->location = $new_location;
+        $this->location = htmlspecialchars(trim($new_location));
     }
 
     public function get_description(): string {
@@ -48,6 +48,6 @@ class Event {
     }
 
     public function set_description(string $new_description): void {
-        $this->description = $new_description;
+        $this->description = htmlspecialchars(trim($new_description));
     }
 }

@@ -37,6 +37,6 @@ class Gift {
     }
 
     public function set_description(string $new_description): void {
-        $this->description = $new_description;
+        $this->description = htmlspecialchars(trim($new_description));
     }
 }

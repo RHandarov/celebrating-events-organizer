@@ -28,7 +28,7 @@ class Date {
     }
 
     public function set_date(string $new_date): void {
-        $this->date = $new_date;
+        $this->date = trim($new_date);
     }
 
     public function get_title(): string {
@@ -36,6 +36,6 @@ class Date {
     }
 
     public function set_title($new_title): void {
-        $this->title = $new_title;
+        $this->title = htmlspecialchars(trim($new_title));
     }
 }
