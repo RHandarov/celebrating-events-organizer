@@ -11,7 +11,7 @@ class AuthController {
         $this->user_service = new \services\UserService();
     }
 
-    public function show_login_form(): void {
+    public function show_login_form(array $params): void {
         $this->forward_if_logged_in();
 
         include("templates/header.php");
@@ -19,7 +19,7 @@ class AuthController {
         include("templates/footer.php");
     }
 
-    public function show_register_form(): void {
+    public function show_register_form(array $params): void {
         $this->forward_if_logged_in();
 
         include("templates/header.php");
@@ -34,14 +34,14 @@ class AuthController {
         }
     }
 
-    public function log_out(): void {
+    public function log_out(array $params): void {
         SessionManager::logout();
 
         header("Location: /");
         exit;
     }
 
-    public function login(): void {
+    public function login(array $params): void {
         $errors = [];
         $user =
             $this->user_service->find_user_by_username_and_password(
@@ -62,7 +62,7 @@ class AuthController {
         }
     }
 
-    public function register(): void {
+    public function register(array $params): void {
         $errors = [];
         $new_user =
             $this->user_service->add_user(
