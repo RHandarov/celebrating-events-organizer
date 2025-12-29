@@ -8,4 +8,6 @@ require_once("../backend/Loader.php");
 spl_autoload_register("\Loader::load");
 
 SessionManager::start();
+
+Router::init();
 Router::run();

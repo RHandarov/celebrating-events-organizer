@@ -39,6 +39,10 @@ body {
     color: #e60000 !important;
 }
 
+.table * {
+    background-color: #eafaea !important;
+}
+
 #login-form {
     display: block;
     margin: 0 auto;

@@ -1,6 +1,8 @@
 <?php
 
 final class Router {
+    private static \services\UserService $user_service;
+
     private static array $PATHS = array(
         "GET" => [
             "/login" => [\controllers\AuthController::class, "show_login_form"],
@@ -15,6 +17,10 @@ final class Router {
             "/register" => [\controllers\AuthController::class, "register"]
         ]
     );
+
+    public static function init(): void {
+        self::$user_service = new \services\UserService();
+    }
 
     public static function run(): void {
         $routes = self::$PATHS[$_SERVER["REQUEST_METHOD"]];
@@ -54,6 +60,14 @@ final class Router {
         }
 
         return "";
+    }
+
+    private static function make_controller($controller_class) {
+        if ($controller_class === \controllers\DateController::class) {
+            return new \controllers\DateController(self::$user_service);
+        }
+
+        return new $controller_class();
     }
 
     private function __construct() {

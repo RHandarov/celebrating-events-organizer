@@ -27,6 +27,10 @@ class SessionManager {
         return isset($_SESSION["is_logged"]) && $_SESSION["is_logged"] === true;
     }
 
+    public static function get_logged_user_id(): int {
+        return $_SESSION["id"];
+    }
+
     private function __construct() {
 
     }
