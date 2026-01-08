@@ -22,7 +22,7 @@ class DateController {
         $user_dates = $this->user_service->get_all_dates_of_user($user);
 
         include("templates/header.php");
-        include("templates/my-dates.php");
+        include("templates/dates/my-dates.php");
         include("templates/footer.php");
     }
 
@@ -57,7 +57,7 @@ class DateController {
         $add_date = true;
 
         include("templates/header.php");
-        include("templates/dates-form.php");
+        include("templates/dates/dates-form.php");
         include("templates/footer.php");
     }
 
@@ -81,7 +81,7 @@ class DateController {
             $add_date = true;
 
             include("templates/header.php");
-            include("templates/dates-form.php");
+            include("templates/dates/dates-form.php");
             include("templates/footer.php");
         } else {
             header("Location: /my-dates");
@@ -111,7 +111,7 @@ class DateController {
         $add_date = false;
 
         include("templates/header.php");
-        include("templates/dates-form.php");
+        include("templates/dates/dates-form.php");
         include("templates/footer.php");
     }
 
@@ -145,7 +145,7 @@ class DateController {
             $add_date = false;
 
             include("templates/header.php");
-            include("templates/dates-form.php");
+            include("templates/dates/dates-form.php");
             include("templates/footer.php");
         } else {
             header("Location: /my-dates");
