@@ -2,6 +2,7 @@
 
 final class Router {
     private static \services\UserService $user_service;
+    private static \services\EventService $event_service;
 
     private static array $PATHS = array(
         "GET" => [
@@ -25,6 +26,7 @@ final class Router {
 
     public static function init(): void {
         self::$user_service = new \services\UserService();
+        self::$event_service = new \services\EventService(self::$user_service);
     }
 
     public static function run(): void {
@@ -67,9 +69,11 @@ final class Router {
         return "";
     }
 
-    private static function make_controller($controller_class) {
+    private static function make_controller($controller_class): object {
         if ($controller_class === \controllers\DateController::class) {
             return new \controllers\DateController(self::$user_service);
+        } else if ($controller_class === \controllers\EventController::class) {
+            return new \controllers\EventController(self::$user_service, self::$event_service);
         }
 
         return new $controller_class();
