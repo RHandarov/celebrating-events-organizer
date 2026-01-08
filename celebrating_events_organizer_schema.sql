@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Време на генериране: 23 дек 2025 в 11:13
+-- Време на генериране:  8 яну 2026 в 14:03
 -- Версия на сървъра: 10.4.32-MariaDB
 -- Версия на PHP: 8.2.12
 
@@ -34,6 +34,14 @@ CREATE TABLE `dates` (
   `title` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Схема на данните от таблица `dates`
+--
+
+INSERT INTO `dates` (`id`, `owner_id`, `date`, `title`) VALUES
+(2, 1, '2003-06-12', 'Моят рожден ден'),
+(64, 1, '2025-12-29', 'Моят рожден ден');
+
 -- --------------------------------------------------------
 
 --
@@ -44,9 +52,21 @@ CREATE TABLE `events` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `date_id` bigint(20) UNSIGNED NOT NULL,
   `organizer_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `title` varchar(256) NOT NULL,
   `location` varchar(256) NOT NULL,
   `description` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Схема на данните от таблица `events`
+--
+
+INSERT INTO `events` (`id`, `date_id`, `organizer_id`, `title`, `location`, `description`) VALUES
+(1, 64, 2, 'Title 1', 'London', 'Some desc'),
+(2, 64, 2, 'Title 2', 'London', 'Some desc'),
+(3, 64, 2, 'Title 3', 'London', 'Some desc'),
+(4, 64, 2, 'Title 4', 'London', 'Some desc'),
+(5, 64, 2, 'Title 5', 'LA', 'dexc');
 
 -- --------------------------------------------------------
 
@@ -58,6 +78,14 @@ CREATE TABLE `followers` (
   `follower_id` bigint(20) UNSIGNED NOT NULL,
   `followed_id` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Схема на данните от таблица `followers`
+--
+
+INSERT INTO `followers` (`follower_id`, `followed_id`) VALUES
+(1, 2),
+(2, 1);
 
 -- --------------------------------------------------------
 
@@ -83,6 +111,14 @@ CREATE TABLE `guests` (
   `guest_id` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Схема на данните от таблица `guests`
+--
+
+INSERT INTO `guests` (`event_id`, `guest_id`) VALUES
+(1, 2),
+(5, 2);
+
 -- --------------------------------------------------------
 
 --
@@ -95,6 +131,17 @@ CREATE TABLE `users` (
   `email` varchar(320) NOT NULL,
   `password` varchar(64) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Схема на данните от таблица `users`
+--
+
+INSERT INTO `users` (`id`, `username`, `email`, `password`) VALUES
+(1, 'test', 'test@example.com', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8'),
+(2, 'test2', 'test2@example.com', '6cf615d5bcaac778352a8f1f3360d23f02f34ec182e259897fd6ce485d7870d4'),
+(3, 'test3', 'test3@example.com', '5906ac361a137e2d286465cd6588ebb5ac3f5ae955001100bc41577c3d751764'),
+(4, 'test3', 'test3@example.com', '5906ac361a137e2d286465cd6588ebb5ac3f5ae955001100bc41577c3d751764'),
+(5, 'test4', 'test4@example.com', 'b9c950640e1b3740e98acb93e669c65766f6670dd1609ba91ff41052ba48c6f3');
 
 --
 -- Indexes for dumped tables
@@ -151,25 +198,25 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `dates`
 --
 ALTER TABLE `dates`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
 -- AUTO_INCREMENT for table `events`
 --
 ALTER TABLE `events`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `gifts`
 --
 ALTER TABLE `gifts`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Ограничения за дъмпнати таблици

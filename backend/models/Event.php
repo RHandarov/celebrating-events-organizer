@@ -6,6 +6,7 @@ class Event {
     private int $id;
     private \models\Date $date;
     private \models\User $organizer;
+    private string $title;
     private string $location;
     private string $description;
 
@@ -13,12 +14,14 @@ class Event {
         int $id,
         \models\Date $date,
         \models\User $organizer,
+        string $title,
         string $location,
         string $description
     ) {
         $this->id = $id;
         $this->date = $date;
         $this->organizer = $organizer;
+        $this->title = $title;
         $this->location = $location;
         $this->description = $description;
     }
@@ -35,6 +38,10 @@ class Event {
         return $this->organizer;
     }
 
+    public function get_title(): string {
+        return $this->title;
+    }
+
     public function get_location(): string {
         return $this->location;
     }
@@ -45,6 +52,10 @@ class Event {
 
     public function get_description(): string {
         return $this->description;
+    }
+
+    public function set_title(string $new_title): void {
+        $this->title = htmlspecialchars(trim($new_title));
     }
 
     public function set_description(string $new_description): void {

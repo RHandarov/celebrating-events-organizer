@@ -16,9 +16,11 @@ class EventService {
     public function add_event(
         \models\Date $date,
         \models\User $organizer,
+        string $title,
         string $location,
         string $description,
         array &$errors): ?\models\Event {
+        $title = htmlspecialchars(trim($title));
         $location = htmlspecialchars(trim($location));
         $description = htmlspecialchars(trim($description));
 
@@ -26,6 +28,10 @@ class EventService {
             array_push($errors,
                 "Не може да организираш парти на себе си!");
 
+            return null;
+        }
+
+        if (!$this->validate_title($title, $errors)) {
             return null;
         }
 
@@ -47,7 +53,7 @@ class EventService {
             return null;
         }
 
-        $event = $this->event_repository->add_event($date, $organizer, $location, $description);
+        $event = $this->event_repository->add_event($date, $organizer, $title, $location, $description);
 
         $errors = [];
         $this->add_guest_to_event($organizer, $event, $errors);
@@ -56,6 +62,10 @@ class EventService {
     }
 
     public function change_event(\models\Event $changed_event, array &$errors): ?\models\Event {
+        if (!$this->validate_title($changed_event->get_title(), $errors)) {
+            return null;
+        }
+
         if (!$this->validate_location($changed_event->get_location(), $errors)) {
             return null;
         }
@@ -65,6 +75,26 @@ class EventService {
 
     private function is_organizer_the_same_as_celebrant(\models\User $organizer, \models\Date $date): bool {
         return $organizer->get_id() === $date->get_owner()->get_id();
+    }
+
+    private function validate_title(string $title, array &$errors): bool {
+        if ($title === "") {
+            array_push($errors,
+                "Заглавието не бива да е празно!");
+
+            return false;
+        }
+
+        $title_length = mb_strlen($title);
+
+        if ($title_length > 256) {
+            array_push($errors,
+                "Дължината на заглавието трябва да е не повече от 256 символа!");
+
+            return false;
+        }
+
+        return true;
     }
 
     private function validate_location(string $location, array &$errors) : bool {

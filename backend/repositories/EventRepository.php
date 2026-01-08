@@ -14,24 +14,26 @@ class EventRepository {
     public function add_event(
         \models\Date $date,
         \models\User $organizer,
+        string $title,
         string $location,
         string $description
     ): \models\Event {
         $prepared_statement =
             $this->db_connection->prepare(
-                "INSERT INTO events (date_id, organizer_id, `location`, `description`)
-                VALUES (?, ?, ?, ?)"
+                "INSERT INTO events (date_id, organizer_id, title, `location`, `description`)
+                VALUES (?, ?, ?, ?, ?)"
             );
 
         $date_id = $date->get_id();
         $organizer_id = $organizer->get_id();
-        $prepared_statement->bind_param("iiss", $date_id, $organizer_id, $location, $description);
+        $prepared_statement->bind_param("iisss", $date_id, $organizer_id, $title, $location, $description);
         $prepared_statement->execute();
 
         return new \models\Event(
             $prepared_statement->insert_id,
             $date,
             $organizer,
+            $title,
             $location,
             $description
         );
@@ -41,14 +43,15 @@ class EventRepository {
         $prepared_statement =
             $this->db_connection->prepare(
                 "UPDATE events
-                SET `location` = ?, `description` = ?
+                SET title = ?, `location` = ?, `description` = ?
                 WHERE id = ?"
             );
 
+        $title = $changed_event->get_title();
         $location = $changed_event->get_location();
         $description = $changed_event->get_description();
         $event_id = $changed_event->get_id();
-        $prepared_statement->bind_param("ssi", $location, $description, $event_id);
+        $prepared_statement->bind_param("sssi", $title, $location, $description, $event_id);
         $prepared_statement->execute();
 
         return $changed_event;
@@ -79,6 +82,7 @@ class EventRepository {
                 $row["id"],
                 $date,
                 $organizer,
+                $row["title"],
                 $row["location"],
                 $row["description"]
             ));
