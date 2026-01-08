@@ -112,3 +112,27 @@ body {
     text-align: center;
     font-size: 17px;
 }
+
+#all-events header {
+    border-bottom: 2px solid black;
+    padding-bottom: 5px;
+    margin-bottom: 20px;
+    background: #c2f0c2;
+}
+
+#all-events header h2 {
+    display: inline-flex;
+    flex-direction: row;
+    font-size: 23px;
+    margin: 10px;
+}
+
+#all-events header form {
+    display: inline-flex;
+    float: right;
+    margin: 10px;
+}
+
+#all-events header form button {
+    font-size: 17px;
+}
