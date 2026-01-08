@@ -12,6 +12,7 @@ final class Router {
             "/my-dates/add" => [\controllers\DateController::class, "show_add_date_form"],
             "/my-dates/edit" => [\controllers\DateController::class, "show_edit_date_form"],
             "/my-dates" => [\controllers\DateController::class, "show_my_dates"],
+            "/all-events" => [\controllers\EventController::class, "show_all_events"],
             "/" => [\controllers\HomeController::class, "show_home_page"]
         ],
         "POST" => [
