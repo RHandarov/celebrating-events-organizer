@@ -53,7 +53,14 @@ class EventService {
             return null;
         }
 
-        $event = $this->event_repository->add_event($date, $organizer, $title, $location, $description);
+        $event = $this->event_repository->add_event(
+            $this->get_actual_celebrating_date_as_string($date),
+            $organizer,
+            $date->get_owner(),
+            $title,
+            $location,
+            $description
+        );
 
         $errors = [];
         $this->add_guest_to_event($organizer, $event, $errors);
@@ -121,13 +128,6 @@ class EventService {
         return time() >= $this->get_actual_celebrating_date($date);
     }
 
-    // Changes year of the date and returns it as a timestamp to compore woth
-    // the current moment.
-    private function get_actual_celebrating_date(\models\Date $date): int {
-        $day_and_month = date("m-d", strtotime($date->get_date()));
-        return strtotime(date("Y") . "-" . $day_and_month);
-    }
-
     private function is_organizer_following_celebrant(
         \models\User $organizer,
         \models\Date $date
@@ -143,11 +143,22 @@ class EventService {
         return false;
     }
 
+    private function get_actual_celebrating_date_as_string(\models\Date $date): string {
+        return date("Y-m-d", $this->get_actual_celebrating_date($date));
+    }
+
+    // Changes year of the date and returns it as a timestamp to compore woth
+    // the current moment.
+    private function get_actual_celebrating_date(\models\Date $date): int {
+        $day_and_month = date("m-d", strtotime($date->get_date()));
+        return strtotime(date("Y") . "-" . $day_and_month);
+    }
+
     public function add_guest_to_event(\models\User $guest, \models\Event $event, array &$errors): void {
         if (!$this->could_user_be_guest_in($guest, $event)) {
             array_push($errors,
                 "Потребителят " . $guest->get_username() . " не следва " .
-                $event->get_date()->get_owner()->get_username() .
+                $event->get_organized()->get_username() .
                 ". Затова не може да бъде гост на събитието!");
 
             return;
@@ -193,18 +204,7 @@ class EventService {
 
         $followed_users = $this->user_service->get_all_followers_of_user($user);
         foreach ($followed_users as $followed_user) {
-            $events = array_merge($events, $this->get_all_celebrant_events($followed_user));
-        }
-
-        return $events;
-    }
-
-    private function get_all_celebrant_events(\models\User $celebrant): array {
-        $events = [];
-
-        $dates = $this->user_service->get_all_dates_of_user($celebrant);
-        foreach ($dates as $date) {
-            $events = array_merge($events, $this->event_repository->get_all_events_for_date($date));
+            $events = array_merge($events, $this->event_repository->get_all_events_organized_for($followed_user));
         }
 
         return $events;

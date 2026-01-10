@@ -4,23 +4,26 @@ namespace models;
 
 class Event {
     private int $id;
-    private \models\Date $date;
+    private string $celebrating_date;
     private \models\User $organizer;
+    private \models\User $organized;
     private string $title;
     private string $location;
     private string $description;
 
     public function __construct(
         int $id,
-        \models\Date $date,
+        string $celebrating_date,
         \models\User $organizer,
+        \models\User $organized,
         string $title,
         string $location,
         string $description
     ) {
         $this->id = $id;
-        $this->date = $date;
+        $this->celebrating_date = $celebrating_date;
         $this->organizer = $organizer;
+        $this->organized = $organized;
         $this->title = $title;
         $this->location = $location;
         $this->description = $description;
@@ -30,12 +33,16 @@ class Event {
         return $this->id;
     }
 
-    public function get_date(): \models\Date {
-        return $this->date;
+    public function get_celebrating_date(): string {
+        return $this->celebrating_date;
     }
 
     public function get_organizer(): \models\User {
         return $this->organizer;
+    }
+
+    public function get_organized(): \models\User {
+        return $this->organized;
     }
 
     public function get_title(): string {

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Време на генериране:  8 яну 2026 в 14:03
+-- Време на генериране: 10 яну 2026 в 16:25
 -- Версия на сървъра: 10.4.32-MariaDB
 -- Версия на PHP: 8.2.12
 
@@ -50,8 +50,9 @@ INSERT INTO `dates` (`id`, `owner_id`, `date`, `title`) VALUES
 
 CREATE TABLE `events` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `date_id` bigint(20) UNSIGNED NOT NULL,
+  `celebrating_date` char(10) NOT NULL,
   `organizer_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `organized_id` bigint(20) UNSIGNED NOT NULL,
   `title` varchar(256) NOT NULL,
   `location` varchar(256) NOT NULL,
   `description` text NOT NULL
@@ -61,12 +62,12 @@ CREATE TABLE `events` (
 -- Схема на данните от таблица `events`
 --
 
-INSERT INTO `events` (`id`, `date_id`, `organizer_id`, `title`, `location`, `description`) VALUES
-(1, 64, 2, 'Title 1', 'London', 'Some desc'),
-(2, 64, 2, 'Title 2', 'London', 'Some desc'),
-(3, 64, 2, 'Title 3', 'London', 'Some desc'),
-(4, 64, 2, 'Title 4', 'London', 'Some desc'),
-(5, 64, 2, 'Title 5', 'LA', 'dexc');
+INSERT INTO `events` (`id`, `celebrating_date`, `organizer_id`, `organized_id`, `title`, `location`, `description`) VALUES
+(1, '2026-12-29', 2, 1, 'Title 1', 'London', 'Some desc'),
+(2, '2026-12-29', 2, 1, 'Title 2', 'London', 'Some desc'),
+(3, '2026-12-29', 2, 1, 'Title 3', 'London', 'Some desc'),
+(4, '2026-12-29', 2, 1, 'Title 4', 'London', 'Some desc'),
+(5, '2026-12-29', 2, 1, 'Title 5', 'LA', 'dexc');
 
 -- --------------------------------------------------------
 
@@ -159,8 +160,8 @@ ALTER TABLE `dates`
 --
 ALTER TABLE `events`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `events_date_id_fk` (`date_id`),
-  ADD KEY `events_organizer_id_fk` (`organizer_id`);
+  ADD KEY `events_organizer_id_fk` (`organizer_id`),
+  ADD KEY `events_organized_id_fk` (`organized_id`);
 
 --
 -- Индекси за таблица `followers`
@@ -198,7 +199,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `dates`
 --
 ALTER TABLE `dates`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
 
 --
 -- AUTO_INCREMENT for table `events`
@@ -232,7 +233,7 @@ ALTER TABLE `dates`
 -- Ограничения за таблица `events`
 --
 ALTER TABLE `events`
-  ADD CONSTRAINT `events_date_id_fk` FOREIGN KEY (`date_id`) REFERENCES `dates` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `events_organized_id_fk` FOREIGN KEY (`organized_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `events_organizer_id_fk` FOREIGN KEY (`organizer_id`) REFERENCES `users` (`id`) ON DELETE SET NULL;
 
 --

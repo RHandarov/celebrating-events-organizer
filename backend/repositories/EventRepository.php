@@ -12,27 +12,29 @@ class EventRepository {
     }
 
     public function add_event(
-        \models\Date $date,
+        string $celebrating_date,
         \models\User $organizer,
+        \models\User $organized,
         string $title,
         string $location,
         string $description
     ): \models\Event {
         $prepared_statement =
             $this->db_connection->prepare(
-                "INSERT INTO events (date_id, organizer_id, title, `location`, `description`)
+                "INSERT INTO events (celebrating_date, organizer_id, organized_id, title, `location`, `description`)
                 VALUES (?, ?, ?, ?, ?)"
             );
 
-        $date_id = $date->get_id();
         $organizer_id = $organizer->get_id();
-        $prepared_statement->bind_param("iisss", $date_id, $organizer_id, $title, $location, $description);
+        $organized_id = $organized->get_id();
+        $prepared_statement->bind_param("siisss", $celebrating_date, $organizer_id, $organized_id, $title, $location, $description);
         $prepared_statement->execute();
 
         return new \models\Event(
             $prepared_statement->insert_id,
-            $date,
+            $celebrating_date,
             $organizer,
+            $organized,
             $title,
             $location,
             $description
@@ -57,14 +59,49 @@ class EventRepository {
         return $changed_event;
     }
 
-    public function get_all_events_for_date(\models\Date $date): array {
+    public function get_all_events_for_date(string $date): array {
         $prepared_statement =
             $this->db_connection->prepare(
-                "SELECT * FROM events WHERE date_id = ?"
+                "SELECT * FROM events WHERE celebrating_date = ?"
             );
 
-        $date_id = $date->get_id();
-        $prepared_statement->bind_param("i", $date_id);
+        $prepared_statement->bind_param("s", $date);
+        $prepared_statement->execute();
+
+        $events = [];
+
+        $result = $prepared_statement->get_result();
+        while (true) {
+            $row = $result->fetch_assoc();
+
+            if ($row === null || $row === false) {
+                break;
+            }
+
+            $organizer = $this->user_service->find_user_by_id($row["organizer_id"]);
+            $organized = $this->user_service->find_user_by_id($row["organized_id"]);
+            array_push($events, new \models\Event(
+                $row["id"],
+                $date,
+                $organizer,
+                $organized,
+                $row["title"],
+                $row["location"],
+                $row["description"]
+            ));
+        }
+
+        return $events;
+    }
+
+    public function get_all_events_organized_for(\models\User $organized): array {
+        $prepared_statement =
+            $this->db_connection->prepare(
+                "SELECT * FROM events WHERE organized_id = ?"
+            );
+
+        $organized_id = $organized->get_id();
+        $prepared_statement->bind_param("i", $organized_id);
         $prepared_statement->execute();
 
         $events = [];
@@ -80,8 +117,9 @@ class EventRepository {
             $organizer = $this->user_service->find_user_by_id($row["organizer_id"]);
             array_push($events, new \models\Event(
                 $row["id"],
-                $date,
+                $row["celebrating_date"],
                 $organizer,
+                $organized,
                 $row["title"],
                 $row["location"],
                 $row["description"]
