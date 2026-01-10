@@ -16,7 +16,7 @@ class EventController {
         $this->event_service = $event_service;
     }
 
-    public function show_all_events(): void {
+    public function show_all_events(array $params): void {
         if (!SessionManager::is_logged_in()) {
             header("Location: /login");
             exit;
