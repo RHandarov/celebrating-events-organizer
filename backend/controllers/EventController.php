@@ -49,5 +49,15 @@ class EventController {
         }
 
         $event_id = intval($params[0]);
+        $event = $this->event_service->find_event_by_id($event_id);
+
+        if ($event->get_organized()->get_id() === SessionManager::get_logged_user_id()) {
+            header("Location: /all-events");
+            exit;
+        }
+        
+        include("templates/header.php");
+        include("templates/events/event-details.php");
+        include("templates/footer.php");
     }
 }
