@@ -14,6 +14,7 @@ final class Router {
             "/my-dates/edit" => [\controllers\DateController::class, "show_edit_date_form"],
             "/my-dates" => [\controllers\DateController::class, "show_my_dates"],
             "/all-events" => [\controllers\EventController::class, "show_all_events"],
+            "/user" => [\controllers\UserController::class, "show_user_details"],
             "/" => [\controllers\HomeController::class, "show_home_page"]
         ],
         "POST" => [
@@ -74,6 +75,8 @@ final class Router {
             return new \controllers\DateController(self::$user_service);
         } else if ($controller_class === \controllers\EventController::class) {
             return new \controllers\EventController(self::$user_service, self::$event_service);
+        } else if ($controller_class === \controllers\UserController::class) {
+            return new \controllers\UserController(self::$user_service);
         }
 
         return new $controller_class();
