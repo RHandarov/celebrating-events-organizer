@@ -68,6 +68,10 @@ class EventService {
         return $event;
     }
 
+    public function find_event_by_id(int $event_id): ?\models\Event {
+        return $this->event_repository->find_event_by_id($event_id);
+    }
+
     public function change_event(\models\Event $changed_event, array &$errors): ?\models\Event {
         if (!$this->validate_title($changed_event->get_title(), $errors)) {
             return null;

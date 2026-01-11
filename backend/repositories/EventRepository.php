@@ -252,4 +252,32 @@ class EventRepository {
         $prepared_statement->bind_param("i", $gift_id);
         $prepared_statement->execute();
     }
+
+    public function find_event_by_id(int $event_id): ?\models\Event {
+        $prepared_staement =
+            $this->db_connection->prepare(
+                "SELECT * FROM events WHERE id = ?"
+            );
+
+        $prepared_staement->bind_param("i", $event_id);
+        $prepared_staement->execute();
+
+        $result = $prepared_staement->get_result();
+        if ($result->num_rows !== 1) {
+            return null;
+        } else {
+            $row = $result->fetch_assoc();
+            $organizer = $this->user_service->find_user_by_id($row["organizer_id"]);
+            $organized = $this->user_service->find_user_by_id($row["organized_id"]);
+            return new \models\Event(
+                $event_id,
+                $row["celebrating_date"],
+                $organizer,
+                $organized,
+                $row["title"],
+                $row["location"],
+                $row["description"]
+            );
+        }
+    }
 }
