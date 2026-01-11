@@ -7,11 +7,14 @@
                 $action = "#";
             } else if ($does_logged_user_follows === true) {
                 $bottom_text = "Отследвай";
+                $action = "#";
             } else {
                 $bottom_text = "Последвай";
+                $action = "/user/follow";
             }
         ?>
-        <form method="GET" action="#">
+        <form method="POST" action="<?php echo $action; ?>">
+            <input type="hidden" name="user_id" value="<?php echo $user->get_id(); ?>">
             <button type="submit"><?php echo $bottom_text; ?></button>
         </form>
     </header>

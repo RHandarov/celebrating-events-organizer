@@ -45,4 +45,26 @@ class UserController {
         include("templates/users/user-details.php");
         include("templates/footer.php");
     }
+
+    public function follow(array $params): void {
+        if (!SessionManager::is_logged_in()) {
+            header("Location: /login");
+            exit;
+        }
+
+        $user_id = intval($_POST["user_id"]);
+        $other_user = $this->user_service->find_user_by_id($user_id);
+
+        if ($other_user === null) {
+            header("Location: /");
+            exit;
+        }
+
+        $logged_user = $this->user_service->find_user_by_id(SessionManager::get_logged_user_id());
+
+        $this->user_service->follow_user($other_user, $logged_user);
+
+        header("Location: /user/" . $user_id);
+        exit;
+    }
 }
