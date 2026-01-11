@@ -136,3 +136,15 @@ body {
 #all-events header form button {
     font-size: 17px;
 }
+
+#user-details * {
+    text-align: center;
+}
+
+#user-details h2 {
+    font-size: 23px;
+}
+
+#user-details h3 {
+    font-size: 20px;
+}

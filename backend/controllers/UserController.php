@@ -30,6 +30,19 @@ class UserController {
             exit;
         }
 
-        echo "Called with id " . $user_id;
+        $user_dates = $this->user_service->get_all_dates_of_user($user);
+        $user_followers = $this->user_service->get_all_followers_of_user($user);
+
+        $does_logged_user_follows = false;
+        foreach ($user_followers as $follower) {
+            if ($follower->get_id() === SessionManager::get_logged_user_id()) {
+                $does_logged_user_follows = true;
+                break;
+            }
+        }
+
+        include("templates/header.php");
+        include("templates/users/user-details.php");
+        include("templates/footer.php");
     }
 }
