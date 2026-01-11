@@ -14,6 +14,7 @@ final class Router {
             "/my-dates/edit" => [\controllers\DateController::class, "show_edit_date_form"],
             "/my-dates" => [\controllers\DateController::class, "show_my_dates"],
             "/all-events" => [\controllers\EventController::class, "show_all_events"],
+            "/event" => [\controllers\EventController::class, "show_event_details"],
             "/user/change-password" => [\controllers\UserController::class, "show_change_password_form"],
             "/user" => [\controllers\UserController::class, "show_user_details"],
             "/" => [\controllers\HomeController::class, "show_home_page"]

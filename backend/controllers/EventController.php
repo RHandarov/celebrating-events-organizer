@@ -36,4 +36,18 @@ class EventController {
         include("templates/events/all-events.php");
         include("templates/footer.php");
     }
+
+    public function show_event_details(array $params): void {
+        if (!SessionManager::is_logged_in()) {
+            header("Location: /login");
+            exit;
+        }
+
+        if (count($params) === 0) {
+            header("Location: /all-events");
+            exit;
+        }
+
+        $event_id = intval($params[0]);
+    }
 }
