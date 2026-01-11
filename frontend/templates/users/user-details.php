@@ -7,7 +7,7 @@
                 $action = "#";
             } else if ($does_logged_user_follows === true) {
                 $bottom_text = "Отследвай";
-                $action = "#";
+                $action = "/user/unfollow";
             } else {
                 $bottom_text = "Последвай";
                 $action = "/user/follow";

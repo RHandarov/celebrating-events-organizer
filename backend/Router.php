@@ -22,7 +22,8 @@ final class Router {
             "/register" => [\controllers\AuthController::class, "register"],
             "/my-dates/add" => [\controllers\DateController::class, "add_date"],
             "/my-dates/edit" => [\controllers\DateController::class, "edit_date"],
-            "/user/follow" => [\controllers\UserController::class, "follow"]
+            "/user/follow" => [\controllers\UserController::class, "follow"],
+            "/user/unfollow" => [\controllers\UserController::class, "unfollow"]
         ]
     );
 
