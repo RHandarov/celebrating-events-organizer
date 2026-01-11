@@ -148,3 +148,20 @@ body {
 #user-details h3 {
     font-size: 20px;
 }
+
+#change-password-form {
+    display: block;
+    margin: 0 auto;
+    width: 50%;
+}
+
+#change-password-form h2 {
+    text-align: center;
+}
+
+#change-password-form form * {
+    display: block;
+    margin: 5px auto;
+    text-align: center;
+    font-size: 17px;
+}

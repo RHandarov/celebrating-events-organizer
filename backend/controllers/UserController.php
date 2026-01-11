@@ -89,4 +89,61 @@ class UserController {
         header("Location: /user/" . $user_id);
         exit;
     }
+
+    public function show_change_password_form(array $params): void {
+        if (!SessionManager::is_logged_in()) {
+            header("Location: /login");
+            exit;
+        }
+
+        include("templates/header.php");
+        include("templates/users/change-password.php");
+        include("templates/footer.php");
+    }
+
+    public function change_password(array $params): void {
+        if (!SessionManager::is_logged_in()) {
+            header("Location: /login");
+            exit;
+        }
+
+        $errors = [];
+
+        if ($_POST["new-password"] !== $_POST["repeat-new-password"]) {
+            array_push($errors, "Новата парола не съвпада с повторението си!");
+
+            include("templates/header.php");
+            include("templates/users/change-password.php");
+            include("templates/footer.php");
+
+            exit;
+        }
+
+        $old_password = hash("sha256", $_POST["old-password"]);
+
+        $user = $this->user_service->find_user_by_id(SessionManager::get_logged_user_id());
+        if ($old_password !== $user->get_password()) {
+            array_push($errors, "Грешна парола!");
+
+            include("templates/header.php");
+            include("templates/users/change-password.php");
+            include("templates/footer.php");
+
+            exit;
+        }
+
+        $user->set_password($_POST["new-password"]);
+        $user = $this->user_service->change_user($user, $errors);
+
+        if ($user === null) {
+            include("templates/header.php");
+            include("templates/users/change-password.php");
+            include("templates/footer.php");
+
+            exit;
+        } else {
+            header("Location: /user/" . SessionManager::get_logged_user_id());
+            exit;
+        }
+    }
 }

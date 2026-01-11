@@ -14,6 +14,7 @@ final class Router {
             "/my-dates/edit" => [\controllers\DateController::class, "show_edit_date_form"],
             "/my-dates" => [\controllers\DateController::class, "show_my_dates"],
             "/all-events" => [\controllers\EventController::class, "show_all_events"],
+            "/user/change-password" => [\controllers\UserController::class, "show_change_password_form"],
             "/user" => [\controllers\UserController::class, "show_user_details"],
             "/" => [\controllers\HomeController::class, "show_home_page"]
         ],
@@ -23,7 +24,8 @@ final class Router {
             "/my-dates/add" => [\controllers\DateController::class, "add_date"],
             "/my-dates/edit" => [\controllers\DateController::class, "edit_date"],
             "/user/follow" => [\controllers\UserController::class, "follow"],
-            "/user/unfollow" => [\controllers\UserController::class, "unfollow"]
+            "/user/unfollow" => [\controllers\UserController::class, "unfollow"],
+            "/user/change-password" => [\controllers\UserController::class, "change_password"]
         ]
     );
 

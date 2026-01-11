@@ -2,9 +2,12 @@
     <header>
         <h2>Детайли за потребител <?php echo $user->get_username(); ?></h2>
         <?php
+            $method = "POST";
+
             if ($user->get_id() === SessionManager::get_logged_user_id()) {
                 $bottom_text = "Смяна на парола";
-                $action = "#";
+                $action = "/user/change-password";
+                $method = "GET";
             } else if ($does_logged_user_follows === true) {
                 $bottom_text = "Отследвай";
                 $action = "/user/unfollow";
@@ -13,8 +16,12 @@
                 $action = "/user/follow";
             }
         ?>
-        <form method="POST" action="<?php echo $action; ?>">
-            <input type="hidden" name="user_id" value="<?php echo $user->get_id(); ?>">
+        <form method="<?php echo $method; ?>" action="<?php echo $action; ?>">
+            <?php
+                if ($user->get_id() !== SessionManager::get_logged_user_id()) {
+                    echo "<input type=\"hidden\" name=\"user_id\" value=\"" . $user->get_id() . "\">";
+                }
+            ?>
             <button type="submit"><?php echo $bottom_text; ?></button>
         </form>
     </header>
