@@ -218,6 +218,10 @@ class EventService {
         return $events;
     }
 
+    public function find_gift_by_id(int $gift_id): ?\models\Gift {
+        return $this->event_repository->find_gift_by_id($gift_id);
+    }
+
     public function add_gift(
         \models\Event $event,
         \models\User $assigned_guest,

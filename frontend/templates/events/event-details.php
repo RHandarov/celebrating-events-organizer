@@ -42,14 +42,13 @@
             <th scope="col">Действия</th>
         </tr>
         <?php
-            $actions_if_own = "<a href=\"#\">Редактирай</a> | <a href=\"#\">Изтрий</a>";
-
             foreach ($gifts as $gift) {
                 echo "<tr>";
                 echo "<td>" . $gift->get_description() . "</td>";
                 echo "<td><a href=\"/user/" . $gift->get_assigned_guest()->get_id() . "\">" . $gift->get_assigned_guest()->get_username() . "</a></td>";
                 if ($gift->get_assigned_guest()->get_id() === SessionManager::get_logged_user_id()) {
-                    echo "<td>" . $actions_if_own . "</td>";
+                    $actions = "<a href=\"#\">Редактирай</a> | <a href=\"/gift/delete/" . $gift->get_id() . "?back=" . $event->get_id() . "\">Изтрий</a>";
+                    echo "<td>" . $actions . "</td>";
                 } else {
                     echo "<td></td>";
                 }

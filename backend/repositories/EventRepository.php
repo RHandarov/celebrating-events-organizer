@@ -280,6 +280,32 @@ class EventRepository {
         $prepared_statement->execute();
     }
 
+    public function find_gift_by_id(int $gift_id): ?\models\Gift {
+        $prepared_statement =
+            $this->db_connection->prepare(
+                "SELECT * FROM gifts WHERE id = ?"
+            );
+
+        $prepared_statement->bind_param("i", $gift_id);
+        $prepared_statement->execute();
+
+        $result = $prepared_statement->get_result();
+
+        if ($result->num_rows !== 1) {
+            return null;
+        }
+
+        $row = $result->fetch_assoc();
+        $event = $this->find_event_by_id($row["event_id"]);
+        $guest = $this->user_service->find_user_by_id($row["assigned_guest_id"]);
+        return new \models\Gift(
+            $row["id"],
+            $event,
+            $guest,
+            $row["description"]
+        );
+    }
+
     public function find_event_by_id(int $event_id): ?\models\Event {
         $prepared_staement =
             $this->db_connection->prepare(
