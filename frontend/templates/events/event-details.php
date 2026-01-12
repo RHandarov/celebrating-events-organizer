@@ -34,4 +34,27 @@
             echo "</a></p>";
         }
     ?>
+    <h3>Подаръци</h3>
+    <table class="table">
+        <tr>
+            <th scope="col">Подарък</th>
+            <th scope="col">Отговорен за</th>
+            <th scope="col">Действия</th>
+        </tr>
+        <?php
+            $actions_if_own = "<a href=\"#\">Редактирай</a> | <a href=\"#\">Изтрий</a>";
+
+            foreach ($gifts as $gift) {
+                echo "<tr>";
+                echo "<td>" . $gift->get_description() . "</td>";
+                echo "<td><a href=\"/user/" . $gift->get_assigned_guest()->get_id() . "\">" . $gift->get_assigned_guest()->get_username() . "</a></td>";
+                if ($gift->get_assigned_guest()->get_id() === SessionManager::get_logged_user_id()) {
+                    echo "<td>" . $actions_if_own . "</td>";
+                } else {
+                    echo "<td></td>";
+                }
+                echo "</tr>";
+            }
+        ?>
+    </table>
 </main>

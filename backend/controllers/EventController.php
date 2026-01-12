@@ -65,6 +65,8 @@ class EventController {
                 break;
             }
         }
+
+        $gifts = $this->event_service->get_all_gifts_of_event($event);
         
         include("templates/header.php");
         include("templates/events/event-details.php");
