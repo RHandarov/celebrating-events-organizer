@@ -18,7 +18,7 @@
                 echo "<td>" . $event->get_title() . "</td>";
                 echo "<td>" . $event->get_celebrating_date() . "</td>";
                 echo "<td>" . $event->get_location() . "</td>";
-                echo "<td><a href=\"#\">Детайли</a></td>";
+                echo "<td><a href=\"/event/" . $event->get_id() . "\">Детайли</a></td>";
                 echo "</tr>";
             }
         ?>
