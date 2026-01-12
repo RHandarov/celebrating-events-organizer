@@ -158,6 +158,10 @@ class EventService {
         return strtotime(date("Y") . "-" . $day_and_month);
     }
 
+    public function get_all_guests_of_event(\models\Event $event): array {
+        return $this->event_repository->get_all_guests_for_event($event);
+    }
+
     public function add_guest_to_event(\models\User $guest, \models\Event $event, array &$errors): void {
         if (!$this->could_user_be_guest_in($guest, $event)) {
             array_push($errors,

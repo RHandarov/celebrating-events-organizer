@@ -55,6 +55,8 @@ class EventController {
             header("Location: /all-events");
             exit;
         }
+
+        $guests = $this->event_service->get_all_guests_of_event($event);
         
         include("templates/header.php");
         include("templates/events/event-details.php");

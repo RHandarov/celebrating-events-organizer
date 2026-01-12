@@ -129,6 +129,33 @@ class EventRepository {
         return $events;
     }
 
+    public function get_all_guests_for_event(\models\Event $event): array {
+        $prepared_statement =
+            $this->db_connection->prepare(
+                "SELECT guest_id FROM guests WHERE event_id = ?"
+            );
+
+        $event_id = $event->get_id();
+        $prepared_statement->bind_param("i", $event_id);
+        $prepared_statement->execute();
+
+        $guests = [];
+
+        $result = $prepared_statement->get_result();
+        while (true) {
+            $row = $result->fetch_assoc();
+
+            if ($row === null || $row === false) {
+                break;
+            }
+
+            $guest = $this->user_service->find_user_by_id($row["guest_id"]);
+            array_push($guests, $guest);
+        }
+
+        return $guests;
+    }
+
     public function save_user_as_guest(\models\User $guest, \models\Event $event): void {
         if ($this->is_user_already_guest($guest, $event)) {
             return;

@@ -12,4 +12,12 @@
     </p>
     <p>Детайлно описаниe:</p>
     <p><?php echo $event->get_description(); ?></p>
+    <h3>Гости</h3>
+    <?php
+        foreach ($guests as $guest) {
+            echo "<p><a href=\"/user/" . $guest->get_id() . "\">";
+            echo $guest->get_username();
+            echo "</a></p>";
+        }
+    ?>
 </main>
