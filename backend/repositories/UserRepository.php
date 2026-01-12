@@ -121,6 +121,32 @@ class UserRepository {
         return $followers;
     }
 
+    public function get_all_followed_of_user(\models\User $user): array {
+        $prepared_statement =
+            $this->db_connection->prepare(
+                "SELECT follower_id FROM followers WHERE followed_id = ?"
+            );
+
+        $user_id = $user->get_id(); // because bind_param accepts only reference
+        $prepared_statement->bind_param("i", $user_id);
+        $prepared_statement->execute();
+
+        $followers = [];
+
+        $result = $prepared_statement->get_result();
+        while (true) {
+            $row = $result->fetch_assoc();
+
+            if ($row === null || $row === false) {
+                break; // no nore rows or error occurred
+            }
+
+            array_push($followers, $this->find_user_by_id($row["follower_id"]));
+        }
+
+        return $followers;
+    }
+
     public function get_dates_of_user(\models\User $user): array {
         $prepared_statement =
             $this->db_connection->prepare(

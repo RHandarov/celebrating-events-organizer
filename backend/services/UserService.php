@@ -71,6 +71,10 @@ class UserService {
         return $this->user_repository->get_all_followers_of_user($user);
     }
 
+    public function get_all_followed_of_user(\models\User $user): array {
+        return $this->user_repository->get_all_followed_of_user($user);
+    }
+
     public function follow_user(\models\User $follower, \models\User $followed): true {
         if ($follower->get_id() === $followed->get_id()) {
             return true;

@@ -210,7 +210,7 @@ class EventService {
     public function get_all_organizing_events_for_user(\models\User $user): array {
         $events = [];
 
-        $followed_users = $this->user_service->get_all_followers_of_user($user);
+        $followed_users = $this->user_service->get_all_followed_of_user($user);
         foreach ($followed_users as $followed_user) {
             $events = array_merge($events, $this->event_repository->get_all_events_organized_for($followed_user));
         }
