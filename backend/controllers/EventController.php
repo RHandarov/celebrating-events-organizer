@@ -57,9 +57,63 @@ class EventController {
         }
 
         $guests = $this->event_service->get_all_guests_of_event($event);
+
+        $is_logged_user_guest = false;
+        foreach ($guests as $guest) {
+            if ($guest->get_id() === SessionManager::get_logged_user_id()) {
+                $is_logged_user_guest = true;
+                break;
+            }
+        }
         
         include("templates/header.php");
         include("templates/events/event-details.php");
         include("templates/footer.php");
+    }
+
+    public function enroll_in_event(array $params): void {
+        if (!SessionManager::is_logged_in()) {
+            header("Location: /login");
+            exit;
+        }
+
+        $event_id = intval($_POST["event_id"]);
+        $event = $this->event_service->find_event_by_id($event_id);
+
+        if ($event === null) {
+            header("Location: /all-events");
+            exit;
+        }
+
+        $logged_user = $this->user_service->find_user_by_id(SessionManager::get_logged_user_id());
+
+        $errors = [];
+        $this->event_service->add_guest_to_event($logged_user, $event, $errors);
+
+        header("Location: /event/" . $event->get_id());
+        exit;
+    }
+
+    public function leave_event(array $params): void {
+        if (!SessionManager::is_logged_in()) {
+            header("Location: /login");
+            exit;
+        }
+
+        $event_id = intval($_POST["event_id"]);
+        $event = $this->event_service->find_event_by_id($event_id);
+
+        if ($event === null) {
+            header("Location: /all-events");
+            exit;
+        }
+
+        $logged_user = $this->user_service->find_user_by_id(SessionManager::get_logged_user_id());
+
+        $errors = [];
+        $this->event_service->delete_guest_from_event($logged_user, $event, $errors);
+
+        header("Location: /event/" . $event->get_id());
+        exit;
     }
 }

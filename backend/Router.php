@@ -26,7 +26,9 @@ final class Router {
             "/my-dates/edit" => [\controllers\DateController::class, "edit_date"],
             "/user/follow" => [\controllers\UserController::class, "follow"],
             "/user/unfollow" => [\controllers\UserController::class, "unfollow"],
-            "/user/change-password" => [\controllers\UserController::class, "change_password"]
+            "/user/change-password" => [\controllers\UserController::class, "change_password"],
+            "/event/enroll" => [\controllers\EventController::class, "enroll_in_event"],
+            "/event/leave" => [\controllers\EventController::class, "leave_event"]
         ]
     );
 
