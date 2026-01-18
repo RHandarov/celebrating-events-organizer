@@ -18,6 +18,7 @@ final class Router {
             "/user/change-password" => [\controllers\UserController::class, "show_change_password_form"],
             "/user" => [\controllers\UserController::class, "show_user_details"],
             "/gift/add" => [\controllers\GiftController::class, "show_add_gift_form"],
+            "/gift/edit" => [\controllers\GiftController::class, "show_edit_gift_form"],
             "/gift/delete" => [\controllers\GiftController::class, "delete_gift"],
             "/" => [\controllers\HomeController::class, "show_home_page"]
         ],
@@ -31,7 +32,8 @@ final class Router {
             "/user/change-password" => [\controllers\UserController::class, "change_password"],
             "/event/enroll" => [\controllers\EventController::class, "enroll_in_event"],
             "/event/leave" => [\controllers\EventController::class, "leave_event"],
-            "/gift/add" => [\controllers\GiftController::class, "add_gift"]
+            "/gift/add" => [\controllers\GiftController::class, "add_gift"],
+            "/gift/edit" => [\controllers\GiftController::class, "edit_gift"]
         ]
     );
 

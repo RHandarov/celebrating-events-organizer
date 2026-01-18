@@ -102,6 +102,76 @@ class GiftController {
         return false;
     }
 
+    public function show_edit_gift_form(array $params): void {
+        if (!SessionManager::is_logged_in()) {
+            header("Location: /login");
+            exit;
+        }
+
+        if (count($params) === 0) {
+            header("Location: /all-events");
+            exit;
+        }
+
+        $gift_id = intval($params[0]);
+        $gift = $this->event_service->find_gift_by_id($gift_id);
+
+        if ($gift === null || $gift->get_assigned_guest()->get_id() !== SessionManager::get_logged_user_id()) {
+            header("Location: /all-events");
+            exit;
+        }
+
+        $edit_mode = true;
+
+        include("templates/header.php");
+        include("templates/gifts/gifts-form.php");
+        include("templates/footer.php");
+    }
+
+    public function edit_gift(array $params): void {
+        if (!SessionManager::is_logged_in()) {
+            header("Location: /login");
+            exit;
+        }
+
+        if (count($params) === 0) {
+            header("Location: /all-events");
+            exit;
+        }
+
+        $gift_id = intval($params[0]);
+        $gift = $this->event_service->find_gift_by_id($gift_id);
+
+        if ($gift === null) {
+            header("Location: /all-events");
+            exit;
+        }
+
+        if ($gift->get_assigned_guest()->get_id() !== SessionManager::get_logged_user_id()) {
+            header("Location: /event/" . $gift->get_event()->get_id());
+            exit;
+        }
+
+        $old_description = $gift->get_description();
+        $gift->set_description($_POST["description"]);
+
+        $errors = [];
+        $new_gift = $this->event_service->change_gift($gift, $errors);
+
+        if ($new_gift === null) {
+            $gift->set_description($old_description);
+
+            $edit_mode = true;
+
+            include("templates/header.php");
+            include("templates/gifts/gifts-form.php");
+            include("templates/footer.php");
+        } else {
+            header("Location: /event/" . $gift->get_event()->get_id());
+            exit;
+        }
+    }
+
     public function delete_gift(array $params): void {
         if (!SessionManager::is_logged_in()) {
             header("Location: /login");

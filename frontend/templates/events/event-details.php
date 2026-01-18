@@ -50,7 +50,7 @@
                 echo "<td>" . $gift->get_description() . "</td>";
                 echo "<td><a href=\"/user/" . $gift->get_assigned_guest()->get_id() . "\">" . $gift->get_assigned_guest()->get_username() . "</a></td>";
                 if ($gift->get_assigned_guest()->get_id() === SessionManager::get_logged_user_id()) {
-                    $actions = "<a href=\"#\">Редактирай</a> | <a href=\"/gift/delete/" . $gift->get_id() . "?back=" . $event->get_id() . "\">Изтрий</a>";
+                    $actions = "<a href=\"/gift/edit/" . $gift->get_id() . "\">Редактирай</a> | <a href=\"/gift/delete/" . $gift->get_id() . "?back=" . $event->get_id() . "\">Изтрий</a>";
                     echo "<td>" . $actions . "</td>";
                 } else {
                     echo "<td></td>";

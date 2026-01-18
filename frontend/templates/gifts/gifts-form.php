@@ -24,7 +24,14 @@
             name="description"
             type="text"
             required
-            maxlength="512">
+            maxlength="512"
+            value="<?php
+                if ($edit_mode) {
+                    echo $gift->get_description();
+                } else {
+                    echo "";
+                }
+            ?>">
 
         <button type="submit">
             <?php
