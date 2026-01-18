@@ -187,7 +187,7 @@ class GiftController {
         $gift = $this->event_service->find_gift_by_id($gift_id);
 
         if ($gift === null || $gift->get_assigned_guest()->get_id() !== SessionManager::get_logged_user_id()) {
-            header("Location: /");
+            header("Location: /all-events");
             exit;
         }
 
