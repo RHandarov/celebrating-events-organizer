@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Време на генериране: 10 яну 2026 в 16:25
+-- Време на генериране: 18 яну 2026 в 15:23
 -- Версия на сървъра: 10.4.32-MariaDB
 -- Версия на PHP: 8.2.12
 
@@ -63,7 +63,7 @@ CREATE TABLE `events` (
 --
 
 INSERT INTO `events` (`id`, `celebrating_date`, `organizer_id`, `organized_id`, `title`, `location`, `description`) VALUES
-(1, '2026-12-29', 2, 1, 'Title 1', 'London', 'Some desc'),
+(1, '2026-12-29', 2, 1, 'Title 1', 'London', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum'),
 (2, '2026-12-29', 2, 1, 'Title 2', 'London', 'Some desc'),
 (3, '2026-12-29', 2, 1, 'Title 3', 'London', 'Some desc'),
 (4, '2026-12-29', 2, 1, 'Title 4', 'London', 'Some desc'),
@@ -86,6 +86,7 @@ CREATE TABLE `followers` (
 
 INSERT INTO `followers` (`follower_id`, `followed_id`) VALUES
 (1, 2),
+(1, 3),
 (2, 1);
 
 -- --------------------------------------------------------
@@ -100,6 +101,13 @@ CREATE TABLE `gifts` (
   `assigned_guest_id` bigint(20) UNSIGNED NOT NULL,
   `description` varchar(512) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Схема на данните от таблица `gifts`
+--
+
+INSERT INTO `gifts` (`id`, `event_id`, `assigned_guest_id`, `description`) VALUES
+(3, 1, 3, 'test gidf 3');
 
 -- --------------------------------------------------------
 
@@ -118,6 +126,9 @@ CREATE TABLE `guests` (
 
 INSERT INTO `guests` (`event_id`, `guest_id`) VALUES
 (1, 2),
+(2, 2),
+(3, 2),
+(4, 2),
 (5, 2);
 
 -- --------------------------------------------------------
@@ -141,8 +152,8 @@ INSERT INTO `users` (`id`, `username`, `email`, `password`) VALUES
 (1, 'test', 'test@example.com', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8'),
 (2, 'test2', 'test2@example.com', '6cf615d5bcaac778352a8f1f3360d23f02f34ec182e259897fd6ce485d7870d4'),
 (3, 'test3', 'test3@example.com', '5906ac361a137e2d286465cd6588ebb5ac3f5ae955001100bc41577c3d751764'),
-(4, 'test3', 'test3@example.com', '5906ac361a137e2d286465cd6588ebb5ac3f5ae955001100bc41577c3d751764'),
-(5, 'test4', 'test4@example.com', 'b9c950640e1b3740e98acb93e669c65766f6670dd1609ba91ff41052ba48c6f3');
+(4, 'test4', 'test3@example.com', '5906ac361a137e2d286465cd6588ebb5ac3f5ae955001100bc41577c3d751764'),
+(5, 'test5', 'test4@example.com', 'b9c950640e1b3740e98acb93e669c65766f6670dd1609ba91ff41052ba48c6f3');
 
 --
 -- Indexes for dumped tables
@@ -211,7 +222,7 @@ ALTER TABLE `events`
 -- AUTO_INCREMENT for table `gifts`
 --
 ALTER TABLE `gifts`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `users`
