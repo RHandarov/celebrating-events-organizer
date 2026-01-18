@@ -17,6 +17,7 @@ final class Router {
             "/event" => [\controllers\EventController::class, "show_event_details"],
             "/user/change-password" => [\controllers\UserController::class, "show_change_password_form"],
             "/user" => [\controllers\UserController::class, "show_user_details"],
+            "/gift/add" => [\controllers\GiftController::class, "show_add_gift_form"],
             "/gift/delete" => [\controllers\GiftController::class, "delete_gift"],
             "/" => [\controllers\HomeController::class, "show_home_page"]
         ],
@@ -29,7 +30,8 @@ final class Router {
             "/user/unfollow" => [\controllers\UserController::class, "unfollow"],
             "/user/change-password" => [\controllers\UserController::class, "change_password"],
             "/event/enroll" => [\controllers\EventController::class, "enroll_in_event"],
-            "/event/leave" => [\controllers\EventController::class, "leave_event"]
+            "/event/leave" => [\controllers\EventController::class, "leave_event"],
+            "/gift/add" => [\controllers\GiftController::class, "add_gift"]
         ]
     );
 
@@ -86,7 +88,7 @@ final class Router {
         } else if ($controller_class === \controllers\UserController::class) {
             return new \controllers\UserController(self::$user_service);
         } else if ($controller_class === \controllers\GiftController::class) {
-            return new \controllers\GiftController(self::$event_service);
+            return new \controllers\GiftController(self::$event_service, self::$user_service);
         }
 
         return new $controller_class();

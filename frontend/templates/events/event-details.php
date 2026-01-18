@@ -35,6 +35,9 @@
         }
     ?>
     <h3>Подаръци</h3>
+    <form method="GET" action="/gift/add/<?php echo $event->get_id(); ?>">
+        <button type="submit">Добави подарък</button>
+    </form>
     <table class="table">
         <tr>
             <th scope="col">Подарък</th>
