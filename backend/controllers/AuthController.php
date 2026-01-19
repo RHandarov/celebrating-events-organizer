@@ -68,6 +68,7 @@ class AuthController {
             $this->user_service->add_user(
                 $_POST["username"],
                 $_POST["email"],
+                $_POST["full-name"],
                 $_POST["password"],
                 $errors
             );

@@ -24,8 +24,16 @@
             ?>
             <button type="submit"><?php echo $bottom_text; ?></button>
         </form>
+        <?php
+            if ($user->get_id() === SessionManager::get_logged_user_id()) {
+                echo "<form method=\"GET\" action=\"/user/change-full-name\">";
+                echo "<button type=\"submit\">Промени пълното име</button>";
+                echo "</form>";
+            }
+        ?>
     </header>
     <p>Имейл: <?php echo $user->get_email(); ?></p>
+    <p>Пълно име: <?php echo $user->get_full_name(); ?></p>
     <h3>Дати</h3>
     <table class="table">
         <tr>

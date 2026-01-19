@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Време на генериране: 18 яну 2026 в 15:23
+-- Време на генериране: 19 яну 2026 в 13:49
 -- Версия на сървъра: 10.4.32-MariaDB
 -- Версия на PHP: 8.2.12
 
@@ -107,7 +107,8 @@ CREATE TABLE `gifts` (
 --
 
 INSERT INTO `gifts` (`id`, `event_id`, `assigned_guest_id`, `description`) VALUES
-(3, 1, 3, 'test gidf 3');
+(3, 1, 3, 'test gidf 3'),
+(5, 1, 2, 'Test gift from test 2');
 
 -- --------------------------------------------------------
 
@@ -141,6 +142,7 @@ CREATE TABLE `users` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `username` varchar(30) NOT NULL,
   `email` varchar(320) NOT NULL,
+  `full_name` varchar(255) NOT NULL,
   `password` varchar(64) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -148,12 +150,12 @@ CREATE TABLE `users` (
 -- Схема на данните от таблица `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `email`, `password`) VALUES
-(1, 'test', 'test@example.com', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8'),
-(2, 'test2', 'test2@example.com', '6cf615d5bcaac778352a8f1f3360d23f02f34ec182e259897fd6ce485d7870d4'),
-(3, 'test3', 'test3@example.com', '5906ac361a137e2d286465cd6588ebb5ac3f5ae955001100bc41577c3d751764'),
-(4, 'test4', 'test3@example.com', '5906ac361a137e2d286465cd6588ebb5ac3f5ae955001100bc41577c3d751764'),
-(5, 'test5', 'test4@example.com', 'b9c950640e1b3740e98acb93e669c65766f6670dd1609ba91ff41052ba48c6f3');
+INSERT INTO `users` (`id`, `username`, `email`, `full_name`, `password`) VALUES
+(1, 'test', 'test@example.com', 'Erica Hendricks', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8'),
+(2, 'test2', 'test2@example.com', 'Lilah Finley', '6cf615d5bcaac778352a8f1f3360d23f02f34ec182e259897fd6ce485d7870d4'),
+(3, 'test3', 'test3@example.com', 'Emma Wong', '5906ac361a137e2d286465cd6588ebb5ac3f5ae955001100bc41577c3d751764'),
+(4, 'test4', 'test3@example.com', 'John Doe', '5906ac361a137e2d286465cd6588ebb5ac3f5ae955001100bc41577c3d751764'),
+(5, 'test5', 'test4@example.com', 'Natalee Rosario', 'b9c950640e1b3740e98acb93e669c65766f6670dd1609ba91ff41052ba48c6f3');
 
 --
 -- Indexes for dumped tables
@@ -222,7 +224,7 @@ ALTER TABLE `events`
 -- AUTO_INCREMENT for table `gifts`
 --
 ALTER TABLE `gifts`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `users`

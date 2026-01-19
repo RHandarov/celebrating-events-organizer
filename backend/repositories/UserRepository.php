@@ -29,6 +29,7 @@ class UserRepository {
         return new \models\User($row["id"],
             $row["username"],
             $row["email"],
+            $row["full_name"],
             $row["password"]);
     }
 
@@ -51,6 +52,7 @@ class UserRepository {
         return new \models\User($row["id"],
             $row["username"],
             $row["email"],
+            $row["full_name"],
             $row["password"]);
     }
 
@@ -74,6 +76,7 @@ class UserRepository {
             $row["id"],
             $row["username"],
             $row["email"],
+            $row["full_name"],
             $row["password"]
         );
     }
@@ -82,14 +85,15 @@ class UserRepository {
         $prepared_statement =
             $this->db_connection->prepare(
                 "UPDATE users
-                SET email = ?, `password` = ?
+                SET email = ?, full_name = ?, `password` = ?
                 WHERE id = ?"
             );
 
         $email = $updated_user->get_email();
+        $full_name = $updated_user->get_full_name();
         $password = $updated_user->get_password();
         $id = $updated_user->get_id();
-        $prepared_statement->bind_param("ssi", $email, $password, $id);
+        $prepared_statement->bind_param("sssi", $email, $full_name, $password, $id);
         $prepared_statement->execute();
 
         return $updated_user;
@@ -178,20 +182,21 @@ class UserRepository {
         return $dates;
     }
 
-    public function add_user(string $username, string $email, string $password_hash): \models\User {
+    public function add_user(string $username, string $email, string $full_name, string $password_hash): \models\User {
         $prepared_statement =
             $this->db_connection->prepare(
-                "INSERT INTO users (username, email, password)
-                VALUES (?, ?, ?)"
+                "INSERT INTO users (username, email, full_name, password)
+                VALUES (?, ?, ?, ?)"
             );
 
-        $prepared_statement->bind_param("sss", $username, $email, $password_hash);
+        $prepared_statement->bind_param("ssss", $username, $email, $full_name, $password_hash);
         $prepared_statement->execute();
 
         return new \models\User(
             $prepared_statement->insert_id,
             $username,
             $email,
+            $full_name,
             $password_hash
         );
     }

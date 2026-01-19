@@ -36,9 +36,10 @@ class UserService {
         return $this->user_repository->find_user_by_id($user_id);
     }
 
-    public function add_user(string $username, string $email, string $password, array &$errors): ?\models\User {
+    public function add_user(string $username, string $email, string $full_name, string $password, array &$errors): ?\models\User {
         $username = htmlspecialchars(trim($username));
         $email = htmlspecialchars(trim($email));
+        $full_name = htmlspecialchars(trim($full_name));
         $password = hash("sha256", $password);
 
         if (!$this->validate_username($username, $errors)) {
@@ -49,6 +50,10 @@ class UserService {
             return null;
         }
 
+        if (!$this->validate_full_name($full_name, $errors)) {
+            return null;
+        }
+
         if ($this->user_repository->find_user_by_username($username) !== null) {
             array_push($errors,
                 "Потребителското име " . $username . " вече е заето!");
@@ -56,11 +61,15 @@ class UserService {
             return null;
         }
 
-        return $this->user_repository->add_user($username, $email, $password);
+        return $this->user_repository->add_user($username, $email, $full_name, $password);
     }
 
     public function change_user(\models\User $changed_user, array &$errors): ?\models\User {
         if (!$this->validate_email($changed_user->get_email(), $errors)) {
+            return null;
+        }
+
+        if (!$this->validate_full_name($changed_user->get_full_name(), $errors)) {
             return null;
         }
 
@@ -187,6 +196,26 @@ class UserService {
     private function validate_email(string $email, array &$errors): bool {
         if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
             array_push($errors, "Невалиден имейл!");
+
+            return false;
+        }
+
+        return true;
+    }
+
+    private function validate_full_name(string $full_name, array &$errors): bool {
+        $full_name_length = mb_strlen($full_name);
+
+        if ($full_name_length === 0) {
+            array_push($errors,
+                "Пълното име не може да е празно!");
+
+            return false;
+        }
+
+        if ($full_name_length > 255) {
+            array_push($errors,
+                "Дължината на пълното име трябва да е не повече от 255 символа!");
 
             return false;
         }

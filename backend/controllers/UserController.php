@@ -146,4 +146,45 @@ class UserController {
             exit;
         }
     }
+
+    public function show_change_full_name_form(array $params): void {
+        if (!SessionManager::is_logged_in()) {
+            header("Location: /login");
+            exit;
+        }
+
+        $user_id = SessionManager::get_logged_user_id();
+        $user = $this->user_service->find_user_by_id($user_id);
+
+        include("templates/header.php");
+        include("templates/users/change-full-name.php");
+        include("templates/footer.php");
+    }
+
+    public function change_full_name(array $params): void {
+        if (!SessionManager::is_logged_in()) {
+            header("Location: /login");
+            exit;
+        }
+
+        $user_id = SessionManager::get_logged_user_id();
+        $user = $this->user_service->find_user_by_id($user_id);
+
+        $old_full_name = $user->get_full_name();
+        $user->set_full_name($_POST["new-full-name"]);
+
+        $errors = [];
+        $changed_user = $this->user_service->change_user($user, $errors);
+
+        if ($changed_user === null) {
+            $user->set_full_name($old_full_name);
+
+            include("templates/header.php");
+            include("templates/users/change-full-name.php");
+            include("templates/footer.php");
+        } else {
+            header("Location: /user/" . $user->get_id());
+            exit;
+        }
+    }
 }

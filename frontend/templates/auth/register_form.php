@@ -16,6 +16,9 @@
         <label for="email">Имейл:</label>
         <input id="email" name="email" type="email" required>
 
+        <label for="full-name">Пълно име:</label>
+        <input id="full-name" name="full-name" type="text" maxlength="255" required>
+
         <label for="password">Парола:</label>
         <input id="password" name="password" type="password" required>
 
