@@ -222,6 +222,7 @@ button:hover {
 
 #user-details * {
     text-align: center;
+    margin: 5px 0px;
 }
 
 #user-details h2 {
@@ -268,6 +269,7 @@ button:hover {
 
 #event-details * {
     text-align: center;
+    margin: 5px 0px;
 }
 
 #event-details h2 {
