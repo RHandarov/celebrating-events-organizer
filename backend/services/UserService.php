@@ -139,6 +139,10 @@ class UserService {
         return true;
     }
 
+    public function find_date_by_id(int $date_id): ?\models\Date {
+        return $this->user_repository->find_date_by_id($date_id);
+    }
+
     private function validate_date_title(string $title, array &$errors): bool {
         $username_length = mb_strlen($title);
 

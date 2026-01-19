@@ -285,4 +285,34 @@ class UserRepository {
         $prepared_statement->bind_param("i", $date_id);
         $prepared_statement->execute();
     }
+
+     public function find_date_by_id(int $date_id): ?\models\Date {
+        $prepared_statement = 
+            $this->db_connection->prepare(
+                "SELECT * FROM dates WHERE id = ?"
+            );
+
+        $prepared_statement->bind_param("i", $date_id);
+        $prepared_statement->execute();
+
+        $result = $prepared_statement->get_result();
+
+        if ($result->num_rows !== 1) {
+            return null;
+        }
+
+        $row = $result->fetch_assoc();
+
+
+        $owner = $this->find_user_by_id($row["owner_id"]);
+
+        return new \models\Date(
+            $row["id"],
+            $owner,
+            $row["date"],
+            $row["title"]
+        );
+    }
 }
+
+   
