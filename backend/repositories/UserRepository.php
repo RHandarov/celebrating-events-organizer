@@ -98,32 +98,6 @@ class UserRepository {
     public function get_all_followers_of_user(\models\User $user): array {
         $prepared_statement =
             $this->db_connection->prepare(
-                "SELECT followed_id FROM followers WHERE follower_id = ?"
-            );
-
-        $user_id = $user->get_id(); // because bind_param accepts only reference
-        $prepared_statement->bind_param("i", $user_id);
-        $prepared_statement->execute();
-
-        $followers = [];
-
-        $result = $prepared_statement->get_result();
-        while (true) {
-            $row = $result->fetch_assoc();
-
-            if ($row === null || $row === false) {
-                break; // no nore rows or error occurred
-            }
-
-            array_push($followers, $this->find_user_by_id($row["followed_id"]));
-        }
-
-        return $followers;
-    }
-
-    public function get_all_followed_of_user(\models\User $user): array {
-        $prepared_statement =
-            $this->db_connection->prepare(
                 "SELECT follower_id FROM followers WHERE followed_id = ?"
             );
 
@@ -142,6 +116,32 @@ class UserRepository {
             }
 
             array_push($followers, $this->find_user_by_id($row["follower_id"]));
+        }
+
+        return $followers;
+    }
+
+    public function get_all_followed_of_user(\models\User $user): array {
+         $prepared_statement =
+            $this->db_connection->prepare(
+                "SELECT followed_id FROM followers WHERE follower_id = ?"
+            );
+
+        $user_id = $user->get_id(); // because bind_param accepts only reference
+        $prepared_statement->bind_param("i", $user_id);
+        $prepared_statement->execute();
+
+        $followers = [];
+
+        $result = $prepared_statement->get_result();
+        while (true) {
+            $row = $result->fetch_assoc();
+
+            if ($row === null || $row === false) {
+                break; // no nore rows or error occurred
+            }
+
+            array_push($followers, $this->find_user_by_id($row["followed_id"]));
         }
 
         return $followers;
@@ -313,6 +313,31 @@ class UserRepository {
             $row["title"]
         );
     }
+
+
+    public function get_all_users_except(int $exclude_user_id): array {
+        $prepared_statement = $this->db_connection->prepare(
+            "SELECT * FROM users WHERE id != ?"
+        );
+
+        $prepared_statement->bind_param("i", $exclude_user_id);
+        $prepared_statement->execute();
+
+        $users = [];
+        $result = $prepared_statement->get_result();
+
+        while ($row = $result->fetch_assoc()) {
+            array_push($users, new \models\User(
+                $row["id"],
+                $row["username"],
+                $row["email"],
+                $row["password"]
+            ));
+        }
+
+        return $users;
+    }
+
 }
 
    

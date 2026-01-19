@@ -17,6 +17,7 @@ final class Router {
             "/event/create" => [\controllers\EventController::class, "show_create_event_form"],
             "/event" => [\controllers\EventController::class, "show_event_details"],
             "/user/change-password" => [\controllers\UserController::class, "show_change_password_form"],
+            "/users/find" => [\controllers\UserController::class, "show_find_users"],
             "/user" => [\controllers\UserController::class, "show_user_details"],
             "/gift/add" => [\controllers\GiftController::class, "show_add_gift_form"],
             "/gift/edit" => [\controllers\GiftController::class, "show_edit_gift_form"],
