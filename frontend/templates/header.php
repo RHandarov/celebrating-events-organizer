@@ -7,7 +7,7 @@
     </head>
     <body>
         <header id="header">
-            <h1>Система за организиране на събития</h1>
+            <h1><a href="/">Система за организиране на събития</a></h1>
             <?php
                 if (!SessionManager::is_logged_in()) {
                     include("navs/guest_nav.php");

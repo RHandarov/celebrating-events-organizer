@@ -92,6 +92,10 @@ button:hover {
     text-transform: uppercase;
 }
 
+#header h1 a {
+    text-decoration: none;
+}
+
 #header nav {
     display: inline-flex;
     justify-content: flex-end;
