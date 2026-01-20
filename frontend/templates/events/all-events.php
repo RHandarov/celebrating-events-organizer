@@ -1,7 +1,7 @@
 <main id="all-events">
     <header>
         <h2>Всички събития</h2>
-        <form method="GET" action="/my-dates/add/">
+        <form method="GET" action="/event/create">
             <button type="submit">Добави събитие</button>
         </form>
     </header>
