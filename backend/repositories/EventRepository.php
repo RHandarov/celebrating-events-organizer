@@ -22,7 +22,7 @@ class EventRepository {
         $prepared_statement =
             $this->db_connection->prepare(
                 "INSERT INTO events (celebrating_date, organizer_id, organized_id, title, `location`, `description`)
-                VALUES (?, ?, ?, ?, ?)"
+                VALUES (?, ?, ?, ?, ?, ?)"
             );
 
         $organizer_id = $organizer->get_id();
