@@ -14,7 +14,7 @@
             <?php foreach ($all_users as $user): ?>
             <tr>
                 <td>
-                    <strong><?php echo $user->get_username(); ?></strong>
+                    <a href="/user/<?php echo $user->get_id(); ?>"><strong><?php echo $user->get_username(); ?></strong></a>
                 </td>
                 <td>
                     <?php echo $user->get_email(); ?>
