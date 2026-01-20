@@ -159,16 +159,16 @@ class UserController {
     //     exit;
     // }
 
-    // public function show_change_password_form(array $params): void {
-    //     if (!SessionManager::is_logged_in()) {
-    //         header("Location: /login");
-    //         exit;
-    //     }
+    public function show_change_password_form(array $params): void {
+        if (!SessionManager::is_logged_in()) {
+            header("Location: /login");
+            exit;
+        }
 
-    //     include("templates/header.php");
-    //     include("templates/users/change-password.php");
-    //     include("templates/footer.php");
-    // }
+        include("templates/header.php");
+        include("templates/users/change-password.php");
+        include("templates/footer.php");
+    }
 
     public function change_password(array $params): void {
         if (!SessionManager::is_logged_in()) {
