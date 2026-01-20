@@ -305,3 +305,8 @@ button:hover {
     font-style: italic;
     font-size: 15px;
 }
+
+#find-users * {
+    text-align: center;
+    margin: 5px 0px;
+}
