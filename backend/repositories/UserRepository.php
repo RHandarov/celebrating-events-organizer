@@ -336,6 +336,7 @@ class UserRepository {
                 $row["id"],
                 $row["username"],
                 $row["email"],
+                $row["full_name"],
                 $row["password"]
             ));
         }
