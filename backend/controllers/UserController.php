@@ -46,27 +46,74 @@ class UserController {
         include("templates/footer.php");
     }
 
+    public function show_find_users(array $params): void {
+        if (!SessionManager::is_logged_in()) {
+            header("Location: /login");
+            exit;
+        }
+
+        $logged_user_id = SessionManager::get_logged_user_id();
+        $logged_user = $this->user_service->find_user_by_id($logged_user_id);
+
+        $all_users = $this->user_service->get_all_users_except($logged_user_id);
+
+        $following_users = $this->user_service->get_all_followed_of_user($logged_user);
+
+        $following_ids = [];
+        foreach ($following_users as $f_user) {
+            $following_ids[] = $f_user->get_id();
+        }
+
+        include("templates/header.php");
+        include("templates/users/find-users.php");
+        include("templates/footer.php");
+    }
+
+
     public function follow(array $params): void {
         if (!SessionManager::is_logged_in()) {
             header("Location: /login");
             exit;
         }
 
-        $user_id = intval($_POST["user_id"]);
-        $other_user = $this->user_service->find_user_by_id($user_id);
+        $followed_id = intval($_POST["followed_id"]);
+        $other_user = $this->user_service->find_user_by_id($followed_id);
 
         if ($other_user === null) {
-            header("Location: /");
+            header("Location: /users/find");
             exit;
         }
 
         $logged_user = $this->user_service->find_user_by_id(SessionManager::get_logged_user_id());
 
-        $this->user_service->follow_user($other_user, $logged_user);
+        $this->user_service->follow_user($logged_user, $other_user);
 
-        header("Location: /user/" . $user_id);
+        header("Location: /users/find");
         exit;
     }
+
+    // public function follow(array $params): void {
+    //     if (!SessionManager::is_logged_in()) {
+    //         header("Location: /login");
+    //         exit;
+    //     }
+
+    //     $user_id = intval($_POST["user_id"]);
+    //     $other_user = $this->user_service->find_user_by_id($user_id);
+
+    //     if ($other_user === null) {
+    //         header("Location: /");
+    //         exit;
+    //     }
+
+    //     $logged_user = $this->user_service->find_user_by_id(SessionManager::get_logged_user_id());
+
+    //     $this->user_service->follow_user($other_user, $logged_user);
+
+    //     header("Location: /user/" . $user_id);
+    //     exit;
+    // }
+
 
     public function unfollow(array $params): void {
         if (!SessionManager::is_logged_in()) {
@@ -74,32 +121,54 @@ class UserController {
             exit;
         }
 
-        $user_id = intval($_POST["user_id"]);
-        $other_user = $this->user_service->find_user_by_id($user_id);
+        $followed_id = intval($_POST["followed_id"]);
+        $other_user = $this->user_service->find_user_by_id($followed_id);
 
         if ($other_user === null) {
-            header("Location: /");
+            header("Location: /users/find");
             exit;
         }
 
         $logged_user = $this->user_service->find_user_by_id(SessionManager::get_logged_user_id());
 
-        $this->user_service->unfollow_user($other_user, $logged_user);
+        $this->user_service->unfollow_user($logged_user, $other_user);
 
-        header("Location: /user/" . $user_id);
+        header("Location: /users/find");
         exit;
     }
 
-    public function show_change_password_form(array $params): void {
-        if (!SessionManager::is_logged_in()) {
-            header("Location: /login");
-            exit;
-        }
+    // public function unfollow(array $params): void {
+    //     if (!SessionManager::is_logged_in()) {
+    //         header("Location: /login");
+    //         exit;
+    //     }
 
-        include("templates/header.php");
-        include("templates/users/change-password.php");
-        include("templates/footer.php");
-    }
+    //     $user_id = intval($_POST["user_id"]);
+    //     $other_user = $this->user_service->find_user_by_id($user_id);
+
+    //     if ($other_user === null) {
+    //         header("Location: /");
+    //         exit;
+    //     }
+
+    //     $logged_user = $this->user_service->find_user_by_id(SessionManager::get_logged_user_id());
+
+    //     $this->user_service->unfollow_user($other_user, $logged_user);
+
+    //     header("Location: /user/" . $user_id);
+    //     exit;
+    // }
+
+    // public function show_change_password_form(array $params): void {
+    //     if (!SessionManager::is_logged_in()) {
+    //         header("Location: /login");
+    //         exit;
+    //     }
+
+    //     include("templates/header.php");
+    //     include("templates/users/change-password.php");
+    //     include("templates/footer.php");
+    // }
 
     public function change_password(array $params): void {
         if (!SessionManager::is_logged_in()) {

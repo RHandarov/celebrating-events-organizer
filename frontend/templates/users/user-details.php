@@ -19,7 +19,7 @@
         <form method="<?php echo $method; ?>" action="<?php echo $action; ?>">
             <?php
                 if ($user->get_id() !== SessionManager::get_logged_user_id()) {
-                    echo "<input type=\"hidden\" name=\"user_id\" value=\"" . $user->get_id() . "\">";
+                    echo "<input type=\"hidden\" name=\"followed_id\" value=\"" . $user->get_id() . "\">";
                 }
             ?>
             <button type="submit"><?php echo $bottom_text; ?></button>
@@ -51,10 +51,18 @@
     </table>
     <h3>Последователи</h3>
     <?php
+    if (count($user_followers) > 0) {
+        echo "<ul class='list-group'>";
         foreach ($user_followers as $follower) {
-            echo "<p><a href=\"/user/" . $follower->get_id() . "\">";
-            echo $follower->get_username();
-            echo "</a></p>";
+            echo "<li class='list-group-item'>";
+            echo "<a href=\"/user/" . $follower->get_id() . "\">";
+            echo htmlspecialchars($follower->get_username()); 
+            echo "</a>";
+            echo "</li>";
         }
+        echo "</ul>";
+    } else {
+        echo "<p class='text-muted'>Този потребител все още няма последователи.</p>";
+    }
     ?>
 </main>

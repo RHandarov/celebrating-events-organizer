@@ -76,12 +76,40 @@ class UserService {
         return $this->user_repository->change_user($changed_user);
     }
 
+    
+    public function get_all_users_except(int $exclude_user_id): array {
+        return $this->user_repository->get_all_users_except($exclude_user_id);
+    }
+
     public function get_all_followers_of_user(\models\User $user): array {
         return $this->user_repository->get_all_followers_of_user($user);
     }
 
     public function get_all_followed_of_user(\models\User $user): array {
         return $this->user_repository->get_all_followed_of_user($user);
+    }
+
+    public function show_find_users(array $params): void {
+        if (!SessionManager::is_logged_in()) {
+            header("Location: /login");
+            exit;
+        }
+
+        $logged_user_id = SessionManager::get_logged_user_id();
+        $logged_user = $this->user_service->find_user_by_id($logged_user_id);
+
+        $all_users = $this->user_service->get_all_users_except($logged_user_id);
+
+        $following_users = $this->user_service->get_all_followed_of_user($logged_user);
+
+        $following_ids = [];
+        foreach ($following_users as $f_user) {
+            $following_ids[] = $f_user->get_id();
+        }
+
+        include("templates/header.php");
+        include("templates/users/find-users.php");
+        include("templates/footer.php");
     }
 
     public function follow_user(\models\User $follower, \models\User $followed): true {
@@ -146,6 +174,10 @@ class UserService {
     public function delete_date(\models\Date $date): true {
         $this->user_repository->delete_date($date);
         return true;
+    }
+
+    public function find_date_by_id(int $date_id): ?\models\Date {
+        return $this->user_repository->find_date_by_id($date_id);
     }
 
     private function validate_date_title(string $title, array &$errors): bool {
