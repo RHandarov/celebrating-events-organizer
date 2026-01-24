@@ -207,6 +207,25 @@ class EventService {
         return $found;
     }
 
+    public function get_most_recent_20_organizing_events_for_user(\models\User $user): array {
+        $all_events = $this->get_all_organizing_events_for_user($user);
+
+        // sort events in decreasing order by their celebration date
+        usort($all_events, function(\models\Event $left_event, \models\Event $right_event): int {
+            return strcmp($left_event->get_celebrating_date(), $right_event->get_celebrating_date()) * -1;
+        });
+
+        $top_20_events = [];
+
+        $num_events = count($all_events);
+        $num_events = min($num_events, 20);
+        for ($index = 0; $index < $num_events; ++$index) {
+            array_push($top_20_events, $all_events[$index]);
+        }
+
+        return $top_20_events;
+    }
+
     public function get_all_organizing_events_for_user(\models\User $user): array {
         $events = [];
 
@@ -220,6 +239,10 @@ class EventService {
 
     public function find_gift_by_id(int $gift_id): ?\models\Gift {
         return $this->event_repository->find_gift_by_id($gift_id);
+    }
+
+    public function get_all_gifts_of_user(\models\User $user): array {
+        return $this->event_repository->get_all_gifts_of_user($user);
     }
 
     public function add_gift(

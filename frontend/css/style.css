@@ -319,3 +319,29 @@ button:hover {
 #find-users h2 {
     font-size: 23px;
 }
+
+#home-page h2 {
+    font-size: 23px;
+}
+
+#top-20-events {
+    float: left;
+    width: 49%;
+    text-align: center;
+    margin-right: 6px;
+}
+
+#top-20-events * {
+    margin: 5px 0px;
+}
+
+#buying-gifts {
+    float: left;
+    width: 49%;
+    text-align: center;
+    margin-left: 6px;
+}
+
+#buying-gifts * {
+    margin: 5px 0px;
+}

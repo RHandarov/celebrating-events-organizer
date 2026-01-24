@@ -255,6 +255,39 @@ class EventRepository {
         return $gifts;
     }
 
+    public function get_all_gifts_of_user(\models\User $user): array {
+        $prepared_statement =
+            $this->db_connection->prepare(
+                "SELECT * FROM gifts WHERE assigned_guest_id = ?"
+            );
+
+        $user_id = $user->get_id();
+        $prepared_statement->bind_param("i", $user_id);
+        $prepared_statement->execute();
+
+        $gifts = [];
+
+        $result = $prepared_statement->get_result();
+        while (true) {
+            $row = $result->fetch_assoc();
+
+            if ($row === null || $row === false) {
+                break;
+            }
+
+            $event = $this->find_event_by_id($row["event_id"]);
+            array_push($gifts,
+                new \models\Gift(
+                    $row["id"],
+                    $event,
+                    $user,
+                    $row["description"]
+                ));
+        }
+
+        return $gifts;
+    }
+
     public function change_gift(\models\Gift $gift): \models\Gift {
         $prepared_statement =
             $this->db_connection->prepare(

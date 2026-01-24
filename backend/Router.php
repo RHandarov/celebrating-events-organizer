@@ -96,6 +96,8 @@ final class Router {
             return new \controllers\UserController(self::$user_service);
         } else if ($controller_class === \controllers\GiftController::class) {
             return new \controllers\GiftController(self::$event_service, self::$user_service);
+        } else if ($controller_class === \controllers\HomeController::class) {
+            return new \controllers\HomeController(self::$user_service, self::$event_service);
         }
 
         return new $controller_class();
