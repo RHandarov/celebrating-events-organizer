@@ -9,12 +9,12 @@
 
     <h2>Организирай ново събитие</h2>
 
-    <form method="POST" action="/event/create">
+    <form method="POST" action="/event/create" novalidate>
         <label for="title">Заглавие на събитието:</label>
         <input type="text"
             id="title"
             name="title"
-            required
+            required    
             maxlength="256"
             placeholder="Напр: Парти изненада за Мария">
 
@@ -53,4 +53,5 @@
 
         <button type="submit">Създай събитие</button>
     </form>
+    <script src="/js/validate-event.js"></script>
 </main>

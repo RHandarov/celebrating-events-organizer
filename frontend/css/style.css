@@ -284,26 +284,102 @@ button:hover {
     font-size: 20px;
 }
 
-#create-event * {
-    text-align: center;
-    margin: 5px 0px;
+
+/* =========================================
+   СТИЛОВЕ ЗА СЪЗДАВАНЕ НА СЪБИТИЕ (Create Event)
+   ========================================= */
+
+#create-event {
+    max-width: 700px;       
+    margin: 40px auto;      
+    background: #c2f0c2;    
+    padding: 40px;         
+    border-radius: 10px;   
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border: 1px solid lightgreen;
 }
 
 #create-event h2 {
-    font-size: 23px;
+    text-align: center;
+    color: #198754;         
+    font-size: 28px;
+    margin-bottom: 30px;
+    font-weight: bold;
+    text-transform: uppercase;
 }
 
-#create-event form * {
-    display: block;
-    margin: 5px auto;
+#create-event .error {
     text-align: center;
-    font-size: 17px;
-    width: 20%;
+    background-color: #f8d7da;
+    color: #842029 !important;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #f5c2c7;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+
+#create-event form label {
+    display: block;         
+    text-align: left;      
+    font-weight: bold;
+    margin-bottom: 8px;
+    margin-top: 20px;
+    color: #333;
+    font-size: 16px;
+}
+
+#create-event form input,
+#create-event form select,
+#create-event form textarea {
+    width: 100%;        
+    padding: 12px;      
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;    
+    background-color: #eafaea;
+    box-sizing: border-box; 
+    font-family: inherit;
+}
+
+#create-event form input:focus,
+#create-event form select:focus,
+#create-event form textarea:focus {
+    border-color: #198754;  
+    outline: none;
+    box-shadow: 0 0 5px rgba(25, 135, 84, 0.3); 
 }
 
 #create-event form small {
+    display: block;
+    text-align: left;
+    margin-top: 6px;
+    color: #666;
     font-style: italic;
-    font-size: 15px;
+    font-size: 13px;
+}
+
+#create-event form textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+#create-event form button {
+    width: 100%;            
+    margin-top: 30px;
+    padding: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+}
+
+#create-event form button:hover {
+    background-color: #146c43; 
+    transform: translateY(-2px); 
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2); 
 }
 
 .text-muted {
