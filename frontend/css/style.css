@@ -573,28 +573,105 @@ button:hover {
 /* =========================================
    (All Events)
    ========================================= */
-#all-events header {
-    border-bottom: 2px solid black;
-    padding-bottom: 5px;
-    margin-bottom: 20px;
+#all-events {
+    max-width: 1200px;
+    margin: 40px auto;
     background: #c2f0c2;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border: 1px solid #dcdcdc;
 }
 
-#all-events header h2 {
-    display: inline-flex;
-    flex-direction: row;
-    font-size: 23px;
-    margin: 10px;
+#all-events header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #e9ecef;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+}
+
+#all-events h2 {
+    color: #198754;
+    font-size: 28px;
+    margin: 0;
+    text-transform: uppercase;
 }
 
 #all-events header form {
-    display: inline-flex;
-    float: right;
-    margin: 10px;
+    margin: 0;
 }
 
-#all-events header form button {
-    font-size: 17px;
+#all-events header button {
+    background-color: #198754;
+    color: white;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s;
+}
+
+#all-events header button:hover {
+    background-color: #146c43;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+#all-events .table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+#all-events .table th {
+    background-color: #80CF87;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    font-weight: bold;
+}
+
+#all-events .table th:first-child { 
+    border-radius: 6px 0 0 0; 
+}
+
+#all-events .table th:last-child { 
+    border-radius: 0 6px 0 0; 
+}
+
+#all-events .table td {
+    padding: 15px;
+    border-bottom: 1px solid #dee2e6;
+    color: #333;
+    font-size: 16px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+
+#all-events .table tr:hover {
+    background-color: #eafaea;
+}
+
+#all-events .table td a {
+    color: #198754;
+    text-decoration: underline;      
+    text-underline-offset: 3px;
+    font-weight: bold;
+    transition: all 0.2s ease-in-out;
+    padding: 4px 8px;
+    border: 1px solid transparent; 
+    border-radius: 4px;
+}
+
+#all-events .table td a:hover {
+    color: #146c43;
+    background-color: #e9f5ef;
+    text-decoration: none; 
 }
 
 
