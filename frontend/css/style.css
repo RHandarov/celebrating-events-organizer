@@ -522,18 +522,162 @@ button:hover {
     font-size: 17px;
 }
 
-#user-details * {
-    text-align: center;
-    margin: 5px 0px;
+
+/* =========================================
+   (User Details)
+   ========================================= */
+#user-details {
+    max-width: 900px;
+    margin: 40px auto;
+    background: #c2f0c2;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border: 1px solid #dcdcdc;
+}
+
+#user-details header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    border-bottom: 2px solid #e9ecef;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
 }
 
 #user-details h2 {
-    font-size: 23px;
+    color: #198754;
+    font-size: 28px;
+    margin: 0;
+    text-transform: uppercase;
+    flex-grow: 1;
+}
+
+#user-details header form {
+    margin: 0;
+}
+
+#user-details header button {
+    background-color: #198754;
+    color: white;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    border: 1px solid #198754;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#user-details header button:hover {
+    background-color: #146c43;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+#user-details form[action="/user/unfollow"] button {
+    background-color: #ffffff !important;
+    border: 2px solid #dc3545 !important;
+    color: #dc3545 !important;
+}
+
+#user-details form[action="/user/unfollow"] button:hover {
+    background-color: #dc3545 !important;
+    color: white !important;
+}
+
+#user-details p {
+    font-size: 16px;
+    color: #333;
+    margin: 10px 0;
+    line-height: 1.5;
 }
 
 #user-details h3 {
-    font-size: 20px;
+    color: #198754;
+    margin-top: 35px;
+    margin-bottom: 15px;
+    font-size: 22px;
+    border-left: 5px solid #198754;
+    padding-left: 10px;
 }
+
+#user-details .table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+#user-details .table th {
+    background-color: #80CF87;
+    color: white;
+    padding: 12px;
+    text-align: center; 
+    font-weight: bold;
+}
+
+#user-details .table th:first-child { border-radius: 6px 0 0 0; }
+#user-details .table th:last-child { border-radius: 0 6px 0 0; }
+
+#user-details .table td {
+    padding: 12px;
+    border-bottom: 1px solid #dee2e6;
+    color: #333;
+    text-align: center;
+    vertical-align: middle;
+}
+
+#user-details .table tr:nth-child(even) {
+    background-color: #eafaea;
+}
+
+#user-details .list-group {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+#user-details .list-group-item {
+    padding: 12px 20px;
+    border-bottom: 1px solid #dee2e6;
+    background-color: #eafaea;
+    transition: background-color 0.2s;
+}
+
+#user-details .list-group-item:last-child {
+    border-bottom: none;
+}
+
+#user-details .list-group-item:hover {
+    background-color: #f8f9fa;
+}
+
+#user-details .list-group-item a {
+    text-decoration: none;
+    color: #212529;
+    font-weight: bold;
+    display: block; 
+}
+
+#user-details .list-group-item a:hover {
+    color: #198754;
+}
+
+#user-details .text-muted {
+    color: #6c757d;
+    font-style: italic;
+    margin-top: 10px;
+}
+
+
+/* =========================================
+   (Change Password)
+   ========================================= */
 
 #change-password-form {
     display: block;
@@ -551,6 +695,11 @@ button:hover {
     text-align: center;
     font-size: 17px;
 }
+
+
+/* =========================================
+   (Change Full Name)
+   ========================================= */
 
 #change-full-name-form {
     display: block;
