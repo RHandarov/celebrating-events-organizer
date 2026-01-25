@@ -293,7 +293,112 @@ button:hover {
 }
 
 
+/* =========================================
+   (My Dates)
+   ========================================= */
+
+#my-dates {
+    max-width: 1200px;
+    margin: 40px auto;
+    background: #c2f0c2;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border: 1px solid #dcdcdc;
+}
+
 #my-dates header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #e9ecef;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+}
+
+#my-dates h2 {
+    color: #198754;
+    font-size: 28px;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+#my-dates header form {
+    margin: 0;
+}
+
+#my-dates header button {
+    background-color: #198754;
+    color: white;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s;
+}
+
+#my-dates header button:hover {
+    background-color: #146c43;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+#my-dates .table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+#my-dates .table th {
+    background-color: #80CF87;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    font-weight: bold;
+}
+
+#my-dates .table th:first-child { 
+    border-radius: 6px 0 0 0; 
+}
+
+#my-dates .table th:last-child { 
+    border-radius: 0 6px 0 0; 
+}
+
+#my-dates .table td {
+    padding: 15px;
+    border-bottom: 1px solid #dee2e6;
+    color: #333;
+    font-size: 16px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+#my-dates .table tr:hover {
+    background-color: #eafaea;
+}
+
+#my-dates a[href*="edit"] {
+    color: #0d6efd !important;
+    text-decoration: none;
+    font-weight: 500;
+    margin-right: 8px;
+}
+
+#my-dates a[href*="delete"] {
+    color: #dc3545 !important;
+    text-decoration: none;
+    font-weight: 500;
+    margin-left: 8px;
+}
+
+#my-dates a[href*="edit"]:hover,
+#my-dates a[href*="delete"]:hover {
+    text-decoration: underline;
+}
+/* #my-dates header {
     border-bottom: 2px solid black;
     padding-bottom: 5px;
     margin-bottom: 20px;
@@ -315,7 +420,7 @@ button:hover {
 
 #my-dates header form button {
     font-size: 17px;
-}
+} */
 
 #dates-form h2 {
     font-size: 23px;
