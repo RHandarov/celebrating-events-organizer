@@ -53,5 +53,6 @@
 
         <button type="submit">Създай събитие</button>
     </form>
+    
     <script src="/js/validate-event.js"></script>
 </main>

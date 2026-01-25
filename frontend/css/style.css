@@ -118,22 +118,94 @@ button:hover {
     background-color: #eafaea;
 }
 
+
+/* =========================================
+   (LOGIN)
+   ========================================= */
+
 #login-form {
-    display: block;
-    margin: 0 auto;
-    width: 50%;
+    max-width: 450px;       
+    margin: 60px auto;      
+    background: #c2f0c2;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border: 1px solid #dcdcdc;
 }
 
 #login-form h2 {
     text-align: center;
+    color: #198754;
+    font-size: 28px;
+    margin-bottom: 30px;
+    text-transform: uppercase;
 }
 
-#login-form form * {
-    display: block;
-    margin: 5px auto;
+#login-form .error {
     text-align: center;
-    font-size: 17px;
+    background-color: #f8d7da;
+    color: #842029 !important;
+    padding: 12px;
+    border-radius: 5px;
+    border: 1px solid #f5c2c7;
+    margin-bottom: 25px;
+    font-size: 16px;
+    font-weight: normal; 
 }
+
+#login-form form label {
+    display: block;
+    text-align: left;
+    font-weight: bold;
+    margin-bottom: 8px;
+    margin-top: 15px;
+    color: #333;
+}
+
+#login-form form input {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #eafaea;
+    box-sizing: border-box;
+    transition: all 0.2s ease-in-out;
+}
+
+#login-form form input:focus {
+    border-color: #198754;
+    outline: none;
+    box-shadow: 0 0 5px rgba(25, 135, 84, 0.3);
+}
+
+#login-form form button {
+    width: 100%;
+    margin-top: 30px;
+    padding: 12px;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    background-color: #198754;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#login-form form button:hover {
+    background-color: #146c43;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+#login-form form button:active {
+    background-color: #0f5132;
+    transform: translateY(0);
+}
+
+
 
 #registration-form {
     display: block;

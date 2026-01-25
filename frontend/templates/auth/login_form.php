@@ -8,7 +8,7 @@
     ?>
 
     <h2>Вход в системата</h2>
-    <form method="post">
+    <form method="post" novalidate>
         <label for="username">Потребителско име:</label>
         <input id="username" name="username" type="text" maxlength="30" required>
 
@@ -17,4 +17,6 @@
 
         <button type="submit">Влез</button>
     </form>
+
+    <script src="/js/validate-login.js"></script>
 </main>
