@@ -9,7 +9,7 @@
 
     <h2>Добре дошъл в нашия сайт! Попълни формата по-долу, за да се регистрираш.</h2>
 
-    <form method="post">
+    <form method="post" novalidate>
         <label for="username">Потребителско име:</label>
         <input id="username" name="username" type="text" maxlength="30" required>
 
@@ -24,4 +24,6 @@
 
         <button type="submit">Регистрирай се</button>
     </form>
+
+    <script src="/js/validate-register.js"></script>
 </main>
