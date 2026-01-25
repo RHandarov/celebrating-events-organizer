@@ -718,17 +718,171 @@ button:hover {
     font-size: 17px;
 }
 
-#event-details * {
-    text-align: center;
-    margin: 5px 0px;
+/* =========================================
+   (Event Details)
+   ========================================= */
+#event-details {
+    max-width: 900px;
+    margin: 40px auto;
+    background: #c2f0c2;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border: 1px solid #dcdcdc;
+}
+
+#event-details header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    border-bottom: 2px solid #e9ecef;
+    margin-bottom: 25px;
+    padding-bottom: 20px;
 }
 
 #event-details h2 {
-    font-size: 23px;
+    color: #198754;
+    font-size: 26px;
+    margin: 0;
+    text-transform: uppercase;
+    flex-grow: 1;
+}
+
+#event-details header form {
+    margin: 0;
+}
+
+#event-details header button {
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+#event-details header form[action*="enroll"] button {
+    background-color: #198754;
+    color: white;
+}
+
+#event-details header form[action*="enroll"] button:hover {
+    background-color: #146c43;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+#event-details header form[action*="leave"] button {
+    background-color: #ffffff;
+    color: #dc3545;
+    border: 2px solid #dc3545;
+}
+
+#event-details header form[action*="leave"] button:hover {
+    background-color: #dc3545;
+    color: white;
+}
+
+#event-details p {
+    font-size: 16px;
+    color: #333;
+    margin: 12px 0;
+    line-height: 1.6;
+}
+
+#event-details p a {
+    color: #198754;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.2s;
+}
+
+#event-details p a:hover {
+    text-decoration: underline;
+    color: #146c43;
 }
 
 #event-details h3 {
-    font-size: 20px;
+    color: #198754;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    font-size: 22px;
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 10px;
+    text-transform: uppercase;
+}
+
+#event-details form[action*="/gift/add"] button {
+    background-color: #198754;
+    color: white;
+    padding: 10px 20px;
+    font-size: 15px;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition: background-color 0.3s ease;
+}
+
+#event-details form[action*="/gift/add"] button:hover {
+    background-color: #146c43;
+}
+
+#event-details .table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+#event-details .table th {
+    background-color: #198754;
+    color: white;
+    padding: 12px;
+    text-align: center;
+    font-weight: bold;
+}
+
+#event-details .table th:first-child { 
+    border-radius: 6px 0 0 0; 
+}
+
+#event-details .table th:last-child { 
+    border-radius: 0 6px 0 0; 
+}
+
+#event-details .table td {
+    padding: 12px;
+    border-bottom: 1px solid #dee2e6;
+    color: #333;
+    text-align: center;
+    vertical-align: middle;
+}
+
+
+#event-details .table tr:hover {
+    background-color: #eafaea;
+}
+
+#event-details .table a[href*="edit"] {
+    color: #0d6efd !important;
+    font-weight: normal;
+    margin-right: 5px;
+    text-decoration: none;
+}
+
+#event-details .table a[href*="delete"] {
+    color: #dc3545 !important;
+    font-weight: normal;
+    margin-left: 5px;
+    text-decoration: none;
+}
+
+#event-details .table a:hover {
+    text-decoration: underline !important;
 }
 
 
