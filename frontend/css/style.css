@@ -1119,7 +1119,7 @@ button:hover {
 
 #event-details .table th {
     background-color: #198754;
-    color: white;
+    color: white !important;
     padding: 12px;
     text-align: center;
     font-weight: bold;
