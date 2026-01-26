@@ -1,6 +1,8 @@
 <main id="event-details">
     <header>
         <?php
+            $is_organizer = ($event->get_organizer()->get_id() === SessionManager::get_logged_user_id());
+
             $action = "/event/leave";
             $text = "Отпиши се от събитието";
 
@@ -11,7 +13,11 @@
         ?>
 
         <h2>Детайли за събитие <?php echo $event->get_title(); ?></h2>
-        <form method="POST" action="<?php echo $action; ?>">
+        <form method="POST" action="<?php echo $action; ?>"
+            <?php if ($is_organizer && $action === "/event/leave") { ?>
+            onsubmit="event.preventDefault(); alert('Организаторът на събитие не може да се отпише!');"
+            <?php } ?>>
+
             <input type="hidden" name="event_id" value="<?php echo $event->get_id(); ?>">
             <button type="submit"><?php echo $text; ?></button>
         </form>
