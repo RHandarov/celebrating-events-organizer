@@ -1,4 +1,5 @@
 <nav>
+    <a href="/">Начало</a>
     <a href="/my-dates">Моите дати</a>
     <a href="/event/create">Организирай събитие</a>
     <a href="/users/find">Намери приятели</a>
