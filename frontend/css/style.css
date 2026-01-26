@@ -1490,7 +1490,7 @@ button:hover {
     margin: 30px auto 0 auto;
     padding: 12px 25px;
     background-color: #198754;
-    color: white;
+    color: white !important;
     border-radius: 25px;
     text-align: center;
     font-weight: bold;
