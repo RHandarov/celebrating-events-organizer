@@ -38,8 +38,23 @@ class GiftController {
         $logged_user = $this->user_service->find_user_by_id(SessionManager::get_logged_user_id());
 
         if (!$this->is_user_guest_of_event($logged_user, $event)) {
-            header("Location: /all-events");
-            exit;
+            $errors = [];
+            array_push($errors, "Трябва да сте записани за това събитие, за да добавяте подаръци.");
+            
+            $guests = $this->event_service->get_all_guests_of_event($event);
+            $gifts = $this->event_service->get_all_gifts_of_event($event);
+            $is_logged_user_guest = false;
+            foreach ($guests as $guest) {
+                if ($guest->get_id() === SessionManager::get_logged_user_id()) {
+                    $is_logged_user_guest = true;
+                    break;
+                }
+            }
+
+            include("templates/header.php");
+            include("templates/events/event-details.php");
+            include("templates/footer.php");
+            return;
         }
 
         $edit_mode = false;
@@ -71,8 +86,23 @@ class GiftController {
         $logged_user = $this->user_service->find_user_by_id(SessionManager::get_logged_user_id());
 
         if (!$this->is_user_guest_of_event($logged_user, $event)) {
-            header("Location: /all-events");
-            exit;
+            $errors = [];
+            array_push($errors, "Трябва да сте записани за това събитие, за да добавяте подаръци.");
+
+            $guests = $this->event_service->get_all_guests_of_event($event);
+            $gifts = $this->event_service->get_all_gifts_of_event($event);
+            $is_logged_user_guest = false;
+            foreach ($guests as $guest) {
+                if ($guest->get_id() === SessionManager::get_logged_user_id()) {
+                    $is_logged_user_guest = true;
+                    break;
+                }
+            }
+
+            include("templates/header.php");
+            include("templates/events/event-details.php");
+            include("templates/footer.php");
+            return;
         }
 
         $errors = [];

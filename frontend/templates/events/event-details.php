@@ -1,4 +1,11 @@
 <main id="event-details">
+    <?php
+        if (isset($errors) && count($errors) > 0) {
+            foreach ($errors as $error) {
+                echo "<h2 class=\"error\">" . $error . "</h2>";
+            }
+        }
+    ?>
     <header>
         <?php
             $is_organizer = ($event->get_organizer()->get_id() === SessionManager::get_logged_user_id());

@@ -1164,6 +1164,17 @@ button:hover {
     text-decoration: underline !important;
 }
 
+#event-details .error {
+    text-align: center;
+    background-color: #f8d7da;
+    color: #842029 !important;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #f5c2c7;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
 
 /* =========================================
    (Create Event)
