@@ -130,14 +130,6 @@ class UserService {
         $title = htmlspecialchars(trim($title));
         $date = trim($date);
 
-        $inputDate = strtotime($date);
-        $today = strtotime("today");
-
-        if ($inputDate < $today) {
-            array_push($errors, "Тази дата предхожда днешната");
-            return null;
-        }
-
         if (!$this->validate_date_format($date, $errors)) {
             return null;
         }
