@@ -61,6 +61,20 @@ class UserService {
             return null;
         }
 
+        $check_email = $this->db_connection->prepare("SELECT email FROM users WHERE email = ?");
+
+        $check_email->bind_param("s", $email);
+        $check_email->execute();
+
+        $check_email->store_result();
+
+        if ($check_email->num_rows > 0 ) {
+            array_push($errors, "Този email вече е регистриран.");
+            $check_email->close();
+            return null;
+        }
+        $check_email->close();
+
         return $this->user_repository->add_user($username, $email, $full_name, $password);
     }
 
