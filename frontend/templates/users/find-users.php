@@ -1,4 +1,18 @@
 <main id="find-users">
+    <script>
+    window.addEventListener('DOMContentLoaded', () => {
+        const scrollPos = localStorage.getItem('scrollPosition');
+        if (scrollPos) {
+            window.scrollTo(0, parseInt(scrollPos));
+            localStorage.removeItem('scrollPosition');
+        }
+    });
+
+    document.addEventListener('submit', () => {
+        localStorage.setItem('scrollPosition', window.scrollY);
+    });
+    </script>
+
     <header>
         <h2>Намери приятели</h2>
     </header>
@@ -25,14 +39,14 @@
                     ?>
                         <form method="POST" action="/user/unfollow">
                             <input type="hidden" name="followed_id" value="<?php echo $user->get_id(); ?>">
-                            <button type="submit">
+                            <button type="submit" class="btn-unfollow">
                                 Отследвай
                             </button>
                         </form>
                     <?php else: ?>
                         <form method="POST" action="/user/follow">
                             <input type="hidden" name="followed_id" value="<?php echo $user->get_id(); ?>">
-                            <button type="submit">
+                            <button type="submit" class="btn-follow">
                                 + Последвай
                             </button>
                         </form>
