@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Време на генериране: 19 яну 2026 в 13:49
+-- Време на генериране: 27 яну 2026 в 16:33
 -- Версия на сървъра: 10.4.32-MariaDB
 -- Версия на PHP: 8.2.12
 
@@ -40,7 +40,9 @@ CREATE TABLE `dates` (
 
 INSERT INTO `dates` (`id`, `owner_id`, `date`, `title`) VALUES
 (2, 1, '2003-06-12', 'Моят рожден ден'),
-(64, 1, '2025-12-29', 'Моят рожден ден');
+(64, 2, '2002-12-29', 'Моят рожден ден'),
+(72, 3, '2003-06-26', 'Моят рожден ден'),
+(73, 3, '2007-05-12', 'Рожденият ден на брат ми');
 
 -- --------------------------------------------------------
 
@@ -67,7 +69,9 @@ INSERT INTO `events` (`id`, `celebrating_date`, `organizer_id`, `organized_id`, 
 (2, '2026-12-29', 2, 1, 'Title 2', 'London', 'Some desc'),
 (3, '2026-12-29', 2, 1, 'Title 3', 'London', 'Some desc'),
 (4, '2026-12-29', 2, 1, 'Title 4', 'London', 'Some desc'),
-(5, '2026-12-29', 2, 1, 'Title 5', 'LA', 'dexc');
+(5, '2026-12-29', 2, 1, 'Title 5', 'LA', 'dexc'),
+(6, '2026-06-12', 2, 1, 'Title 6', 'Center', 'Some desc'),
+(8, '2026-05-12', 1, 3, 'Парти изненада за брата на test3', 'Пицария &quot;Верди&quot;, Център', 'Луд купон в пицарията!');
 
 -- --------------------------------------------------------
 
@@ -87,7 +91,9 @@ CREATE TABLE `followers` (
 INSERT INTO `followers` (`follower_id`, `followed_id`) VALUES
 (1, 2),
 (1, 3),
-(2, 1);
+(2, 1),
+(2, 3),
+(3, 1);
 
 -- --------------------------------------------------------
 
@@ -107,8 +113,11 @@ CREATE TABLE `gifts` (
 --
 
 INSERT INTO `gifts` (`id`, `event_id`, `assigned_guest_id`, `description`) VALUES
-(3, 1, 3, 'test gidf 3'),
-(5, 1, 2, 'Test gift from test 2');
+(3, 1, 3, 'Тестов подарък от test3'),
+(5, 1, 2, 'Тестов подарък от test2'),
+(8, 8, 2, 'Да донеса подарък'),
+(10, 8, 2, 'Да донеса картичка'),
+(11, 8, 1, 'Да направя резервация');
 
 -- --------------------------------------------------------
 
@@ -127,10 +136,14 @@ CREATE TABLE `guests` (
 
 INSERT INTO `guests` (`event_id`, `guest_id`) VALUES
 (1, 2),
+(1, 3),
 (2, 2),
 (3, 2),
 (4, 2),
-(5, 2);
+(5, 2),
+(6, 2),
+(8, 1),
+(8, 2);
 
 -- --------------------------------------------------------
 
@@ -154,8 +167,9 @@ INSERT INTO `users` (`id`, `username`, `email`, `full_name`, `password`) VALUES
 (1, 'test', 'test@example.com', 'Erica Hendricks', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8'),
 (2, 'test2', 'test2@example.com', 'Lilah Finley', '6cf615d5bcaac778352a8f1f3360d23f02f34ec182e259897fd6ce485d7870d4'),
 (3, 'test3', 'test3@example.com', 'Emma Wong', '5906ac361a137e2d286465cd6588ebb5ac3f5ae955001100bc41577c3d751764'),
-(4, 'test4', 'test3@example.com', 'John Doe', '5906ac361a137e2d286465cd6588ebb5ac3f5ae955001100bc41577c3d751764'),
-(5, 'test5', 'test4@example.com', 'Natalee Rosario', 'b9c950640e1b3740e98acb93e669c65766f6670dd1609ba91ff41052ba48c6f3');
+(4, 'test4', 'test4@example.com', 'John Doe', '5906ac361a137e2d286465cd6588ebb5ac3f5ae955001100bc41577c3d751764'),
+(5, 'test5', 'test5@example.com', 'Natalee Rosario', 'b9c950640e1b3740e98acb93e669c65766f6670dd1609ba91ff41052ba48c6f3'),
+(7, 'test6', 'test6@example.com', 'Test Name', '598a1a400c1dfdf36974e69d7e1bc98593f2e15015eed8e9b7e47a83b31693d5');
 
 --
 -- Indexes for dumped tables
@@ -202,7 +216,8 @@ ALTER TABLE `guests`
 -- Индекси за таблица `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -212,25 +227,25 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `dates`
 --
 ALTER TABLE `dates`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
 
 --
 -- AUTO_INCREMENT for table `events`
 --
 ALTER TABLE `events`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `gifts`
 --
 ALTER TABLE `gifts`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Ограничения за дъмпнати таблици
