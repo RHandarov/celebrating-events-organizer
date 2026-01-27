@@ -56,6 +56,26 @@ class UserRepository {
             $row["password"]);
     }
 
+    public function find_user_by_email(string $email): ?\models\User {
+        $check_email = $this->db_connection->prepare("SELECT * FROM users WHERE email = ?");
+
+        $check_email->bind_param("s", $email);
+        $check_email->execute();
+
+        $result = $check_email->get_result();
+
+        if ($result->num_rows !== 1) {
+            return null;
+        }
+
+        $row = $result->fetch_assoc();
+        return new \models\User($row["id"],
+            $row["username"],
+            $row["email"],
+            $row["full_name"],
+            $row["password"]);
+    }
+
     public function find_user_by_id(int $user_id): ?\models\User {
         $prepared_statement =
             $this->db_connection->prepare(
