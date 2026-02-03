@@ -130,7 +130,13 @@ final class Router {
             $current_url[0] = $current_url[0] . "index.php";
         }
 
-        $result = "http://" . $_SERVER["HTTP_HOST"] . $current_url[0];
+        if (isset($_SERVER["HTTPS"]) && !empty($_SERVER["HTTPS"])) {
+            $protocol = "https://";
+        } else {
+            $protocol = "http://";
+        }
+
+        $result = $protocol . $_SERVER["HTTP_HOST"] . $current_url[0];
         return $result;
     }
 
