@@ -38,7 +38,7 @@ class DBPool {
     }
 
     private function make_connection(): mysqli {
-        $config = \Config\AppConfig::get_instance();
+        $config = \config\AppConfig::get_instance();
 
         $new_connection = new mysqli(
             $config->DB_HOST,
