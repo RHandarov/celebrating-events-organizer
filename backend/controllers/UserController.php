@@ -2,6 +2,7 @@
 
 namespace controllers;
 
+use Router;
 use SessionManager;
 
 class UserController {
@@ -13,20 +14,20 @@ class UserController {
 
     public function show_user_details(array $params): void {
         if (!SessionManager::is_logged_in()) {
-            header("Location: /login");
+            header("Location: " . Router::get_url() . "?action=login");
             exit;
         }
 
-        if (count($params) === 0) {
-            header("Location: /");
+        if (!isset($_GET["id"])) {
+            header("Location: " . Router::get_url());
             exit;
         }
 
-        $user_id = intval($params[0]);
+        $user_id = intval($_GET["id"]);
         $user = $this->user_service->find_user_by_id($user_id);
 
         if ($user === null) {
-            header("Location: /");
+            header("Location: " . Router::get_url());
             exit;
         }
 
@@ -41,14 +42,14 @@ class UserController {
             }
         }
 
-        include("templates/header.php");
-        include("templates/users/user-details.php");
-        include("templates/footer.php");
+        include("frontend/templates/header.php");
+        include("frontend/templates/users/user-details.php");
+        include("frontend/templates/footer.php");
     }
 
     public function show_find_users(array $params): void {
         if (!SessionManager::is_logged_in()) {
-            header("Location: /login");
+            header("Location: " . Router::get_url() . "?action=login");
             exit;
         }
 
@@ -64,14 +65,14 @@ class UserController {
             $following_ids[] = $f_user->get_id();
         }
 
-        include("templates/header.php");
-        include("templates/users/find-users.php");
-        include("templates/footer.php");
+        include("frontend/templates/header.php");
+        include("frontend/templates/users/find-users.php");
+        include("frontend/templates/footer.php");
     }
 
     public function follow(array $params): void {
         if (!SessionManager::is_logged_in()) {
-            header("Location: /login");
+            header("Location: " . Router::get_url() . "?action=login");
             exit;
         }
 
@@ -79,7 +80,7 @@ class UserController {
         $other_user = $this->user_service->find_user_by_id($followed_id);
 
         if ($other_user === null) {
-            header("Location: /users/find");
+            header("Location: " . Router::get_url() . "?action=users&a=find");
             exit;
         }
 
@@ -87,13 +88,13 @@ class UserController {
 
         $this->user_service->follow_user($logged_user, $other_user);
 
-        header("Location: /users/find");
+        header("Location: " . Router::get_url() . "?action=users&a=find");
         exit;
     }
 
     public function unfollow(array $params): void {
         if (!SessionManager::is_logged_in()) {
-            header("Location: /login");
+            header("Location: " . Router::get_url() . "?action=login");
             exit;
         }
 
@@ -101,7 +102,7 @@ class UserController {
         $other_user = $this->user_service->find_user_by_id($followed_id);
 
         if ($other_user === null) {
-            header("Location: /users/find");
+            header("Location: " . Router::get_url() . "?action=users&a=find");
             exit;
         }
 
@@ -109,24 +110,24 @@ class UserController {
 
         $this->user_service->unfollow_user($logged_user, $other_user);
 
-        header("Location: /users/find");
+        header("Location: " . Router::get_url() . "?action=users&a=find");
         exit;
     }
 
     public function show_change_password_form(array $params): void {
         if (!SessionManager::is_logged_in()) {
-            header("Location: /login");
+            header("Location: " . Router::get_url() . "?action=login");
             exit;
         }
 
-        include("templates/header.php");
-        include("templates/users/change-password.php");
-        include("templates/footer.php");
+        include("frontend/templates/header.php");
+        include("frontend/templates/users/change-password.php");
+        include("frontend/templates/footer.php");
     }
 
     public function change_password(array $params): void {
         if (!SessionManager::is_logged_in()) {
-            header("Location: /login");
+            header("Location: " . Router::get_url() . "?action=login");
             exit;
         }
 
@@ -135,9 +136,9 @@ class UserController {
         if ($_POST["new-password"] !== $_POST["repeat-new-password"]) {
             array_push($errors, "Новата парола не съвпада с повторението си!");
 
-            include("templates/header.php");
-            include("templates/users/change-password.php");
-            include("templates/footer.php");
+            include("frontend/templates/header.php");
+            include("frontend/templates/users/change-password.php");
+            include("frontend/templates/footer.php");
 
             exit;
         }
@@ -148,9 +149,9 @@ class UserController {
         if ($old_password !== $user->get_password()) {
             array_push($errors, "Грешна парола!");
 
-            include("templates/header.php");
-            include("templates/users/change-password.php");
-            include("templates/footer.php");
+            include("frontend/templates/header.php");
+            include("frontend/templates/users/change-password.php");
+            include("frontend/templates/footer.php");
 
             exit;
         }
@@ -159,34 +160,34 @@ class UserController {
         $user = $this->user_service->change_user($user, $errors);
 
         if ($user === null) {
-            include("templates/header.php");
-            include("templates/users/change-password.php");
-            include("templates/footer.php");
+            include("frontend/templates/header.php");
+            include("frontend/templates/users/change-password.php");
+            include("frontend/templates/footer.php");
 
             exit;
         } else {
-            header("Location: /user/" . SessionManager::get_logged_user_id());
+            header("Location: " . Router::get_url() . "?action=user&id=" . SessionManager::get_logged_user_id());
             exit;
         }
     }
 
     public function show_change_full_name_form(array $params): void {
         if (!SessionManager::is_logged_in()) {
-            header("Location: /login");
+            header("Location: " . Router::get_url() . "?action=login");
             exit;
         }
 
         $user_id = SessionManager::get_logged_user_id();
         $user = $this->user_service->find_user_by_id($user_id);
 
-        include("templates/header.php");
-        include("templates/users/change-full-name.php");
-        include("templates/footer.php");
+        include("frontend/templates/header.php");
+        include("frontend/templates/users/change-full-name.php");
+        include("frontend/templates/footer.php");
     }
 
     public function change_full_name(array $params): void {
         if (!SessionManager::is_logged_in()) {
-            header("Location: /login");
+            header("Location: " . Router::get_url() . "?action=login");
             exit;
         }
 
@@ -202,11 +203,11 @@ class UserController {
         if ($changed_user === null) {
             $user->set_full_name($old_full_name);
 
-            include("templates/header.php");
-            include("templates/users/change-full-name.php");
-            include("templates/footer.php");
+            include("frontend/templates/header.php");
+            include("frontend/templates/users/change-full-name.php");
+            include("frontend/templates/footer.php");
         } else {
-            header("Location: /user/" . $user->get_id());
+            header("Location: " . Router::get_url() . "?action=user&id=" . $user->get_id());
             exit;
         }
     }

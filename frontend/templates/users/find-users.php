@@ -1,5 +1,5 @@
 <main id="find-users">
-    <script>
+    <script type="text/javascript">
     window.addEventListener('DOMContentLoaded', () => {
         const scrollPos = localStorage.getItem('scrollPosition');
         if (scrollPos) {
@@ -28,7 +28,7 @@
             <?php foreach ($all_users as $user): ?>
             <tr>
                 <td>
-                    <a href="/user/<?php echo $user->get_id(); ?>"><strong><?php echo $user->get_username(); ?></strong></a>
+                    <a href="<?php echo Router::get_url(); ?>?action=user&id=<?php echo $user->get_id(); ?>"><strong><?php echo $user->get_username(); ?></strong></a>
                 </td>
                 <td>
                     <?php echo $user->get_email(); ?>
@@ -37,14 +37,14 @@
                     <?php 
                     if (in_array($user->get_id(), $following_ids)): 
                     ?>
-                        <form method="POST" action="/user/unfollow">
+                        <form method="POST" action="<?php echo Router::get_url(); ?>?action=user&a=unfollow">
                             <input type="hidden" name="followed_id" value="<?php echo $user->get_id(); ?>">
                             <button type="submit" class="btn-unfollow">
                                 Отследвай
                             </button>
                         </form>
                     <?php else: ?>
-                        <form method="POST" action="/user/follow">
+                        <form method="POST" action="<?php echo Router::get_url(); ?>?action=user&a=follow">
                             <input type="hidden" name="followed_id" value="<?php echo $user->get_id(); ?>">
                             <button type="submit" class="btn-follow">
                                 + Последвай

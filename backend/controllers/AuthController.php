@@ -2,6 +2,7 @@
 
 namespace controllers;
 
+use Router;
 use SessionManager;
 
 class AuthController {
@@ -14,22 +15,22 @@ class AuthController {
     public function show_login_form(array $params): void {
         $this->forward_if_logged_in();
 
-        include("templates/header.php");
-        include("templates/auth/login_form.php");
-        include("templates/footer.php");
+        include("frontend/templates/header.php");
+        include("frontend/templates/auth/login_form.php");
+        include("frontend/templates/footer.php");
     }
 
     public function show_register_form(array $params): void {
         $this->forward_if_logged_in();
 
-        include("templates/header.php");
-        include("templates/auth/register_form.php");
-        include("templates/footer.php");
+        include("frontend/templates/header.php");
+        include("frontend/templates/auth/register_form.php");
+        include("frontend/templates/footer.php");
     }
 
     private function forward_if_logged_in(): void {
         if (SessionManager::is_logged_in()) {
-            header("Location: /");
+            header("Location: " . Router::get_url());
             exit;
         }
     }
@@ -37,7 +38,7 @@ class AuthController {
     public function log_out(array $params): void {
         SessionManager::logout();
 
-        header("Location: /");
+        header("Location: " . Router::get_url());
         exit;
     }
 
@@ -53,12 +54,12 @@ class AuthController {
         if ($user !== null) {
             SessionManager::login($user);
 
-            header("Location: /");
+            header("Location: " . Router::get_url());
             exit;
         } else {
-            include("templates/header.php");
-            include("templates/auth/login_form.php");
-            include("templates/footer.php");
+            include("frontend/templates/header.php");
+            include("frontend/templates/auth/login_form.php");
+            include("frontend/templates/footer.php");
         }
     }
 
@@ -74,12 +75,12 @@ class AuthController {
             );
 
         if ($new_user !== null) {
-            header("Location: /login");
+            header("Location: " . Router::get_url() . "?action=login");
             exit;
         } else {
-            include("templates/header.php");
-            include("templates/auth/register_form.php");
-            include("templates/footer.php");
+            include("frontend/templates/header.php");
+            include("frontend/templates/auth/register_form.php");
+            include("frontend/templates/footer.php");
         }
     }
 }

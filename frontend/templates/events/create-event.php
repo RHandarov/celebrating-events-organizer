@@ -9,7 +9,7 @@
 
     <h2>Организирай ново събитие</h2>
 
-    <form method="POST" action="/event/create" novalidate>
+    <form method="POST" action="<?php echo Router::get_url() ?>?action=event&a=create" novalidate>
         <label for="title">Заглавие на събитието:</label>
         <input type="text"
             id="title"
@@ -54,5 +54,9 @@
         <button type="submit">Създай събитие</button>
     </form>
     
-    <script src="/js/validate-event.js"></script>
+     <script type="text/javascript">
+        <?php
+        include("frontend/js/validate-event.js");
+        ?>
+     </script>
 </main>

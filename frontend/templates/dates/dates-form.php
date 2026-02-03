@@ -18,6 +18,7 @@
         на дата
     </h2>
 
+    <?php if ($add_date): ?>
     <form method="POST">
         <label for="date">Дата</label>
         <input id="date"
@@ -56,4 +57,44 @@
             ?>
         </button>
     </form>
+    <?php else: ?>
+    <form method="POST" action="<?php echo Router::get_url() . "?action=my-dates&a=edit&id=" . $date->get_id() ?>">
+        <label for="date">Дата</label>
+        <input id="date"
+            name="date"
+            type="date"
+            required
+            value="<?php
+                if ($add_date === true) {
+                    echo "";
+                } else {
+                    echo $date->get_date();
+                }
+            ?>">
+
+        <label for="title">Повод</label>
+        <input id="title"
+            name="title"
+            type="text"
+            required
+            maxlength="100"
+            value="<?php
+                if ($add_date === true) {
+                    echo "";
+                } else {
+                    echo $date->get_title();
+                }
+            ?>">
+
+        <button>
+            <?php
+                if ($add_date === true) {
+                    echo "Добави";
+                } else {
+                    echo "Редактирай";
+                }
+            ?>
+        </button>
+    </form>
+    <?php endif; ?>
 </main>

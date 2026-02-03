@@ -11,14 +11,16 @@
         <?php
             if ($edit_mode) {
                 echo "Редактиране";
+                $action_url = Router::get_url() . "?action=gift&a=edit&id=" . $gift_id;
             } else {
                 echo "Добавяне";
+                $action_url = Router::get_url() . "?action=gift&a=add&event_id=" . $event_id;
             }
         ?>
         на подарък
     </h2>
 
-    <form method="POST">
+    <form method="POST" action="<?php echo $action_url; ?>">
         <label for="description">Описание на подаръка</label>
         <input id="description"
             name="description"

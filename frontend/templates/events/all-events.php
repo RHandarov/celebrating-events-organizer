@@ -1,7 +1,9 @@
 <main id="all-events">
     <header>
         <h2>Всички събития</h2>
-        <form method="GET" action="/event/create">
+        <form method="GET" action="<?php echo Router::get_url(); ?>">
+            <input type="hidden" name="action" value="event">
+            <input type="hidden" name="a" value="create">
             <button type="submit">Добави събитие</button>
         </form>
     </header>
@@ -18,7 +20,7 @@
                 echo "<td>" . $event->get_title() . "</td>";
                 echo "<td>" . $event->get_celebrating_date() . "</td>";
                 echo "<td>" . $event->get_location() . "</td>";
-                echo "<td><a href=\"/event/" . $event->get_id() . "\">Детайли</a></td>";
+                echo "<td><a href=\"" . Router::get_url() . "?action=event&id=" . $event->get_id() . "\">Детайли</a></td>";
                 echo "</tr>";
             }
         ?>

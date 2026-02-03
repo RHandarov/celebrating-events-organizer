@@ -25,5 +25,9 @@
         <button type="submit">Регистрирай се</button>
     </form>
 
-    <script src="/js/validate-register.js"></script>
+    <script type="text/javascript">
+        <?php
+        include("frontend/js/validate-register.js");
+        ?>
+    </script>
 </main>

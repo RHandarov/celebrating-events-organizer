@@ -3,42 +3,43 @@
 final class Router {
     private static \services\UserService $user_service;
     private static \services\EventService $event_service;
+    private static string $parsed_request_uri;
 
     private static array $PATHS = array(
         "GET" => [
-            "/login" => [\controllers\AuthController::class, "show_login_form"],
-            "/register" => [\controllers\AuthController::class, "show_register_form"],
-            "/logout" => [\controllers\AuthController::class, "log_out"],
-            "/my-dates/delete" => [\controllers\DateController::class, "delete_date"],
-            "/my-dates/add" => [\controllers\DateController::class, "show_add_date_form"],
-            "/my-dates/edit" => [\controllers\DateController::class, "show_edit_date_form"],
-            "/my-dates" => [\controllers\DateController::class, "show_my_dates"],
-            "/all-events" => [\controllers\EventController::class, "show_all_events"],
-            "/event/create" => [\controllers\EventController::class, "show_create_event_form"],
-            "/event" => [\controllers\EventController::class, "show_event_details"],
-            "/user/change-password" => [\controllers\UserController::class, "show_change_password_form"],
-            "/user/change-full-name" => [\controllers\UserController::class, "show_change_full_name_form"],
-            "/users/find" => [\controllers\UserController::class, "show_find_users"],
-            "/user" => [\controllers\UserController::class, "show_user_details"],
-            "/gift/add" => [\controllers\GiftController::class, "show_add_gift_form"],
-            "/gift/edit" => [\controllers\GiftController::class, "show_edit_gift_form"],
-            "/gift/delete" => [\controllers\GiftController::class, "delete_gift"],
+            "/index.php?action=login" => [\controllers\AuthController::class, "show_login_form"],
+            "/index.php?action=register" => [\controllers\AuthController::class, "show_register_form"],
+            "/index.php?action=logout" => [\controllers\AuthController::class, "log_out"],
+            "/index.php?action=my-dates&a=delete" => [\controllers\DateController::class, "delete_date"],
+            "/index.php?action=my-dates&a=add" => [\controllers\DateController::class, "show_add_date_form"],
+            "/index.php?action=my-dates&a=edit" => [\controllers\DateController::class, "show_edit_date_form"],
+            "/index.php?action=my-dates" => [\controllers\DateController::class, "show_my_dates"],
+            "/index.php?action=all-events" => [\controllers\EventController::class, "show_all_events"],
+            "/index.php?action=event&a=create" => [\controllers\EventController::class, "show_create_event_form"],
+            "/index.php?action=event" => [\controllers\EventController::class, "show_event_details"],
+            "/index.php?action=user&a=change-password" => [\controllers\UserController::class, "show_change_password_form"],
+            "/index.php?action=user&a=change-full-name" => [\controllers\UserController::class, "show_change_full_name_form"],
+            "/index.php?action=users&a=find" => [\controllers\UserController::class, "show_find_users"],
+            "/index.php?action=user" => [\controllers\UserController::class, "show_user_details"],
+            "/index.php?action=gift&a=add" => [\controllers\GiftController::class, "show_add_gift_form"],
+            "/index.php?action=gift&a=edit" => [\controllers\GiftController::class, "show_edit_gift_form"],
+            "/index.php?action=gift&a=delete" => [\controllers\GiftController::class, "delete_gift"],
             "/" => [\controllers\HomeController::class, "show_home_page"]
         ],
         "POST" => [
-            "/login" => [\controllers\AuthController::class, "login"],
-            "/register" => [\controllers\AuthController::class, "register"],
-            "/my-dates/add" => [\controllers\DateController::class, "add_date"],
-            "/my-dates/edit" => [\controllers\DateController::class, "edit_date"],
-            "/user/follow" => [\controllers\UserController::class, "follow"],
-            "/user/unfollow" => [\controllers\UserController::class, "unfollow"],
-            "/user/change-password" => [\controllers\UserController::class, "change_password"],
-            "/user/change-full-name" => [\controllers\UserController::class, "change_full_name"],
-            "/event/create" => [\controllers\EventController::class, "create_event"],
-            "/event/enroll" => [\controllers\EventController::class, "enroll_in_event"],
-            "/event/leave" => [\controllers\EventController::class, "leave_event"],
-            "/gift/add" => [\controllers\GiftController::class, "add_gift"],
-            "/gift/edit" => [\controllers\GiftController::class, "edit_gift"]
+            "/index.php?action=login" => [\controllers\AuthController::class, "login"],
+            "/index.php?action=register" => [\controllers\AuthController::class, "register"],
+            "/index.php?action=my-dates&a=add" => [\controllers\DateController::class, "add_date"],
+            "/index.php?action=my-dates&a=edit" => [\controllers\DateController::class, "edit_date"],
+            "/index.php?action=user&a=follow" => [\controllers\UserController::class, "follow"],
+            "/index.php?action=user&a=unfollow" => [\controllers\UserController::class, "unfollow"],
+            "/index.php?action=user&a=change-password" => [\controllers\UserController::class, "change_password"],
+            "/index.php?action=user&a=change-full-name" => [\controllers\UserController::class, "change_full_name"],
+            "/index.php?action=event&a=create" => [\controllers\EventController::class, "create_event"],
+            "/index.php?action=event&a=enroll" => [\controllers\EventController::class, "enroll_in_event"],
+            "/index.php?action=event&a=leave" => [\controllers\EventController::class, "leave_event"],
+            "/index.php?action=gift&a=add" => [\controllers\GiftController::class, "add_gift"],
+            "/index.php?action=gift&a=edit" => [\controllers\GiftController::class, "edit_gift"]
         ]
     );
 
@@ -49,11 +50,31 @@ final class Router {
 
     public static function run(): void {
         $routes = self::$PATHS[$_SERVER["REQUEST_METHOD"]];
-        $controller_and_method = self::find_controller_and_method($_SERVER["REQUEST_URI"], $routes);
-        $requst_params = self::get_request_params($_SERVER["REQUEST_URI"], $routes);
+        $request_uri = self::parse_request_uri($_SERVER["REQUEST_URI"]);
+        self::$parsed_request_uri = $request_uri;
+        $controller_and_method = self::find_controller_and_method($request_uri, $routes);
+        $requst_params = self::get_request_params($request_uri, $routes);
 
         $controller = self::make_controller($controller_and_method[0]);
         $controller->{$controller_and_method[1]}($requst_params);
+    }
+
+    private static function parse_request_uri(string $request_uri): string {
+        $tokens = explode("/", $request_uri);
+
+        $result = "/";
+        $should_add = false;
+        foreach ($tokens as $token) {
+            if (str_starts_with($token, "index.php")) {
+                $should_add = true;
+            }
+
+            if ($should_add) {
+                $result = $result . $token;
+            }
+        }
+
+        return $result;
     }
 
     private static function find_controller_and_method(string $request_uri, array $routes): ?array {
@@ -101,6 +122,16 @@ final class Router {
         }
 
         return new $controller_class();
+    }
+
+    public static function get_url(): string {
+        $current_url = explode("?", $_SERVER["REQUEST_URI"]);
+        if (!str_ends_with($current_url[0], "/index.php")) {
+            $current_url[0] = $current_url[0] . "index.php";
+        }
+
+        $result = "http://" . $_SERVER["HTTP_HOST"] . $current_url[0];
+        return $result;
     }
 
     private function __construct() {

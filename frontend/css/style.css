@@ -711,7 +711,7 @@ button:hover {
     margin: 0;
 }
 
-#user-details header button {
+#user-details header .green-btn {
     background-color: #198754;
     color: white;
     padding: 10px 20px;
@@ -723,19 +723,19 @@ button:hover {
     transition: all 0.3s ease;
 }
 
-#user-details header button:hover {
+#user-details header .green-btn:hover {
     background-color: #146c43;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
-#user-details form[action="/user/unfollow"] button {
+#user-details form .red-btn {
     background-color: #ffffff !important;
     border: 2px solid #dc3545 !important;
     color: #dc3545 !important;
 }
 
-#user-details form[action="/user/unfollow"] button:hover {
+#user-details .red-btn:hover {
     background-color: #dc3545 !important;
     color: white !important;
 }
@@ -1372,24 +1372,24 @@ button:hover {
     transition: all 0.3s ease;
 }
 
-#find-users form[action="/user/follow"] button {
+#find-users form .btn-follow {
     background-color: #198754 !important;
     border: 1px solid #198754 !important;
     color: white !important;
 }
 
-#find-users form[action="/user/follow"] button:hover {
+#find-users form .btn-follow:hover {
     background-color: #146c43 !important;
     transform: scale(1.05);
 }
 
-#find-users form[action="/user/unfollow"] button {
+#find-users form .btn-unfollow {
     background-color: #ffffff !important;
     border: 2px solid #dc3545 !important;
     color: #dc3545 !important;
 }
 
-#find-users form[action="/user/unfollow"] button:hover {
+#find-users form .btn-unfollow:hover {
     background-color: #dc3545 !important;
     color: white !important;
 }
@@ -1495,7 +1495,7 @@ button:hover {
     opacity: 0.8;
 }
 
-#top-20-events > a[href="/all-events"] {
+#top-20-events > .green-button {
     display: block;
     width: fit-content;
     margin: 30px auto 0 auto;
@@ -1510,7 +1510,7 @@ button:hover {
     font-size: 16px;
 }
 
-#top-20-events > a[href="/all-events"]:hover {
+#top-20-events > .green-button:hover {
     background-color: #146c43;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);

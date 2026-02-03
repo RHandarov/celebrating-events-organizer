@@ -6,27 +6,37 @@
 
             if ($user->get_id() === SessionManager::get_logged_user_id()) {
                 $bottom_text = "Смяна на парола";
-                $action = "/user/change-password";
+                $action = Router::get_url() . "?action=user&a=change-password";
                 $method = "GET";
+                $button_class = "green_btn";
             } else if ($does_logged_user_follows === true) {
                 $bottom_text = "Отследвай";
-                $action = "/user/unfollow";
+                $action = Router::get_url() . "?action=user&a=unfollow";
+                $button_class = "red_btn";
             } else {
                 $bottom_text = "Последвай";
-                $action = "/user/follow";
+                $action = Router::get_url() . "?action=user&a=follow";
+                $button_class = "green_btn";
             }
         ?>
         <form method="<?php echo $method; ?>" action="<?php echo $action; ?>">
             <?php
+                if ($method === "GET") {
+                    echo "<input type=\"hidden\" name=\"action\" value=\"user\">";
+                    echo "<input type=\"hidden\" name=\"a\" value=\"change-password\">";
+                }
+
                 if ($user->get_id() !== SessionManager::get_logged_user_id()) {
                     echo "<input type=\"hidden\" name=\"followed_id\" value=\"" . $user->get_id() . "\">";
                 }
             ?>
-            <button type="submit"><?php echo $bottom_text; ?></button>
+            <button type="submit" class="<?php echo $button_class; ?>"><?php echo $bottom_text; ?></button>
         </form>
         <?php
             if ($user->get_id() === SessionManager::get_logged_user_id()) {
-                echo "<form method=\"GET\" action=\"/user/change-full-name\">";
+                echo "<form method=\"GET\" action=\"" . Router::get_url() . "\">";
+                echo "<input type=\"hidden\" name=\"action\" value=\"user\">";
+                echo "<input type=\"hidden\" name=\"a\" value=\"change-full-name\">";
                 echo "<button type=\"submit\">Промени пълното име</button>";
                 echo "</form>";
             }
@@ -55,7 +65,7 @@
         echo "<ul class='list-group'>";
         foreach ($user_followers as $follower) {
             echo "<li class='list-group-item'>";
-            echo "<a href=\"/user/" . $follower->get_id() . "\">";
+            echo "<a href=\"" . Router::get_url() . "?action=user&id=" . $follower->get_id() ."\">";
             echo htmlspecialchars($follower->get_username()); 
             echo "</a>";
             echo "</li>";

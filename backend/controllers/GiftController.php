@@ -2,6 +2,7 @@
 
 namespace controllers;
 
+use Router;
 use SessionManager;
 
 class GiftController {
@@ -18,20 +19,20 @@ class GiftController {
 
     public function show_add_gift_form(array $params): void {
         if (!SessionManager::is_logged_in()) {
-            header("Location: /login");
+            header("Location: " . Router::get_url() . "?action=login");
             exit;
         }
 
-        if (count($params) === 0) {
-            header("Location: /all-events");
+        if (!isset($_GET["event_id"])) {
+            header("Location: " . Router::get_url() . "?action=all-events");
             exit;
         }
 
-        $event_id = intval($params[0]);
+        $event_id = intval($_GET["event_id"]);
         $event = $this->event_service->find_event_by_id($event_id);
 
         if ($event === null) {
-            header("Location: /all-events");
+            header("Location: " . Router::get_url() . "?action=all-events");
             exit;
         }
 
@@ -51,35 +52,35 @@ class GiftController {
                 }
             }
 
-            include("templates/header.php");
-            include("templates/events/event-details.php");
-            include("templates/footer.php");
+            include("frontend/templates/header.php");
+            include("frontend/templates/events/event-details.php");
+            include("frontend/templates/footer.php");
             return;
         }
 
         $edit_mode = false;
 
-        include("templates/header.php");
-        include("templates/gifts/gifts-form.php");
-        include("templates/footer.php");
+        include("frontend/templates/header.php");
+        include("frontend/templates/gifts/gifts-form.php");
+        include("frontend/templates/footer.php");
     }
 
     public function add_gift(array $params): void {
         if (!SessionManager::is_logged_in()) {
-            header("Location: /login");
+            header("Location: " . Router::get_url() . "?action=login");
             exit;
         }
 
-        if (count($params) === 0) {
-            header("Location: /all-events");
+        if (!isset($_GET["event_id"])) {
+            header("Location: " . Router::get_url() . "?action=all-events");
             exit;
         }
 
-        $event_id = intval($params[0]);
+        $event_id = intval($_GET["event_id"]);
         $event = $this->event_service->find_event_by_id($event_id);
 
         if ($event === null) {
-            header("Location: /all-events");
+            header("Location: " . Router::get_url() . "?action=all-events");
             exit;
         }
 
@@ -99,9 +100,9 @@ class GiftController {
                 }
             }
 
-            include("templates/header.php");
-            include("templates/events/event-details.php");
-            include("templates/footer.php");
+            include("frontend/templates/header.php");
+            include("frontend/templates/events/event-details.php");
+            include("frontend/templates/footer.php");
             return;
         }
 
@@ -111,11 +112,11 @@ class GiftController {
         if ($new_gift === null) {
             $edit_mode = false;
 
-            include("templates/header.php");
-            include("templates/gifts/gifts-form.php");
-            include("templates/footer.php");
+            include("frontend/templates/header.php");
+            include("frontend/templates/gifts/gifts-form.php");
+            include("frontend/templates/footer.php");
         } else {
-            header("Location: /event/" . $event_id);
+            header("Location: " . Router::get_url() . "?action=event&id=" . $event_id);
             exit;
         }
     }
@@ -134,51 +135,51 @@ class GiftController {
 
     public function show_edit_gift_form(array $params): void {
         if (!SessionManager::is_logged_in()) {
-            header("Location: /login");
+            header("Location: " . Router::get_url() . "?action=login");
             exit;
         }
 
-        if (count($params) === 0) {
-            header("Location: /all-events");
+        if (!isset($_GET["id"])) {
+            header("Location: " . Router::get_url() . "?action=all-events");
             exit;
         }
 
-        $gift_id = intval($params[0]);
+        $gift_id = intval($_GET["id"]);
         $gift = $this->event_service->find_gift_by_id($gift_id);
 
         if ($gift === null || $gift->get_assigned_guest()->get_id() !== SessionManager::get_logged_user_id()) {
-            header("Location: /all-events");
+            header("Location: " . Router::get_url() . "?action=all-events");
             exit;
         }
 
         $edit_mode = true;
 
-        include("templates/header.php");
-        include("templates/gifts/gifts-form.php");
-        include("templates/footer.php");
+        include("frontend/templates/header.php");
+        include("frontend/templates/gifts/gifts-form.php");
+        include("frontend/templates/footer.php");
     }
 
     public function edit_gift(array $params): void {
         if (!SessionManager::is_logged_in()) {
-            header("Location: /login");
+            header("Location: " . Router::get_url() . "?action=login");
             exit;
         }
 
-        if (count($params) === 0) {
-            header("Location: /all-events");
+        if (!isset($_GET["id"])) {
+            header("Location: " . Router::get_url() . "?action=all-events");
             exit;
         }
 
-        $gift_id = intval($params[0]);
+        $gift_id = intval($_GET["id"]);
         $gift = $this->event_service->find_gift_by_id($gift_id);
 
         if ($gift === null) {
-            header("Location: /all-events");
+            header("Location: " . Router::get_url() . "?action=all-events");
             exit;
         }
 
         if ($gift->get_assigned_guest()->get_id() !== SessionManager::get_logged_user_id()) {
-            header("Location: /event/" . $gift->get_event()->get_id());
+            header("Location: " . Router::get_url() . "?action=event&id=" . $gift->get_event()->get_id());
             exit;
         }
 
@@ -193,40 +194,40 @@ class GiftController {
 
             $edit_mode = true;
 
-            include("templates/header.php");
-            include("templates/gifts/gifts-form.php");
-            include("templates/footer.php");
+            include("frontend/templates/header.php");
+            include("frontend/templates/gifts/gifts-form.php");
+            include("frontend/templates/footer.php");
         } else {
-            header("Location: /event/" . $gift->get_event()->get_id());
+            header("Location: " . Router::get_url() . "?action=event&id=" . $gift->get_event()->get_id());
             exit;
         }
     }
 
     public function delete_gift(array $params): void {
         if (!SessionManager::is_logged_in()) {
-            header("Location: /login");
+            header("Location: " . Router::get_url() . "?action=login");
             exit;
         }
 
-        if (count($params) === 0) {
-            header("Location: /");
+        if (!isset($_GET["id"])) {
+            header("Location: " . Router::get_url());
             exit;
         }
 
-        $gift_id = intval($params[0]);
+        $gift_id = intval($_GET["id"]);
         $gift = $this->event_service->find_gift_by_id($gift_id);
 
         if ($gift === null || $gift->get_assigned_guest()->get_id() !== SessionManager::get_logged_user_id()) {
-            header("Location: /all-events");
+            header("Location: " . Router::get_url() . "?action=all-events");
             exit;
         }
 
         $this->event_service->delete_gift($gift);
 
         if (isset($_GET["back"])) {
-            $url = "/event/" . $_GET["back"];
+            $url = Router::get_url() . "?action=event&id=" . $_GET["back"];
         } else {
-            $url = "/all-events";
+            $url = Router::get_url() . "?action=all-events";
         }
 
         header("Location: " . $url);

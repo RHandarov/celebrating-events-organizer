@@ -18,5 +18,9 @@
         <button type="submit">Влез</button>
     </form>
 
-    <script src="/js/validate-login.js"></script>
+     <script type="text/javascript">
+        <?php
+        include("frontend/js/validate-login.js");
+        ?>
+    </script>
 </main>

@@ -2,6 +2,7 @@
 
 namespace controllers;
 
+use Router;
 use SessionManager;
 
 class EventController {
@@ -18,7 +19,7 @@ class EventController {
 
     public function show_all_events(array $params): void {
         if (!SessionManager::is_logged_in()) {
-            header("Location: /login");
+            header("Location: " . Router::get_url() . "?action=login");
             exit;
         }
 
@@ -26,33 +27,33 @@ class EventController {
         $user = $this->user_service->find_user_by_id($user_id);
 
         if ($user === null) {
-            header("Location: /login");
+            header("Location: " . Router::get_url() . "?action=login");
             exit;
         }
 
         $all_events_for_this_user = $this->event_service->get_all_organizing_events_for_user($user);
 
-        include("templates/header.php");
-        include("templates/events/all-events.php");
-        include("templates/footer.php");
+        include("frontend/templates/header.php");
+        include("frontend/templates/events/all-events.php");
+        include("frontend/templates/footer.php");
     }
 
     public function show_event_details(array $params): void {
         if (!SessionManager::is_logged_in()) {
-            header("Location: /login");
+            header("Location: " . Router::get_url() . "?action=login");
             exit;
         }
 
-        if (count($params) === 0) {
-            header("Location: /all-events");
+        if (!isset($_GET["id"])) {
+            header("Location: " . Router::get_url() . "?action=all-events");
             exit;
         }
 
-        $event_id = intval($params[0]);
+        $event_id = intval($_GET["id"]);
         $event = $this->event_service->find_event_by_id($event_id);
 
         if ($event->get_organized()->get_id() === SessionManager::get_logged_user_id()) {
-            header("Location: /all-events");
+            header("Location: " . Router::get_url() . "?action=all-events");
             exit;
         }
 
@@ -68,14 +69,14 @@ class EventController {
 
         $gifts = $this->event_service->get_all_gifts_of_event($event);
         
-        include("templates/header.php");
-        include("templates/events/event-details.php");
-        include("templates/footer.php");
+        include("frontend/templates/header.php");
+        include("frontend/templates/events/event-details.php");
+        include("frontend/templates/footer.php");
     }
 
     public function enroll_in_event(array $params): void {
         if (!SessionManager::is_logged_in()) {
-            header("Location: /login");
+            header("Location: " . Router::get_url() . "?action=login");
             exit;
         }
 
@@ -83,7 +84,7 @@ class EventController {
         $event = $this->event_service->find_event_by_id($event_id);
 
         if ($event === null) {
-            header("Location: /all-events");
+            header("Location: " . Router::get_url() . "?action=all-events");
             exit;
         }
 
@@ -92,13 +93,13 @@ class EventController {
         $errors = [];
         $this->event_service->add_guest_to_event($logged_user, $event, $errors);
 
-        header("Location: /event/" . $event->get_id());
+        header("Location: " . Router::get_url() . "?action=event&id=" . $event->get_id());
         exit;
     }
 
     public function leave_event(array $params): void {
         if (!SessionManager::is_logged_in()) {
-            header("Location: /login");
+            header("Location: " . Router::get_url() . "?action=login");
             exit;
         }
 
@@ -106,7 +107,7 @@ class EventController {
         $event = $this->event_service->find_event_by_id($event_id);
 
         if ($event === null) {
-            header("Location: /all-events");
+            header("Location: " . Router::get_url() . "?action=all-events");
             exit;
         }
 
@@ -115,13 +116,13 @@ class EventController {
         $errors = [];
         $this->event_service->delete_guest_from_event($logged_user, $event, $errors);
 
-        header("Location: /event/" . $event->get_id());
+        header("Location: " . Router::get_url() . "?action=event&id=" . $event->get_id());
         exit;
     }
 
     public function show_create_event_form(array $params): void {
         if (!SessionManager::is_logged_in()) {
-            header("Location: /login");
+            header("Location: " . Router::get_url() . "?action=login");
             exit;
         }
 
@@ -129,7 +130,7 @@ class EventController {
         $user = $this->user_service->find_user_by_id($user_id);
 
         if ($user === null) {
-            header("Location: /login");
+            header("Location: " . Router::get_url() . "?action=login");
             exit;
         }
 
@@ -141,14 +142,14 @@ class EventController {
             $available_dates = array_merge($available_dates, $friend_dates);
         }
 
-        include("templates/header.php");
-        include("templates/events/create-event.php");
-        include("templates/footer.php");
+        include("frontend/templates/header.php");
+        include("frontend/templates/events/create-event.php");
+        include("frontend/templates/footer.php");
     }
 
     public function create_event(array $params): void {
         if (!SessionManager::is_logged_in()) {
-            header("Location: /login");
+            header("Location: " . Router::get_url() . "?action=login");
             exit;
         }
 
@@ -165,7 +166,7 @@ class EventController {
         $date = $this->user_service->find_date_by_id($date_id);
 
         if ($date === null) {
-            header("Location: /event/create");
+            header("Location: " . Router::get_url() . "?action=event&a=create");
             exit;
         }
 
@@ -187,11 +188,11 @@ class EventController {
                 $available_dates = array_merge($available_dates, $friend_dates);
             }
 
-            include("templates/header.php");
-            include("templates/events/create-event.php");
-            include("templates/footer.php");
+            include("frontend/templates/header.php");
+            include("frontend/templates/events/create-event.php");
+            include("frontend/templates/footer.php");
         } else {
-            header("Location: /event/" . $event->get_id());
+            header("Location: " . Router::get_url() . "?action=event&id=" . $event->get_id());
             exit;
         }
     }
